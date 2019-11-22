@@ -16,10 +16,17 @@ public class Contest163 {
 		gd=shiftGrid(grid, k);
 		
 //		System.out.println(gd);
+		int []arr={1,2,3,4,5,6,7,8,9};
+		
+		
 	}
 
 	
-	public int [] rightLeft(int [] arr){
+	public int [] rightLeft(int [] arr,int k){
+		
+		for (int i = 0; i < arr.length; i++) {
+			arr[i-1]=arr[i];
+		}
 		
 	}
 	
