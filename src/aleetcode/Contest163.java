@@ -22,13 +22,13 @@ public class Contest163 {
 	}
 
 	
-	public int [] rightLeft(int [] arr,int k){
-		
-		for (int i = 0; i < arr.length; i++) {
-			arr[i-1]=arr[i];
-		}
-		
-	}
+//	public int [] rightLeft(int [] arr,int k){
+//
+//		for (int i = 0; i < arr.length; i++) {
+//			arr[i-1]=arr[i];
+//		}
+//
+//	}
 	
 	public static List<List<Integer>> shiftGrid(int[][] grid, int k) {
 
