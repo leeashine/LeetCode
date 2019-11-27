@@ -1,5 +1,9 @@
 package aleetcode;
 
+import org.omg.CORBA.INTERNAL;
+
+import java.util.*;
+
 public class Contest164 {
 
     public static void main(String[] args) {
@@ -12,6 +16,64 @@ public class Contest164 {
 //		int [][] grid={{1,0},{1,1}};
         System.out.println(countServers(grid));
 
+//        String [] products = {"mobile","mouse","moneypot","monitor","mousepad"};
+        String [] products = {"bags","baggage","banner","box","cloths"};
+        String searchWord = "bags";
+        List<List<String>> list=suggestedProducts(products,searchWord);
+        System.out.println();
+//        System.out.println(stringToInt("bagg"));
+//        System.out.println(stringToInt("bags"));
+//        System.out.println(stringToInt("bann"));
+
+    }
+    public static List<List<String>> suggestedProducts(String[] products, String searchWord) {
+
+        List<List<String>> list=new ArrayList<>();
+        List<String> indexs=new ArrayList<>();
+        StringBuilder sb=new StringBuilder();
+        String[] productss=new String[products.length];
+        for(int i=0;i<searchWord.length();i++){
+
+            sb.append(searchWord.charAt(i));
+            indexs.add(sb.toString());
+        }
+//        indexs.forEach(System.out::println);
+        //按字典排序
+        Arrays.sort(products);
+
+        for(int i=0;i<products.length;i++){
+            if(i>=searchWord.length()){
+                break;
+            }
+            productss[i]=products[i];
+        }
+
+        for (int i=0;i<indexs.size();i++){
+            List<String> values=new ArrayList<>();
+            int cnt=0;
+            for(int j=0;j<productss.length-1;j++){
+
+                if(cnt==3){
+                    break;
+                }
+                if(indexs.get(i).length()>productss[j].length()){
+                    if(productss[j].contains(indexs.get(i))){
+                        values.add(productss[j]);
+                        cnt++;
+                    }
+                }else{
+                    if(productss[j].substring(0,indexs.get(i).length()).contains(indexs.get(i))){
+                        values.add(productss[j]);
+                        cnt++;
+                    }
+                }
+
+
+            }
+            list.add(values);
+        }
+
+        return  list;
     }
 
     //先加后减

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="Encoding">
+    <file url="file://$APPLICATION_CONFIG_DIR$/scratches/ydreport-20171024.jar" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/../Java8InAction-master" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/java8/chap5/BuildingStreams.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/java8/chap5/Dish.java" charset="UTF-8" />
