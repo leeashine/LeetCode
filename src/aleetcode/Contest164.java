@@ -20,12 +20,46 @@ public class Contest164 {
         String [] products = {"bags","baggage","banner","box","cloths"};
         String searchWord = "bags";
         List<List<String>> list=suggestedProducts(products,searchWord);
-        System.out.println();
-//        System.out.println(stringToInt("bagg"));
-//        System.out.println(stringToInt("bags"));
-//        System.out.println(stringToInt("bann"));
+
+        numWays(4,2);
+
+
 
     }
+
+    static int mod = (int)Math.pow(10, 9) + 7;
+    //DP
+    public static int numWays(int steps, int n) {
+
+        int[] arr = new int[n];
+        if(n <= 1) return n;
+        arr[0] = 1;
+        arr[1] = 1;
+
+        for(int j = 1; j < steps; j++){
+
+            int[] temp = new int[n];
+
+            for(int i = 0; i <= Math.min(n - 1, steps - j); i++){
+                //stay
+                long ans = arr[i];
+                //right
+                if(i > 0)
+                    ans = (ans + arr[i - 1]) % mod;
+                //left
+                if(i < n - 1)
+                    ans = (ans + arr[i + 1]) % mod;
+
+                temp[i] = (int)ans;
+            }
+
+            arr = temp;
+        }
+
+        return arr[0];
+
+    }
+
     public static List<List<String>> suggestedProducts(String[] products, String searchWord) {
 
         List<List<String>> list=new ArrayList<>();
