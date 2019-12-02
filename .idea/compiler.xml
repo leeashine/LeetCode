@@ -19,6 +19,9 @@
       <file url="file://$PROJECT_DIR$/src/chapter4/DeadLock.java" />
       <file url="file://$PROJECT_DIR$/src/java8/chap6/PartitionPrimeNumbers.java" />
       <file url="file://$PROJECT_DIR$/src/java8/chap6/CollectorHarness.java" />
+      <file url="file://$PROJECT_DIR$/../Java8InAction-master/src/main/java/lambdasinaction/chap6/Grouping.java" />
+      <file url="file://$PROJECT_DIR$/../Java8InAction-master/src/main/java/lambdasinaction/chap6/PartitionPrimeNumbers.java" />
+      <file url="file://$PROJECT_DIR$/../Java8InAction-master/src/main/java/lambdasinaction/chap6/CollectorHarness.java" />
     </excludeFromCompile>
     <annotationProcessing>
       <profile name="Maven default annotation processors profile" enabled="true">
