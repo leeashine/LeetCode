@@ -17,6 +17,7 @@ public class Contest165 {
 	}
 
 	//DP
+
 	public static int countSquares(int[][] A) {
 
 		int res = 0;
