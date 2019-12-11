@@ -2,7 +2,9 @@ package aleetcode;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Contest165 {
 
@@ -14,8 +16,48 @@ public class Contest165 {
 		int [][] mat={{0,1,1,1}, {1,1,1,1},{0,1,1,1}};
 		countSquares(mat);
 
+		String s = "aabbc";
+		int k = 3;
+		Contest165 contest=new Contest165();
+		contest.palindromePartition(s, k);
+		
 	}
 
+	
+	Map<String, Integer> map = new HashMap<>();
+    public int palindromePartition(String s, int k) {
+        if (s.length() == k) return 0;
+        int len = s.length();
+        int[][] dp = new int[k][len + 1];
+        for (int i = 0; i < len; ++i){
+            dp[0][i + 1] = helper(s.substring(0, i + 1));
+        }
+        for (int i = 1; i < k; ++i){
+            for (int j = i; j <= len; ++j){
+                int cur = Integer.MAX_VALUE;
+                for (int p = j; p >= i; p--){
+                    cur = Math.min(cur, dp[i - 1][p - 1] + helper(s.substring(p - 1,j )));
+                }
+                dp[i][j] = cur;
+            }
+        }
+        return dp[k - 1][len];
+        
+        
+    }
+    private int helper(String str){
+        if (str == null || str.length() == 0) return 0;
+        if (map.containsKey(str)) return map.get(str);
+        int res = 0;
+        for (int i = 0; i < str.length(); ++i){
+            if (str.charAt(i) != str.charAt(str.length() - i - 1)) res++;
+        }
+        res /= 2;
+        map.put(str, res);
+        return res;
+    }
+	
+	
 	//DP
 
 	public static int countSquares(int[][] A) {

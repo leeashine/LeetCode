@@ -1,6 +1,5 @@
 package util;
 
-import java.util.HashMap;
 import java.util.Map;
 
 public class LRU3<k,v>{
@@ -29,86 +28,94 @@ public class LRU3<k,v>{
     }
 
     public void put(k key, v value) {
-       
-    	Node<k,v> node=nodeMap.get(key);
-    	if(node==null){
-    		if(count>capacity)
-    			//移除节点
-    			removeNode();
-    		node = new Node(key, value);
-    		addNode(node);
-    	}else{
-    		//移动到头节点
-    		moveNodeToHead(node);
-    	}
-    	
+
+        Node<k, v> node = nodeMap.get(key);
+        if(node==null){
+
+            if(count>capacity){
+                //移除一个节点
+                removeNode();
+            }
+            node=new Node<>(key,value);
+            //添加节点
+            addToHead(node);
+        }else{
+            //移动到头结点
+            addToHead(node);
+        }
+
+        return;
     }
 
     public Node<k, v> get(k key) {
-       Node node=nodeMap.get(key);
-       if(node!=null){
-    	   moveNodeToHead(node);
-       }
-       return node;
+
+        Node<k, v> node = nodeMap.get(key);
+        if (node != null) {
+            //移动到头节点
+            moveNodeToHead(node);
+        }
+        return node;
+
     }
 
+    //移除节点（尾部）
     private void removeNode() {
-       Node node=tail.pre;
-       //从链表里面移除
-       removeFromList(node);
-       nodeMap.remove(node.key);
-       count--;
+
+        Node node=tail.pre;
+        removeFromList(node);
+        nodeMap.remove(node);
+        count--;
+
     }
 
-    private void removeFromList(Node<k, v> node) {
-        Node pre=node.pre;
-        Node next=node.next;
-        
-        pre.next=next;
-        next.pre=pre;
-        
-        node.key=null;
-        node.value=null;
-    }
 
     private void addNode(Node<k, v> node) {
-       
-    	//添加节点到头部
-    	addToHead(node);
-    	nodeMap.put(node.key, node);
-    	count++;
-    	
+        //添加到头部
+        addToHead(node);
+        nodeMap.put(node.key, node);
+        count++;
     }
-
+    //添加节点到头部
     private void addToHead(Node<k, v> node) {
-       
-    	Node next=head.next;
-    	next.pre=node;
-    	node.next=next;
-    	node.pre=head;
-    	head.next=node;
-    	
+
+        //真正的头节点
+        Node headNode=head.next;
+        headNode.pre=node;
+        node.next=headNode;
+        node.pre=head;
+        head.next=node;
+
+    }
+    //从链表里面移除
+    private void removeFromList(Node<k, v> node) {
+
+        Node pre=node.pre;
+        Node next=node.next;
+        pre.next=next;
+        next.pre=pre;
+        node.next=null;
+        node.pre=null;
+
     }
 
     public void moveNodeToHead(Node<k, v> node) {
-    	//从链表里面移除
+        //从链表里面移除
         removeFromList(node);
-        //添加节点到头部
+        //添加到头部
         addToHead(node);
+
     }
 
     private class Node<k, v> {
         k key;
         v value;
-        
         Node pre;
         Node next;
-        
         public Node(k key,v value){
-        	this.key=key;
-        	this.value=value;
+            this.key=key;
+            this.value=value;
         }
-        
+
     }
 	
 	

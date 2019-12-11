@@ -80,6 +80,7 @@ public class LRU2<k,v>{
     }
 
     private void addToHead(Node<k, v> node) {
+        //Í·½Úµã
         Node next = head.next;
         next.pre = node;
         node.next = next;
