@@ -17,13 +17,13 @@ public class Contest152 {
 
         new Contest152().canMakePaliQueries("abcda",new int[][]{{3,3,0},{1,2,0},{0,3,1},{0,3,2},{0,4,1}});
 
-//        int i=1_000_000_007;//jdk 1.7ÌØĞÔ
+//        int i=1_000_000_007;//jdk 1.7ç‰¹æ€§
 //        System.out.println(i);
 
 //        int count=0;
-//        ´ø±êÇ©µÄcontinue,break
+//        å¸¦æ ‡ç­¾çš„continue,break
 //        outer:
-//        for(int i=3;i*i<=100;i+=2){//³ıÁË2Õâ¸öÅ¼Êı ËØÊıÖ»¿ÉÄÜ³öÏÖÔÚÆæÊıÀï
+//        for(int i=3;i*i<=100;i+=2){//é™¤äº†2è¿™ä¸ªå¶æ•° ç´ æ•°åªå¯èƒ½å‡ºç°åœ¨å¥‡æ•°é‡Œ
 //            for(int j=3;j*j<=i;j+=2){
 //                if(i%j==0)
 //                    continue outer;
@@ -46,10 +46,10 @@ public class Contest152 {
         if (max >= 13) return true;
         Set<Character> set = new HashSet();
         for (int i = start; i <= end; i++) {
-            if (!set.add(s.charAt(i))) //É¾Ñ¡³ö²»ÊÇ»ØÎÄÊıµÄ×ÖÄ¸
+            if (!set.add(s.charAt(i))) //åˆ é€‰å‡ºä¸æ˜¯å›æ–‡æ•°çš„å­—æ¯
                 set.remove(s.charAt(i));
         }
-        return max >= set.size()/2; //ÊıÑ§ »»µôÒ»°ëÒÔÉÏ¾Í¿ÉÒÔ³ÉÎª»ØÎÄÊı
+        return max >= set.size()/2; //æ•°å­¦ æ¢æ‰ä¸€åŠä»¥ä¸Šå°±å¯ä»¥æˆä¸ºå›æ–‡æ•°
     }
 
 
@@ -58,7 +58,7 @@ public class Contest152 {
         for (int lo = -1, hi = 0, win = 0; hi < calories.length; ++hi) {
             win += calories[hi];
             if (hi - lo > k) {
-                win -= calories[++lo];//ËõĞ¡´°¿Ú
+                win -= calories[++lo];//ç¼©å°çª—å£
             }
             if (hi - lo < k) { continue; } // not a k sequence yet.
             if (win < lower) {
@@ -75,7 +75,7 @@ public class Contest152 {
         int cnt = 1; // # of primes, first prime is 2.
         outer:
         for (int i = 3; i <= n; i += 2) { // only odd number could be a prime, if i > 2.
-            for (int factor = 3; factor * factor <= i; factor += 2)//ÆæÊıÖ»¿ÉÄÜ±»ÆæÊıÕû³ı
+            for (int factor = 3; factor * factor <= i; factor += 2)//å¥‡æ•°åªå¯èƒ½è¢«å¥‡æ•°æ•´é™¤
                 if (i % factor == 0)
                     continue outer;
 //            System.out.println(i);
@@ -89,10 +89,10 @@ public class Contest152 {
         return (int)ans;
     }
 
-    //Í³¼Æ<=nµÄËØÊı¸öÊı
-    //Áî x =2;
-    //½« 2x¡¢3x¡¢4x Ö±ÖÁ ax<n µÄÊı±ê¼ÇÎª·ÇËØÊı
-    //Áî x ÎªÏÂÒ»¸öÃ»ÓĞ±»±ê¼ÇÎª·ÇËØÊıµÄÊı£¬ÖØ¸´ 2£»Ö±ÖÁËùÓĞµÄÊı¶¼ÒÑ³¢ÊÔÍê±Ï¡£
+    //ç»Ÿè®¡<=nçš„ç´ æ•°ä¸ªæ•°
+    //ä»¤ x =2;
+    //å°† 2xã€3xã€4x ç›´è‡³ ax<n çš„æ•°æ ‡è®°ä¸ºéç´ æ•°
+    //ä»¤ x ä¸ºä¸‹ä¸€ä¸ªæ²¡æœ‰è¢«æ ‡è®°ä¸ºéç´ æ•°çš„æ•°ï¼Œé‡å¤ 2ï¼›ç›´è‡³æ‰€æœ‰çš„æ•°éƒ½å·²å°è¯•å®Œæ¯•ã€‚
     private static int generatePrimes(int n) {
 
         boolean [] prime=new boolean[n+1];

@@ -18,7 +18,7 @@ public class Contest157 {
         int ans = 0;
         for (int i = 0; i < grid.length; ++i) {
             for (int j = 0; j < grid[0].length; ++j) {
-            	//Ã¿Ò»¸öµã¶¼½øÐÐdfs
+            	//æ¯ä¸€ä¸ªç‚¹éƒ½è¿›è¡Œdfs
                 ans = Math.max(ans, dfs(grid, i, j, 0));
             }
         }
@@ -38,14 +38,14 @@ public class Contest157 {
         	
         }
         
-        g[i][j]-=1000; //»¹Ô­ÊýÖµ
+        g[i][j]-=1000; //è¿˜åŽŸæ•°å€¼
         return mx;
         
     }
     
     
 	
-	//arr = [1,5,7,8,5,3,4,2,1], difference = -2  //µ¹ÍÆ·¨£¡
+	//arr = [1,5,7,8,5,3,4,2,1], difference = -2  //å€’æŽ¨æ³•ï¼
 	public static int longestSubsequence2(int[] arr, int difference) {
 		HashMap<Integer, Integer> dp = new HashMap<>();
 		int longest = 0;

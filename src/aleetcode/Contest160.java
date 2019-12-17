@@ -126,10 +126,10 @@ public class Contest160 {
 			
 			for(int i=0;i<s.length();i++){
 				if(cnt[s.charAt(i)-'a']==0){
-					cnt[s.charAt(i)-'a']++;//µÚÒ»´Î·ÃÎÊ
+					cnt[s.charAt(i)-'a']++;//ç¬¬ä¸€æ¬¡è®¿é—®
 					maxS.append(s.charAt(i));
 				}else{
-					//·ÃÎÊ¹ý
+					//è®¿é—®è¿‡
 				}
 			}
 			

@@ -80,7 +80,7 @@ public class Contest165 {
         return t % 2 == 0 && c * 2 <= t && t <= c * 4 ? Arrays.asList(t / 2 - c, c * 2 - t / 2) :  new ArrayList();
     }
 
-	// 借助辅助数组统计每行每列和对角线的和
+	// 鍊熷姪杈呭姪鏁扮粍缁熻姣忚姣忓垪鍜屽瑙掔嚎鐨勫拰
 	public static String tictactoe(int[][] moves) {
 		int[] A = new int[8], B = new int[8]; // 3 rows, 3 cols, 2 diagonals
 		for (int i = 0; i < moves.length; i++) {

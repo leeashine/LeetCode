@@ -13,13 +13,36 @@ public class Contest166 {
         List list=new ArrayList();
         System.out.println(list.contains(3));
 
+        int [] A={1,2,5,9};
+        int threshold = 6;
+        smallestDivisor(A,threshold);
+
     }
+
+//    è¾“å…¥ï¼šnums = [1,2,5,9], threshold = 6
+//    è¾“å‡ºï¼š5
+    public static int smallestDivisor(int[] A, int threshold) {
+
+        int left = 1, right = (int)1e6;
+        while (left < right) {
+            int m = left + (right - left) / 2, sum = 0;
+            for (int i : A)
+                sum += Math.ceil(i*1.0/m);//å‘ä¸Šå–æ•´
+            if (sum > threshold)
+                left = m + 1;
+            else
+                right = m;
+        }
+        return left;
+
+    }
+
 
     //    Input: groupSizes = [3,3,3,3,3,1,3]
     //    Output: [[5],[0,1,2],[3,4,6]]
     //    Explanation:
     //    Other possible solutions are [[2,1,6],[5],[0,4,3]] and [[5],[0,6,2],[4,3,1]].
-    // Ë¼Â·:hashmap
+    // æ€è·¯:hashmap
     public List<List<Integer>> groupThePeople(int[] arr) {
 
         int n = arr.length;
@@ -31,10 +54,10 @@ public class Contest166 {
             List<Integer> temp = new ArrayList<>();
             if(map.containsKey(curr)) temp=map.get(curr);
             temp.add(i);
-            map.put(curr,temp);//¸üĞÂmap
-            if(temp.size()>=curr){//Èç¹û×éÂúÁË
+            map.put(curr,temp);//æ›´æ–°map
+            if(temp.size()>=curr){//å¦‚æœç»„æ»¡äº†
                 ans.add(temp);
-                map.remove(curr);//ÒÆ³ıÕâÒ»×é ÏÂÒ»ÂÖÖØĞÂ¿ªÊ¼
+                map.remove(curr);//ç§»é™¤è¿™ä¸€ç»„ ä¸‹ä¸€è½®é‡æ–°å¼€å§‹
             }
         }
 
