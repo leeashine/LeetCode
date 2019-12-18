@@ -1,9 +1,9 @@
 package designpattern.proxypattern.ProxySample;
 
 public class Logger {
-    //Ä£ÄâÊµÏÖÈÕÖ¾¼ÇÂ¼
+    //æ¨¡æ‹Ÿå®ç°æ—¥å¿—è®°å½•
     public void Log(String userId) {
-        System.out.println("¸üĞÂÊı¾İ¿â£¬ÓÃ»§"+userId+"²éÑ¯´ÎÊı¼Ó1£¡");
+        System.out.println("æ›´æ–°æ•°æ®åº“ï¼Œç”¨æˆ·"+userId+"æŸ¥è¯¢æ¬¡æ•°åŠ 1ï¼");
     }
 
 }

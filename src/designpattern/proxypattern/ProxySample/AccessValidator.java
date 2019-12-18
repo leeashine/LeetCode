@@ -1,17 +1,17 @@
 package designpattern.proxypattern.ProxySample;
 
-//Éí·İÑéÖ¤
+//èº«ä»½éªŒè¯
 public class AccessValidator {
-    //Ä£ÄâÊµÏÖµÇÂ¼ÑéÖ¤
+    //æ¨¡æ‹Ÿå®ç°ç™»å½•éªŒè¯
     public boolean Validate(String userId)
     {
-        System.out.println("ÔÚÊı¾İ¿âÖĞÑéÖ¤ÓÃ»§'" + userId + "'ÊÇ·ñÊÇºÏ·¨ÓÃ»§£¿");
-        if (userId.equals("Ñî¹ı")) {
-            System.out.println(userId+"µÇÂ¼³É¹¦£¡");
+        System.out.println("åœ¨æ•°æ®åº“ä¸­éªŒè¯ç”¨æˆ·'" + userId + "'æ˜¯å¦æ˜¯åˆæ³•ç”¨æˆ·ï¼Ÿ");
+        if (userId.equals("æ¨è¿‡")) {
+            System.out.println(userId+"ç™»å½•æˆåŠŸï¼");
             return true;
         }
         else {
-            System.out.println(userId+"µÇÂ¼Ê§°Ü£¡");
+            System.out.println(userId+"ç™»å½•å¤±è´¥ï¼");
             return false;
         }
     }

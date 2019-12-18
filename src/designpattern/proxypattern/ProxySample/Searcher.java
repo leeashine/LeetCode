@@ -1,5 +1,5 @@
 package designpattern.proxypattern.ProxySample;
-//抽象查询类，充当抽象主题角色
+//鎶借薄鏌ヨ绫伙紝鍏呭綋鎶借薄涓婚瑙掕壊
 public interface Searcher {
     String DoSearch(String userId, String keyword);
 }

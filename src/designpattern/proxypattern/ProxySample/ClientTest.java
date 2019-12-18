@@ -3,19 +3,21 @@ package designpattern.proxypattern.ProxySample;
 import java.io.Console;
 
 public class ClientTest {
-//    ÔÚ´úÀíÀàProxySearcherÖĞÊµÏÖ¶ÔÕæÊµÖ÷ÌâÀàµÄ
-//    È¨ÏŞ¿ØÖÆºÍÒıÓÃ¼ÆÊı£¬Èç¹ûĞèÒªÔÚ·ÃÎÊÕæÊµÖ÷ÌâÊ±Ôö¼ÓĞÂµÄ·ÃÎÊ¿ØÖÆ»úÖÆºÍĞÂ¹¦ÄÜ£¬Ö»ĞèÔö
-//    ¼ÓÒ»¸öĞÂµÄ´úÀíÀà£¬ÔÙĞŞ¸ÄÅäÖÃÎÄ¼ş£¬ÔÚ¿Í»§¶Ë´úÂëÖĞÊ¹ÓÃĞÂÔö´úÀíÀà¼´¿É£¬Ô´´úÂëÎŞĞëĞŞ
-//    ¸Ä£¬·ûºÏ¿ª±ÕÔ­Ôò
+    //    åœ¨ä»£ç†ç±»ProxySearcherä¸­å®ç°å¯¹çœŸå®ä¸»é¢˜ç±»çš„
+//    æƒé™æ§åˆ¶å’Œå¼•ç”¨è®¡æ•°ï¼Œå¦‚æœéœ€è¦åœ¨è®¿é—®çœŸå®ä¸»é¢˜æ—¶å¢åŠ æ–°çš„è®¿é—®æ§åˆ¶æœºåˆ¶å’Œæ–°åŠŸèƒ½ï¼Œåªéœ€å¢
+//    åŠ ä¸€ä¸ªæ–°çš„ä»£ç†ç±»ï¼Œå†ä¿®æ”¹é…ç½®æ–‡ä»¶ï¼Œåœ¨å®¢æˆ·ç«¯ä»£ç ä¸­ä½¿ç”¨æ–°å¢ä»£ç†ç±»å³å¯ï¼Œæºä»£ç æ— é¡»ä¿®
+//    æ”¹ï¼Œç¬¦åˆå¼€é—­åŸåˆ™
     public static void main(String[] args) {
-        //¶ÁÈ¡ÅäÖÃÎÄ¼ş
+        //è¯»å–é…ç½®æ–‡ä»¶
 //        String proxy = ConfigurationManager.AppSettings["proxy"];
-//        //·´ÉäÉú³É¶ÔÏó£¬Õë¶Ô³éÏó±à³Ì£¬¿Í»§¶ËÎŞĞë·Ö±æÕæÊµÖ÷ÌâÀàºÍ´úÀíÀà
+//        //åå°„ç”Ÿæˆå¯¹è±¡ï¼Œé’ˆå¯¹æŠ½è±¡ç¼–ç¨‹ï¼Œå®¢æˆ·ç«¯æ— é¡»åˆ†è¾¨çœŸå®ä¸»é¢˜ç±»å’Œä»£ç†ç±»
 //        Searcher searcher;
 //        searcher = (Searcher)Assembly.Load("ProxySample").CreateInstance(proxy);
-//        String result = searcher.DoSearch("Ñî¹ı", "ÓñÅ®ĞÄ¾­");
+//        String result = searcher.DoSearch("æ¨è¿‡", "ç‰å¥³å¿ƒç»");
 //        System.out.println(result);
-
+        Searcher searcher = new ProxySearcher();
+        String result=searcher.DoSearch("æ¨è¿‡","ç‰å¥³å¿ƒç»");
+        System.out.println(result);
     }
 
 }
