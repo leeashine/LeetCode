@@ -1,7 +1,5 @@
 package designpattern.proxypattern.ProxySample;
 
-import java.io.Console;
-
 public class ClientTest {
     //    在代理类ProxySearcher中实现对真实主题类的
 //    权限控制和引用计数，如果需要在访问真实主题时增加新的访问控制机制和新功能，只需增

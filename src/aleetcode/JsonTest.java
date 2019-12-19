@@ -14,7 +14,7 @@ public class JsonTest {
 
 		String jsonStr="{\"aa\":\"123456789.1234\",\"bb\":\"123456789.1234\",\"cc\":\"1.0E+7\"}";
 		JSONObject json = (JSONObject) JSONObject.parse(jsonStr);
-		//¿ÕÖ¸Õë
+		//ç©ºæŒ‡é’ˆ
 //		JSONObject json = (JSONObject) JSONObject.parse("");  
 		System.out.println(json.get("aa"));
 		String dd=String.valueOf(json.get("dd"));
@@ -40,7 +40,7 @@ public class JsonTest {
 		
 		Map<String, Object> map =(JSONObject)list.get("list");  
         for (Entry<String, Object> entry : map.entrySet()) {
-                        //getKey»ñÈ¡Entry¼¯ºÏÖĞµÄkey¡¢getValue»ñÈ¡value
+                        //getKeyè·å–Entryé›†åˆä¸­çš„keyã€getValueè·å–value
 //                        System.out.println(entry.getKey()+"="+entry.getValue()); 
                         Map<String, Object> map2=(JSONObject)entry.getValue();
                         for (Entry<String, Object> entry2 : map2.entrySet()) {
@@ -49,7 +49,7 @@ public class JsonTest {
             }
 
         
-        String jsonStr4="{\"SpouseCustomerName\": \"ÅäÅ¼\", 	\"loanAmount\": \"10000.0\", 	\"customerAddressCode\": \"999999\", 	\"customerSex\": \"2\", 	\"customerNumber\": \"WD2019073100000001\", 	\"customerPhone\": \"18271414002\", 	\"organization\": \"ÖĞ¹ú¿Æ¼¼Ô°q\", 	\"eventId\": \"netloan_taxSecondsLoan\", 	\"customerProperty\": \"\", 	\"EAccountID\": \"1122334455\", 	\"applicationNumber\": \"WD2019073100000001\", 	\"transTime\": \"2019-07-31 10:28:36\", 	\"partnerCode\": \"kratos\", 	\"ChannelNumber\": \"AH\", 	\"UnifiedSocialCredit\": \"666\", 	\"registered_address\": \"ÉÏº£ÊĞ½ÌÓıÂ·11ºÅ\", 	\"SpouseCertID\": \"320922197905138447\", 	\"loanTerm\": \"12\", 	\"ECustomerID\": \"1122334455\", 	\"pboPostAddress\": \"ÉÏº£ÊĞ½ÌÓıÂ·11ºÅ\", 	\"SpouseCertType\": \"Ind01\", 	\"customerName\": \"â×ÃÀ\", 	\"customerType\": \"03\", 	\"SpousePhoneNo\": \"13131231234\", 	\"id_number\": \"522701199111237641\", 	\"productCode\": \"\", 	\"customerBirthday\": \"1991-11-23\", 	\"marriage\": \"10\", 	\"account_name\": \"â×ÃÀ\", 	\"productId\": \"3076\", 	\"appName\": \"netloan\", 	\"secretKey\": \"2597b083866c4b419ea12dede2ed03eb\", 	\"transId\": \"WD2019073100000001\", 	\"customerAddress\": \"ÉÏº£ÊĞ½ÌÓıÂ·11ºÅ\", 	\"pouseCode\": \"522701199111237641\", 	\"pouseCerttype\": \"Ind01\" }";
+        String jsonStr4="{\"SpouseCustomerName\": \"é…å¶\", 	\"loanAmount\": \"10000.0\", 	\"customerAddressCode\": \"999999\", 	\"customerSex\": \"2\", 	\"customerNumber\": \"WD2019073100000001\", 	\"customerPhone\": \"18271414002\", 	\"organization\": \"ä¸­å›½ç§‘æŠ€å›­q\", 	\"eventId\": \"netloan_taxSecondsLoan\", 	\"customerProperty\": \"\", 	\"EAccountID\": \"1122334455\", 	\"applicationNumber\": \"WD2019073100000001\", 	\"transTime\": \"2019-07-31 10:28:36\", 	\"partnerCode\": \"kratos\", 	\"ChannelNumber\": \"AH\", 	\"UnifiedSocialCredit\": \"666\", 	\"registered_address\": \"ä¸Šæµ·å¸‚æ•™è‚²è·¯11å·\", 	\"SpouseCertID\": \"320922197905138447\", 	\"loanTerm\": \"12\", 	\"ECustomerID\": \"1122334455\", 	\"pboPostAddress\": \"ä¸Šæµ·å¸‚æ•™è‚²è·¯11å·\", 	\"SpouseCertType\": \"Ind01\", 	\"customerName\": \"åº¾ç¾\", 	\"customerType\": \"03\", 	\"SpousePhoneNo\": \"13131231234\", 	\"id_number\": \"522701199111237641\", 	\"productCode\": \"\", 	\"customerBirthday\": \"1991-11-23\", 	\"marriage\": \"10\", 	\"account_name\": \"åº¾ç¾\", 	\"productId\": \"3076\", 	\"appName\": \"netloan\", 	\"secretKey\": \"2597b083866c4b419ea12dede2ed03eb\", 	\"transId\": \"WD2019073100000001\", 	\"customerAddress\": \"ä¸Šæµ·å¸‚æ•™è‚²è·¯11å·\", 	\"pouseCode\": \"522701199111237641\", 	\"pouseCerttype\": \"Ind01\" }";
         JSONObject json4 = (JSONObject) JSONObject.parse(jsonStr4);
 		System.out.println(json4.getString("SpouseCustomerName"));
 		
@@ -60,7 +60,7 @@ public class JsonTest {
 //		Map<String,Object> map = ServiceTransUtils.toHashMap(list);
 //		
 //        for (Entry<String, Object> entry : map.entrySet()) {
-//                        //getKey»ñÈ¡Entry¼¯ºÏÖĞµÄkey¡¢getValue»ñÈ¡value
+//                        //getKeyè·å–Entryé›†åˆä¸­çš„keyã€getValueè·å–value
 ////                        System.out.println(entry.getKey()+"="+entry.getValue()); 
 //                        Map<String, Object> map2=(Map)entry.getValue();
 //                        for (Entry<String, Object> entry2 : map2.entrySet()) {
@@ -71,8 +71,8 @@ public class JsonTest {
 //            }
 		
 		
-		//Òì³£Çé¿ö  ¸ù±¾²»ÊÇjson×Ö·û´®£¡
-//		String jsonStrs="º¼ÖİÊĞ";
+		//å¼‚å¸¸æƒ…å†µ  æ ¹æœ¬ä¸æ˜¯jsonå­—ç¬¦ä¸²ï¼
+//		String jsonStrs="æ­å·å¸‚";
 //		JSONObject jsons =  JSONObject.parseObject(jsonStrs);
 //		String prov=jsons.getString("prov");
 //		System.out.println(prov);

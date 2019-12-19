@@ -15,7 +15,7 @@ public class Proxy extends Subject{
     @Override
     public void Request() {
         PreRequest();
-        realSubject.Request(); //调用真实主题对象的方法
+        realSubject.Request(); //锟斤拷锟斤拷锟斤拷实锟斤拷锟斤拷锟斤拷锟侥凤拷锟斤拷
         PostRequest();
     }
 }

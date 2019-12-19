@@ -16,6 +16,9 @@ public class Contest166 {
         int [] A={1,2,5,9};
         int threshold = 6;
         smallestDivisor(A,threshold);
+//        Double a=2500.0d*100;
+//        System.out.println(a);
+//        System.out.println(a.longValue());
 
     }
 
