@@ -5,11 +5,11 @@ import java.util.Map;
 
 public class LRU2<k,v>{
 
-	//ÈİÁ¿
+	//å®¹é‡
     private int capacity;
-    //µ±Ç°ÓĞ¶àÉÙ½ÚµãµÄÍ³¼Æ
+    //å½“å‰æœ‰å¤šå°‘èŠ‚ç‚¹çš„ç»Ÿè®¡
     private int count;
-    //»º´æ½Úµã
+    //ç¼“å­˜èŠ‚ç‚¹
     private Map<k, Node<k, v>> nodeMap;
     private Node<k, v> head;
     private Node<k, v> tail;
@@ -20,7 +20,7 @@ public class LRU2<k,v>{
         }
         this.capacity = capacity;
         this.nodeMap = new HashMap<>();
-        //³õÊ¼»¯Í·½ÚµãºÍÎ²½Úµã£¬ÀûÓÃÉÚ±øÄ£Ê½¼õÉÙÅĞ¶ÏÍ·½áµãºÍÎ²½ÚµãÎª¿ÕµÄ´ú¼Û
+        //åˆå§‹åŒ–å¤´èŠ‚ç‚¹å’Œå°¾èŠ‚ç‚¹ï¼Œåˆ©ç”¨å“¨å…µæ¨¡å¼å‡å°‘åˆ¤æ–­å¤´ç»“ç‚¹å’Œå°¾èŠ‚ç‚¹ä¸ºç©ºçš„ä»£ä»·
         Node headNode = new Node(null, null);
         Node tailNode = new Node(null, null);
         headNode.next = tailNode;
@@ -33,14 +33,14 @@ public class LRU2<k,v>{
         Node<k, v> node = nodeMap.get(key);
         if (node == null) {
             if (count >= capacity) {
-                //ÏÈÒÆ³ıÒ»¸ö½Úµã
+                //å…ˆç§»é™¤ä¸€ä¸ªèŠ‚ç‚¹
                 removeNode();
             }
             node = new Node<>(key, value);
-            //Ìí¼Ó½Úµã
+            //æ·»åŠ èŠ‚ç‚¹
             addNode(node);
         } else {
-            //ÒÆ¶¯½Úµãµ½Í·½Úµã
+            //ç§»åŠ¨èŠ‚ç‚¹åˆ°å¤´èŠ‚ç‚¹
             moveNodeToHead(node);
         }
     }
@@ -55,7 +55,7 @@ public class LRU2<k,v>{
 
     private void removeNode() {
         Node node = tail.pre;
-        //´ÓÁ´±íÀïÃæÒÆ³ı
+        //ä»é“¾è¡¨é‡Œé¢ç§»é™¤
         removeFromList(node);
         nodeMap.remove(node.key);
         count--;
@@ -73,14 +73,14 @@ public class LRU2<k,v>{
     }
 
     private void addNode(Node<k, v> node) {
-        //Ìí¼Ó½Úµãµ½Í·²¿
+        //æ·»åŠ èŠ‚ç‚¹åˆ°å¤´éƒ¨
         addToHead(node);
         nodeMap.put(node.key, node);
         count++;
     }
 
     private void addToHead(Node<k, v> node) {
-        //Í·½Úµã
+        //å¤´èŠ‚ç‚¹
         Node next = head.next;
         next.pre = node;
         node.next = next;
@@ -89,9 +89,9 @@ public class LRU2<k,v>{
     }
 
     public void moveNodeToHead(Node<k, v> node) {
-        //´ÓÁ´±íÀïÃæÒÆ³ı
+        //ä»é“¾è¡¨é‡Œé¢ç§»é™¤
         removeFromList(node);
-        //Ìí¼Ó½Úµãµ½Í·²¿
+        //æ·»åŠ èŠ‚ç‚¹åˆ°å¤´éƒ¨
         addToHead(node);
     }
 

@@ -1,4 +1,4 @@
-package util;
+package linklist;
 
 import java.util.Map;
 
