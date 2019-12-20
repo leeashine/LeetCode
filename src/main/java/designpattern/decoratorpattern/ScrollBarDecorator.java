@@ -1,5 +1,5 @@
 package designpattern.decoratorpattern;
-//¹ö¶¯Ìõ×°ÊÎÀà£º¾ßÌå×°ÊÎÀà
+//æ»šåŠ¨æ¡è£…é¥°ç±»ï¼šå…·ä½“è£…é¥°ç±»
 public class ScrollBarDecorator extends ComponentDecorator{
     public ScrollBarDecorator(Component component)
     {
@@ -12,7 +12,7 @@ public class ScrollBarDecorator extends ComponentDecorator{
     }
     public void setScrollBar()
     {
-        System.out.println("Îª¹¹¼şÔö¼Ó¹ö¶¯Ìõ£¡");
+        System.out.println("ä¸ºæ„ä»¶å¢åŠ æ»šåŠ¨æ¡ï¼");
     }
 
 }

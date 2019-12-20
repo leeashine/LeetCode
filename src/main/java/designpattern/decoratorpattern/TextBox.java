@@ -1,10 +1,10 @@
 package designpattern.decoratorpattern;
-//文本框类：具体构件类
+//鏂囨湰妗嗙被锛氬叿浣撴瀯浠剁被
 public class TextBox extends Component{
 
     @Override
     public void display() {
-        System.out.println("显示文本框！");
+        System.out.println("鏄剧ず鏂囨湰妗嗭紒");
 
     }
 }

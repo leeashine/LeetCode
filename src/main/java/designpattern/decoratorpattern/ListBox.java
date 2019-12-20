@@ -3,6 +3,6 @@ package designpattern.decoratorpattern;
 public class ListBox extends Component {
     @Override
     public void display() {
-        System.out.println("ÏÔÊ¾ÁĞ±í¿ò£¡");
+        System.out.println("æ˜¾ç¤ºåˆ—è¡¨æ¡†ï¼");
     }
 }

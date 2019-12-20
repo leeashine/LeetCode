@@ -1,5 +1,5 @@
 package designpattern.decoratorpattern;
-//ºÚÉ«±ß¿ò×°ÊÎÀà£º¾ßÌå×°ÊÎÀà
+//é»‘è‰²è¾¹æ¡†è£…é¥°ç±»ï¼šå…·ä½“è£…é¥°ç±»
 public class BlackBorderDecorator extends ComponentDecorator{
     public BlackBorderDecorator(Component component)
     {
@@ -12,7 +12,7 @@ public class BlackBorderDecorator extends ComponentDecorator{
     }
     public void setBlackBorder()
     {
-        System.out.println("Îª¹¹¼şÔö¼ÓºÚÉ«±ß¿ò£¡");
+        System.out.println("ä¸ºæ„ä»¶å¢åŠ é»‘è‰²è¾¹æ¡†ï¼");
     }
 
 }

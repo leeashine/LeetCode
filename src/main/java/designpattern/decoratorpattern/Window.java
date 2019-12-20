@@ -1,8 +1,8 @@
 package designpattern.decoratorpattern;
-//´°ÌåÀà£º¾ßÌå¹¹¼şÀà
+//çª—ä½“ç±»ï¼šå…·ä½“æ„ä»¶ç±»
 public class Window extends Component{
     @Override
     public void display() {
-        System.out.println("ÏÔÊ¾´°Ìå£¡");
+        System.out.println("æ˜¾ç¤ºçª—ä½“ï¼");
     }
 }
