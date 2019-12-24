@@ -42,7 +42,7 @@ public class Contest150 {
 		
 		int level = 1, max = Integer.MIN_VALUE, maxLevel = 1;
         Queue<TreeNode> q = new LinkedList<>();
-        q.offer(root);//Ïò¶ÓÁĞÎ²²¿²åÈëÔªËØ
+        q.offer(root);//å‘é˜Ÿåˆ—å°¾éƒ¨æ’å…¥å…ƒç´ 
 //      q.add(root);
         while (!q.isEmpty()) {
             int sum = 0; 
