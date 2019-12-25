@@ -1,11 +1,11 @@
 package singletonpackage;
 
 /**
- * ÀÁººÄ£Ê½ Ïß³Ì²»°²È«
- * Ë«ÖØ¼ì²éËø¶¨ ×¢Òâ volatile¹Ø¼ü×Ö
- * ÓÉÓÚvolatile¹Ø¼ü×Ö»áÆÁ±ÎJavaĞéÄâ»úËù×öµÄÒ»
- * Ğ©´úÂëÓÅ»¯£¬¿ÉÄÜ»áµ¼ÖÂÏµÍ³ÔËĞĞĞ§ÂÊ½µµÍ£¬Òò´Ë¼´Ê¹Ê¹ÓÃË«ÖØ¼ì²éËø¶¨À´ÊµÏÖµ¥ÀıÄ£Ê½Ò²
- * ²»ÊÇÒ»ÖÖÍêÃÀµÄÊµÏÖ·½Ê½¡£
+ * æ‡’æ±‰æ¨¡å¼ çº¿ç¨‹ä¸å®‰å…¨
+ * åŒé‡æ£€æŸ¥é”å®š æ³¨æ„ volatileå…³é”®å­—
+ * ç”±äºvolatileå…³é”®å­—ä¼šå±è”½Javaè™šæ‹Ÿæœºæ‰€åšçš„ä¸€
+ * äº›ä»£ç ä¼˜åŒ–ï¼Œå¯èƒ½ä¼šå¯¼è‡´ç³»ç»Ÿè¿è¡Œæ•ˆç‡é™ä½ï¼Œå› æ­¤å³ä½¿ä½¿ç”¨åŒé‡æ£€æŸ¥é”å®šæ¥å®ç°å•ä¾‹æ¨¡å¼ä¹Ÿ
+ * ä¸æ˜¯ä¸€ç§å®Œç¾çš„å®ç°æ–¹å¼ã€‚
  */
 public class LazySingleton {
     private volatile static LazySingleton instance = null;
@@ -14,13 +14,13 @@ public class LazySingleton {
     }
 
     public static LazySingleton getInstance() {
-        //µÚÒ»ÖØÅĞ¶Ï
+        //ç¬¬ä¸€é‡åˆ¤æ–­
         if (instance == null) {
-            //Ëø¶¨´úÂë¿é
+            //é”å®šä»£ç å—
             synchronized (LazySingleton.class) {
-                //µÚ¶şÖØÅĞ¶Ï
+                //ç¬¬äºŒé‡åˆ¤æ–­
                 if (instance == null) {
-                    instance = new LazySingleton(); //´´½¨µ¥ÀıÊµÀı
+                    instance = new LazySingleton(); //åˆ›å»ºå•ä¾‹å®ä¾‹
                 }
             }
         }
