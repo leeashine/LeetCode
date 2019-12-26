@@ -30,8 +30,8 @@ public class AccountingVol implements Runnable {
     }
 
     /**
-     * ��������ͨ�������̶߳�i�����ۼӲ���,���յ���ȷ���ӦΪ20000000,����ʵ������ȴԶԶС����ȷ��ֵ,��Ϊ����߳�ͬ�¶�i����д�����ʱ,
-     * ����һ���̵߳Ľ���Ḳ������һ���̵߳Ĳ���,�̲߳���ȫ���������ֳ�ͻ.
+     * 主函数是通过两个线程对i进行累加操作,最终的正确结果应为20000000,但是实际运行却远远小于正确数值,因为多个线程同事对i进行写入操作时,
+     * 其中一个线程的结果会覆盖另外一个线程的操作,线程不安全导致了这种冲突.
      *
      * @param args
      * @throws InterruptedException
