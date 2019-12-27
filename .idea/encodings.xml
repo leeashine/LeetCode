@@ -5,6 +5,7 @@
     <file url="file://$PROJECT_DIR$/../Java8InAction-master/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/../Java8InAction-master/src/main/java/lambdasinaction/util/Word2Html.java" charset="GBK" />
     <file url="file://$PROJECT_DIR$/../Java8InAction-master/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/aleetcode/CollectionDemo.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/main/java/aleetcode/Contest150.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/main/java/chapter2/AccountingVol.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/main/java/chapter4/AtomicIntegerFieldUpdaterDemo.java" charset="UTF-8" />
@@ -20,6 +21,7 @@
     <file url="file://$PROJECT_DIR$/src/main/java/singletonpackage/StaticSingleton.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/main/java/util/LRU2.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/main/java/util/LRU3.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/util/Test.java" charset="UTF-8" />
     <file url="PROJECT" charset="UTF-8" />
   </component>
 </project>

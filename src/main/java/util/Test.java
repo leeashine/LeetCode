@@ -1,8 +1,6 @@
 package util;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class Test {
 
@@ -29,15 +27,15 @@ public class Test {
 		
 		Map map=new HashMap();
 		
-//		//getOrDefault Èç¹ûÃ»ÓĞÕâ¸ökey,¾Í·µ»ØÄ¬ÈÏÖµ¼´µÚ¶ş¸ö²ÎÊı
+//		//getOrDefault å¦‚æœæ²¡æœ‰è¿™ä¸ªkey,å°±è¿”å›é»˜è®¤å€¼å³ç¬¬äºŒä¸ªå‚æ•°
 //		String a=map.getOrDefault("a", "").toString();
 //		System.out.println("map.getOrDefault(): "+a);
-//		//putIfAbsent Èç¹ûkeyËù¶ÔÓ¦µÄµÄvalue²»´æÔÚ¾Í·ÅÈëÕâ¸öÖµ
+//		//putIfAbsent å¦‚æœkeyæ‰€å¯¹åº”çš„çš„valueä¸å­˜åœ¨å°±æ”¾å…¥è¿™ä¸ªå€¼
 //		map.putIfAbsent("a", "123");
 //		map.putIfAbsent("a", "bbb");
 //		System.out.println("map.get(): "+map.get("a"));
 		
-		// Ò»°ãÕâÑùĞ´
+		// ä¸€èˆ¬è¿™æ ·å†™
 //		list = map.get("list-1");
 //		if (list == null) {
 //		    list = new LinkedList<>();
@@ -45,9 +43,11 @@ public class Test {
 //		}
 //		list.add("one");
 //		
-//		// Ê¹ÓÃ computeIfAbsent ¿ÉÒÔÕâÑùĞ´
-//		list = map.computeIfAbsent("list-1", k -> new ArrayList<>());
-//		list.add("one");
+//	    ä½¿ç”¨ computeIfAbsent å¯ä»¥è¿™æ ·å†™
+//		å¦‚æœkeyå¯¹åº”çš„valueä¸å­˜åœ¨å°±é‡æ–°new ä¸€ä¸ªlistæ”¾è¿›å»
+		List list=new ArrayList();
+		list = (List) map.computeIfAbsent("list-1", k -> new ArrayList<>());
+		list.add("one");
 		
 		
 	}
