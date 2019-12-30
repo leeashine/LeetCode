@@ -18,7 +18,7 @@ public class SegmentTree<E> {
         buildSegmentTree(0, 0, arr.length - 1);
     }
 
-    // ÔÚtreeIndexµÄÎ»ÖÃ´´½¨±íÊ¾Çø¼ä[l...r]µÄÏß¶ÎÊ÷
+    // åœ¨treeIndexçš„ä½ç½®åˆ›å»ºè¡¨ç¤ºåŒºé—´[l...r]çš„çº¿æ®µæ ‘
     private void buildSegmentTree(int treeIndex, int l, int r){
 
         if(l == r){
@@ -47,17 +47,17 @@ public class SegmentTree<E> {
         return data[index];
     }
 
-    // ·µ»ØÍêÈ«¶ş²æÊ÷µÄÊı×é±íÊ¾ÖĞ£¬Ò»¸öË÷ÒıËù±íÊ¾µÄÔªËØµÄ×óº¢×Ó½ÚµãµÄË÷Òı
+    // è¿”å›å®Œå…¨äºŒå‰æ ‘çš„æ•°ç»„è¡¨ç¤ºä¸­ï¼Œä¸€ä¸ªç´¢å¼•æ‰€è¡¨ç¤ºçš„å…ƒç´ çš„å·¦å­©å­èŠ‚ç‚¹çš„ç´¢å¼•
     private int leftChild(int index){
         return 2*index + 1;
     }
 
-    // ·µ»ØÍêÈ«¶ş²æÊ÷µÄÊı×é±íÊ¾ÖĞ£¬Ò»¸öË÷ÒıËù±íÊ¾µÄÔªËØµÄÓÒº¢×Ó½ÚµãµÄË÷Òı
+    // è¿”å›å®Œå…¨äºŒå‰æ ‘çš„æ•°ç»„è¡¨ç¤ºä¸­ï¼Œä¸€ä¸ªç´¢å¼•æ‰€è¡¨ç¤ºçš„å…ƒç´ çš„å³å­©å­èŠ‚ç‚¹çš„ç´¢å¼•
     private int rightChild(int index){
         return 2*index + 2;
     }
 
-    // ·µ»ØÇø¼ä[queryL, queryR]µÄÖµ
+    // è¿”å›åŒºé—´[queryL, queryR]çš„å€¼
     public E query(int queryL, int queryR){
 
         if(queryL < 0 || queryL >= data.length ||
@@ -67,14 +67,14 @@ public class SegmentTree<E> {
         return query(0, 0, data.length - 1, queryL, queryR);
     }
 
-    // ÔÚÒÔtreeIndexÎª¸ùµÄÏß¶ÎÊ÷ÖĞ[l...r]µÄ·¶Î§Àï£¬ËÑË÷Çø¼ä[queryL...queryR]µÄÖµ
+    // åœ¨ä»¥treeIndexä¸ºæ ¹çš„çº¿æ®µæ ‘ä¸­[l...r]çš„èŒƒå›´é‡Œï¼Œæœç´¢åŒºé—´[queryL...queryR]çš„å€¼
     private E query(int treeIndex, int l, int r, int queryL, int queryR){
 
         if(l == queryL && r == queryR)
             return tree[treeIndex];
 
         int mid = l + (r - l) / 2;
-        // treeIndexµÄ½Úµã·ÖÎª[l...mid]ºÍ[mid+1...r]Á½²¿·Ö
+        // treeIndexçš„èŠ‚ç‚¹åˆ†ä¸º[l...mid]å’Œ[mid+1...r]ä¸¤éƒ¨åˆ†
 
         int leftTreeIndex = leftChild(treeIndex);
         int rightTreeIndex = rightChild(treeIndex);
@@ -88,7 +88,7 @@ public class SegmentTree<E> {
         return merger.merge(leftResult, rightResult);
     }
 
-    // ½«indexÎ»ÖÃµÄÖµ£¬¸üĞÂÎªe
+    // å°†indexä½ç½®çš„å€¼ï¼Œæ›´æ–°ä¸ºe
     public void set(int index, E e){
 
         if(index < 0 || index >= data.length)
@@ -98,7 +98,7 @@ public class SegmentTree<E> {
         set(0, 0, data.length - 1, index, e);
     }
 
-    // ÔÚÒÔtreeIndexÎª¸ùµÄÏß¶ÎÊ÷ÖĞ¸üĞÂindexµÄÖµÎªe
+    // åœ¨ä»¥treeIndexä¸ºæ ¹çš„çº¿æ®µæ ‘ä¸­æ›´æ–°indexçš„å€¼ä¸ºe
     private void set(int treeIndex, int l, int r, int index, E e){
 
         if(l == r){
@@ -107,7 +107,7 @@ public class SegmentTree<E> {
         }
 
         int mid = l + (r - l) / 2;
-        // treeIndexµÄ½Úµã·ÖÎª[l...mid]ºÍ[mid+1...r]Á½²¿·Ö
+        // treeIndexçš„èŠ‚ç‚¹åˆ†ä¸º[l...mid]å’Œ[mid+1...r]ä¸¤éƒ¨åˆ†
 
         int leftTreeIndex = leftChild(treeIndex);
         int rightTreeIndex = rightChild(treeIndex);
