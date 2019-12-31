@@ -15,7 +15,7 @@ public class Proxy extends Subject{
     @Override
     public void Request() {
         PreRequest();
-        realSubject.Request(); //������ʵ�������ķ���
+        realSubject.Request();
         PostRequest();
     }
 }
