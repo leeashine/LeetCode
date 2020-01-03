@@ -1,4 +1,4 @@
-package singletonpackage;
+package designpattern.singletonpackage;
 
 /**
  * 静态内部类单例模式

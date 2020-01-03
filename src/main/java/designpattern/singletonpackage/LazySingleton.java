@@ -1,4 +1,4 @@
-package singletonpackage;
+package designpattern.singletonpackage;
 
 /**
  * 懒汉模式 线程不安全
