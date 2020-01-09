@@ -14,9 +14,8 @@ public class lock_condition2 {
         Condition conditionT2 = lock.newCondition();
 
         new Thread(()->{
+            lock.lock();
             try {
-                lock.lock();
-
                 for(char c : aI) {
                     System.out.print(c);
                     conditionT2.signal();

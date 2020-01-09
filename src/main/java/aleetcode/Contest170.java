@@ -1,5 +1,9 @@
 package aleetcode;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
 public class Contest170 {
 
     public static void main(String[] args) {
@@ -10,10 +14,66 @@ public class Contest170 {
         int [][] queries ={{0,1},{1,2},{0,3},{3,3}};
         int [] res=xorQueries(A,queries);
 
-        System.out.println(1^0);
+        List<List<String>> watchedVideos=new ArrayList();
+
+//        new Contest170().watchedVideosByFriends2();
+
 
     }
+//    BFS + CompareSort
+//    Input: watchedVideos = [["A","B"],["C"],["B","C"],["D"]], friends = [[1,2],[0,3],[0,3],[1,2]], id = 0, level = 1
+//    Output: ["B","C"]
+//    Explanation:
+//    You have id = 0 (green color in the figure) and your friends are (yellow color in the figure):
+//    Person with id = 1 -> watchedVideos = ["C"]
+//    Person with id = 2 -> watchedVideos = ["B","C"]
+//    The frequencies of watchedVideos by your friends are:
+//    B -> 1
+//    C -> 2
+    public List<String> watchedVideosByFriends2(List<List<String>> watchedVideos, int[][] friends, int id, int level) {
 
+        int N = friends.length;
+        boolean[] visited = new boolean[N]; // keeping list of visited frnds
+        visited[id] = true;// i'm my own frnd
+
+        ArrayList<Integer> q = new ArrayList<>();
+        q.add(id);
+
+        for (int k = 0; k < level; k++) {// depth less than level
+            ArrayList<Integer> newQ = new ArrayList<>();
+            for (int v : q) {
+                for (int w : friends[v]) {// this is frnds of frnds
+                    if (!visited[w]) {
+                        visited[w] = true;
+                        newQ.add(w);
+                    }
+                }
+            }
+            q = newQ;//change the list to own frnd of frnd
+        }
+
+        HashMap<String, Integer> freq = new HashMap<>();
+
+        for (int person : q) {
+            for (String v : watchedVideos.get(person)) {
+                freq.put(v, 1 + freq.getOrDefault(v, 0));
+            }
+        }
+
+        List<String> ans = new ArrayList<>(freq.keySet());
+
+        ans.sort((a, b) -> {// custom sort
+            int fa = freq.get(a);
+            int fb = freq.get(b);
+            if (fa != fb) {
+                return fa - fb;
+            } else {
+                return a.compareTo(b);
+            }
+        });
+
+        return ans;
+    }
     //前缀亦或^ 范围查询  [2,4] ---> [1]^[4]    [0,4] ---> [4]
     //类似前缀和  [2,4] ---> [4]-[1]          [0,4] ---> [4]
     public static int[] xorQueries(int[] A, int[][] queries) {

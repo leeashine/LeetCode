@@ -7,19 +7,19 @@ public class test23 {
 
 	
 	public static void main(String[] args) {
-		String sz = "´ò°ĞÎ»ÖÃ1:´òL°ĞºÍZ°Ğ ×Ü¿×Êı:5 ×ê¾¶:3.175 ´ò°ĞÎ»ÖÃ2:´òABCD°Ğ ×Ü¿×Êı:4 ×ê¾¶:3.175 A0°Ğ¾à±ê×¼Öµ: X=102mm Y=486mm Z=383mm ABCD°Ğ±ê×¼Öµ: AB=374mm CD=374mm BD=477mm AC=474mm";
+		String sz = "æ‰“é¶ä½ç½®1:æ‰“Lé¶å’ŒZé¶ æ€»å­”æ•°:5 é’»å¾„:3.175 æ‰“é¶ä½ç½®2:æ‰“ABCDé¶ æ€»å­”æ•°:4 é’»å¾„:3.175 A0é¶è·æ ‡å‡†å€¼: X=102mm Y=486mm Z=383mm ABCDé¶æ ‡å‡†å€¼: AB=374mm CD=374mm BD=477mm AC=474mm";
 		
 		String s="2019/11/08";
 		System.out.println(s.substring(8,10));
 		
-		 // °´Ö¸¶¨Ä£Ê½ÔÚ×Ö·û´®²éÕÒ
+		 // æŒ‰æŒ‡å®šæ¨¡å¼åœ¨å­—ç¬¦ä¸²æŸ¥æ‰¾
 	      String line = "This order was placed for QT3000! OK?";
 	      String pattern = ".*?(\\D*)(\\d+)(.*)";
 	 
-	      // ´´½¨ Pattern ¶ÔÏó
+	      // åˆ›å»º Pattern å¯¹è±¡
 	      Pattern r = Pattern.compile(pattern);
 	 
-	      // ÏÖÔÚ´´½¨ matcher ¶ÔÏó
+	      // ç°åœ¨åˆ›å»º matcher å¯¹è±¡
 	      Matcher m = r.matcher(line);
 	      if (m.find( )) {
 	         System.out.println("Found value: " + m.group(0) );
