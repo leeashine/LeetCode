@@ -18,8 +18,41 @@ public class Contest170 {
 
 //        new Contest170().watchedVideosByFriends2();
 
+        Boolean b= new Contest170().isPalindrome("ddcdd");
 
+        System.out.println(b);
     }
+    public int minInsertions(String s) {
+        int n = s.length();
+        int[][] dp = new int[n+1][n+1];
+        for (int i = 0; i < n; ++i)
+            for (int j = 0; j < n; ++j)
+                dp[i + 1][j + 1] = s.charAt(i) == s.charAt(n - 1 - j) ? dp[i][j] + 1 : Math.max(dp[i][j + 1], dp[i + 1][j]);
+        return n - dp[n][n];
+    }
+
+    public static boolean isPalindrome(String A){
+
+        if(A.length()==1)
+            return true;
+
+        int head=0;
+        int tail=A.length()-1;
+        while(head<tail){
+
+            if(A.charAt(head)==A.charAt(tail)){
+                head++;
+                tail--;
+                continue;
+            }
+
+            return false;
+
+        }
+
+        return true;
+    }
+
 //    BFS + CompareSort
 //    Input: watchedVideos = [["A","B"],["C"],["B","C"],["D"]], friends = [[1,2],[0,3],[0,3],[1,2]], id = 0, level = 1
 //    Output: ["B","C"]
