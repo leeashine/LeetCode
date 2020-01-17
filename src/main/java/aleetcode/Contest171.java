@@ -54,7 +54,7 @@ public class Contest171 {
         }
         return count;
     }
-    //位操作题   |运算：两个位都为0时，结果才为0
+    //位运算操作题   |运算：两个位都为0时，结果才为0
     //(a | b) ^ c是0，a | b和c是平等的，1为不相等
     //第ith位(a | b) ^ c，使用1 << i掩码做&操作检查位是否0; 如果不是，ith则a | b和位c不相同，我们至少需要1翻转；有3种情况：
     public int minFlips(int a, int b, int c) {
