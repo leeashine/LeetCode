@@ -3,7 +3,6 @@ package java8.chap5;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.function.IntSupplier;
@@ -78,7 +77,7 @@ public class BuildingStreams {
 //数流中有多少各不相同的单词。
 //        flatmap方法让你把一个流中的每个值都换成另一个流，然后把所有的流连接起来成为一个流。
          long uniqueWords = 0;
-         try(Stream<String> lines =Files.lines(Paths.get("D:\\workspace\\aleetcode\\src\\java8\\data.txt"),Charset.defaultCharset())) {
+         try(Stream<String> lines =Files.lines(Paths.get("D:\\workspace\\aleetcode\\src\\main\\java\\java8\\chap5\\data.txt"),Charset.defaultCharset())) {
              uniqueWords=lines.flatMap(line->Arrays.stream(line.split(" ")))
                      .distinct()
                      .count();

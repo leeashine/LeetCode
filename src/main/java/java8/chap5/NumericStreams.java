@@ -44,13 +44,19 @@ public class NumericStreams{
         Stream<int[]> pythagoreanTriples =
                IntStream.rangeClosed(1, 100).boxed()
                         .flatMap(a -> IntStream.rangeClosed(a, 100)
-                                               .filter(b -> Math.sqrt(a*a + b*b) % 1 == 0).boxed()
+                                               .filter(b -> isPerfectSquare((int)Math.sqrt(a*a+b*b))).boxed()
                                                .map(b -> new int[]{a, b, (int) Math.sqrt(a * a + b * b)}));       
 
         pythagoreanTriples.forEach(t -> System.out.println(t[0] + ", " + t[1] + ", " + t[2])); 
 
     }
-   
+    Stream<double[]> pythagoreanTriples2 =
+            IntStream.rangeClosed(1, 100).boxed()
+                    .flatMap(a ->
+                            IntStream.rangeClosed(a, 100)
+                                    .mapToObj(
+                                            b -> new double[]{a, b, Math.sqrt(a*a + b*b)})
+                                    .filter(t -> t[2] % 1 == 0));
     public static boolean isPerfectSquare(int n){
         return Math.sqrt(n) % 1 == 0;
     }

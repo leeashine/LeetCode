@@ -3,8 +3,7 @@ package java8.chap5;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static java.util.stream.Collectors.toList;
-import static java.util.stream.Collectors.toSet;
+import static java.util.Comparator.comparing;
 
 public class StreamTest {
 
@@ -21,57 +20,57 @@ public class StreamTest {
                 new Transaction(mario, 2012, 700),
                 new Transaction(alan, 2012, 950)
         );
-//            (1) ÕÒ³ö2011Äê·¢ÉúµÄËùÓĞ½»Ò×£¬²¢°´½»Ò×¶îÅÅĞò£¨´ÓµÍµ½¸ß£©¡£
+//            (1) æ‰¾å‡º2011å¹´å‘ç”Ÿçš„æ‰€æœ‰äº¤æ˜“ï¼Œå¹¶æŒ‰äº¤æ˜“é¢æ’åºï¼ˆä»ä½åˆ°é«˜ï¼‰ã€‚
         List<Transaction> tr2011=
                 transactions.stream()
-                        .filter(transaction -> transaction.getYear()==2011)
-                        .sorted(Comparator.comparing(Transaction::getValue))
-                        .collect(toList());
-//            (2) ½»Ò×Ô±¶¼ÔÚÄÄĞ©²»Í¬µÄ³ÇÊĞ¹¤×÷¹ı£¿
+                        .filter( transaction -> transaction.getYear()==2011)
+                        .sorted(comparing(Transaction::getValue))
+                        .collect(Collectors.toList());
+//            (2) äº¤æ˜“å‘˜éƒ½åœ¨å“ªäº›ä¸åŒçš„åŸå¸‚å·¥ä½œè¿‡ï¼Ÿ
         Set<String> cities=
                 transactions.stream()
                 .map(transaction -> transaction.getTrader().getCity())
-                .collect(toSet());
+                .collect(Collectors.toSet());
 //                .distinct()
 //                .collect(toList());
 
-//            (3) ²éÕÒËùÓĞÀ´×ÔÓÚ½£ÇÅµÄ½»Ò×Ô±£¬²¢°´ĞÕÃûÅÅĞò¡£
+//            (3) æŸ¥æ‰¾æ‰€æœ‰æ¥è‡ªäºå‰‘æ¡¥çš„äº¤æ˜“å‘˜ï¼Œå¹¶æŒ‰å§“åæ’åºã€‚
         List<Trader> traders=
                 transactions.stream()
                 .map(Transaction::getTrader)
-                .filter(trader -> trader.getCity().equals("Cambridge"))
-                .distinct()
-                .sorted(Comparator.comparing(Trader::getName))
-                .collect(toList());
+                        .filter(trader -> trader.getCity().equalsIgnoreCase("Cambridge"))
+                        .distinct()
+                        .sorted(comparing(Trader::getName))
+                .collect(Collectors.toList());
 
-//            (4) ·µ»ØËùÓĞ½»Ò×Ô±µÄĞÕÃû×Ö·û´®£¬°´×ÖÄ¸Ë³ĞòÅÅĞò¡£
+//            (4) è¿”å›æ‰€æœ‰äº¤æ˜“å‘˜çš„å§“åå­—ç¬¦ä¸²ï¼ŒæŒ‰å­—æ¯é¡ºåºæ’åºã€‚
         String traderStr=
                 transactions.stream()
                 .map(transaction -> transaction.getTrader().getName())
-                .distinct()
-                .sorted()
+                .distinct().sorted()
                 .collect(Collectors.joining());
+//                .reduce("",(n1,n2)-> n1 + n2);
 //                .reduce("",(n1,n2)->n1+n2);
 
-//            (5) ÓĞÃ»ÓĞ½»Ò×Ô±ÊÇÔÚÃ×À¼¹¤×÷µÄ£¿
+//            (5) æœ‰æ²¡æœ‰äº¤æ˜“å‘˜æ˜¯åœ¨ç±³å…°å·¥ä½œçš„ï¼Ÿ
         boolean milanBased=
                 transactions.stream()
                 .anyMatch(transaction -> transaction.getTrader().getCity().equals("Milan"));
 
-//            (6) ´òÓ¡Éú»îÔÚ½£ÇÅµÄ½»Ò×Ô±µÄËùÓĞ½»Ò×¶î¡£
+//            (6) æ‰“å°ç”Ÿæ´»åœ¨å‰‘æ¡¥çš„äº¤æ˜“å‘˜çš„æ‰€æœ‰äº¤æ˜“é¢ã€‚
         transactions.stream()
                 .filter(transaction -> transaction.getTrader().getCity().equals("Cambridge"))
                 .map(Transaction::getValue)
                 .forEach(System.out::println);
-//            (7) ËùÓĞ½»Ò×ÖĞ£¬×î¸ßµÄ½»Ò×¶îÊÇ¶àÉÙ£¿
+//            (7) æ‰€æœ‰äº¤æ˜“ä¸­ï¼Œæœ€é«˜çš„äº¤æ˜“é¢æ˜¯å¤šå°‘ï¼Ÿ
         Optional<Integer> highestValue =
                 transactions.stream()
                 .map(Transaction::getValue)
-                .reduce(Integer::max);//reduce ¹æÔ¼
+                .reduce(Integer::max);//reduce è§„çº¦
 
-//            (8) ÕÒµ½½»Ò×¶î×îĞ¡µÄ½»Ò×¡£
+//            (8) æ‰¾åˆ°äº¤æ˜“é¢æœ€å°çš„äº¤æ˜“ã€‚
         Optional<Transaction> smallestTransaction =
-                transactions.stream()   //Í¨¹ı·´¸´±È½ÏÃ¿¸ö½» Ò×µÄ½»Ò×¶î£¬ÕÒ³ö×îĞ¡µÄ½»Ò×
+                transactions.stream()   //é€šè¿‡åå¤æ¯”è¾ƒæ¯ä¸ªäº¤ æ˜“çš„äº¤æ˜“é¢ï¼Œæ‰¾å‡ºæœ€å°çš„äº¤æ˜“
                 .reduce((t1,t2)->t1.getValue()<t2.getValue()?t1:t2);
 
     }
