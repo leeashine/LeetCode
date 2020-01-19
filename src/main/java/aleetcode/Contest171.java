@@ -1,8 +1,11 @@
 package aleetcode;
 
-import java.util.HashMap;
-import java.util.Map;
-
+/**
+ * 并查集总结（3个方法）：
+ * 1.找上级 findParent([],i)
+ * 2.连接/江湖势力合并 makeConnected(n,con)
+ * 3.求联通分量/有几个江湖势力 getComponents(n,[])
+ */
 public class Contest171 {
     public static void main(String[] args) {
 
@@ -39,7 +42,7 @@ public class Contest171 {
         return (extraEdge >= components - 1) ? components - 1 : -1;
     }
 
-    //a >> (i - 1) 表示a所代表的二进制数的第i号为是0还是1
+    //a >> (i - 1) & 1 表示a所代表的二进制数的第i号为是0还是1
     public int minFlips2(int a, int b, int c) {
         int count = 0;
         for(int i = 1; i <= 32; i++) {
