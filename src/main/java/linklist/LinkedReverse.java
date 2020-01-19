@@ -18,12 +18,12 @@ public class LinkedReverse {
     public static Node reverse(Node node){
 
         Node pre=null;
-        Node next=null;
+        Node temp=null;
         while(node!=null){
-            next=node.next;//赋值next
-            node.next=pre;//连接新的下一个位置
-            pre=node;//赋值pre
-            node=next;//此时这个节点就是反转链表里的下一个节点
+            temp=node.next;//把下一个节点赋值给临时节点
+            node.next=pre;//连接新的一个位置
+            pre=node;//把node 和 pre对调
+            node=temp;//此时这个节点就是反转链表里的下一个节点
 
         }
         return pre;
