@@ -67,7 +67,7 @@ public class SummingDecimalNumbersCollector implements Collector<Txt, Map<Date, 
 
 //        Map<Date,Double> map = list.stream().collect(Collectors.groupingBy(Txt::getDate,Collectors.summingDouble(Txt::getMoney))));
 
-        //根据日期统计消费金额
+        //鏍规嵁鏃ユ湡缁熻娑堣垂閲戦
         Map<Date,BigDecimal> map = list.stream().collect(new SummingDecimalNumbersCollector());
 
         System.out.println(map);
@@ -78,7 +78,7 @@ public class SummingDecimalNumbersCollector implements Collector<Txt, Map<Date, 
     public static List<Txt> countData(List<Txt> list) {
         String name = list.get(0).getName();
         String shopName = list.get(0).getShopName();
-        //根据日期统计消费金额
+        //鏍规嵁鏃ユ湡缁熻娑堣垂閲戦
         Map<Date,BigDecimal> map = list.stream().collect(new SummingDecimalNumbersCollector());
         return null;
     }

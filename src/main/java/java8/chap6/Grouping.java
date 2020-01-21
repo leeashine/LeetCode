@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.*;
 import static java8.chap6.Dish.dishTags;
@@ -66,7 +68,8 @@ public class Grouping {
     }
 
     private static Map<Dish.Type, Long> countDishesInGroups() {
-        return menu.stream().collect(groupingBy(Dish::getType, counting()));
+//        return menu.stream().collect(groupingBy(Dish::getType, counting()));
+        return menu.stream().collect(Collectors.groupingBy(Dish::getType, Collectors.counting()));
     }
 
     private static Map<Dish.Type, Optional<Dish>> mostCaloricDishesByType() {

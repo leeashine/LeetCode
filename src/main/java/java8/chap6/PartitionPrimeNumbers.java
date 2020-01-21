@@ -34,8 +34,9 @@ public class PartitionPrimeNumbers {
 
     public static boolean isPrime(List<Integer> primes, Integer candidate) {
         double candidateRoot = Math.sqrt((double) candidate);
-        //return takeWhile(primes, i -> i <= candidateRoot).stream().noneMatch(i -> candidate % i == 0);
+        return takeWhile(primes, i -> i <= candidateRoot).stream().noneMatch(i -> candidate % i == 0);
 //        return primes.stream().takeWhile(i -> i <= candidateRoot).noneMatch(i -> candidate % i == 0);
+//        return false;
     }
 
     public static <A> List<A> takeWhile(List<A> list, Predicate<A> p) {
@@ -48,10 +49,11 @@ public class PartitionPrimeNumbers {
         }
         return list;
     }
-
+//    流中元素类型 累加器类型 collect操作的结果类型
     public static class PrimeNumbersCollector
             implements Collector<Integer, Map<Boolean, List<Integer>>, Map<Boolean, List<Integer>>> {
 
+        //初始化
         @Override
         public Supplier<Map<Boolean, List<Integer>>> supplier() {
             return () -> new HashMap<Boolean, List<Integer>>() {{
@@ -60,6 +62,8 @@ public class PartitionPrimeNumbers {
             }};
         }
 
+        //累加器  。收集器中最重要的方法是accumulator，因
+        //为它定义了如何收集流中元素的逻辑。
         @Override
         public BiConsumer<Map<Boolean, List<Integer>>, Integer> accumulator() {
             return (Map<Boolean, List<Integer>> acc, Integer candidate) -> {
@@ -68,7 +72,9 @@ public class PartitionPrimeNumbers {
                         .add(candidate);
             };
         }
-
+//      让收集器并行工作（如果可能）
+//    实际上这个收集器是不能并行使用的，因为该算法本身是顺序的。这意味着永远都
+//    不会调用combiner方法，你可以把它的实现留空（更好的做法是抛出一个UnsupportedOperationException异常）。为了让这个例子完整，我们还是决定实现它。
         @Override
         public BinaryOperator<Map<Boolean, List<Integer>>> combiner() {
             return (Map<Boolean, List<Integer>> map1, Map<Boolean, List<Integer>> map2) -> {
@@ -80,7 +86,7 @@ public class PartitionPrimeNumbers {
 
         @Override
         public Function<Map<Boolean, List<Integer>>, Map<Boolean, List<Integer>>> finisher() {
-            return i -> i;
+            return  Function.identity();
         }
 
         @Override
