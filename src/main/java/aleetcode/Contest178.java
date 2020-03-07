@@ -35,6 +35,129 @@ public class Contest178 {
         isSubPath(head,root);
 
     }
+
+    public int minCost(int[][] grid) {
+
+        int m=grid.length;
+        int n=grid[0].length;
+        if(grid==null||m<1||n<1)
+            return -1;
+        //下 上 又 左
+        int [][] dir={{0,0},{0,1},{0,-1},{1,0},{-1,0}};
+        Deque deque=new LinkedList();
+        deque.addFirst(new Node(0,0,0));
+
+        boolean[][] visit = new boolean[m][n];
+        while (!deque.isEmpty()){
+
+            //当前位置
+            Node poll=(Node)deque.pollFirst();
+
+            int x=poll.x;
+            int y=poll.y;
+            int cost=poll.cost;
+
+            if(x==m-1&&y==n-1)
+                return cost;
+            visit[x][y]=true;
+
+            for(int i=1;i<=4;i++){
+                //下一个位置
+                int nx=x+dir[i][0];
+                int ny=y+dir[i][1];
+                if (nx < 0 || nx >= m || ny < 0 || ny >= n || visit[nx][ny]) continue;
+                if(grid[x][y]==i){//方向相同
+                    deque.addFirst(new Node(nx,ny,cost));
+                }else{//变方向
+                    deque.addLast(new Node(nx,ny,cost+1));
+                }
+            }
+        }
+        return -1;
+    }
+
+    //BFS+DFS dp 最优解
+    class Solution {
+        int[][] DIR = new int[][]{{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
+        public int minCost(int[][] grid) {
+            int m = grid.length, n = grid[0].length, cost = 0;
+            int[][] dp = new int[m][n];
+            for (int i = 0; i < m; i++) Arrays.fill(dp[i], Integer.MAX_VALUE);
+            Queue<int[]> bfs = new LinkedList<>();
+            dfs(grid, 0, 0, dp, cost, bfs);
+            while (!bfs.isEmpty()) {
+                cost++;
+                for (int size = bfs.size(); size > 0; size--) {
+                    int[] top = bfs.poll();
+                    int r = top[0], c = top[1];
+                    for (int i = 0; i < 4; i++) dfs(grid, r + DIR[i][0], c + DIR[i][1], dp, cost, bfs);
+                }
+            }
+            return dp[m - 1][n - 1];
+        }
+
+        void dfs(int[][] grid, int r, int c, int[][] dp, int cost, Queue<int[]> bfs) {
+            int m = grid.length, n = grid[0].length;
+            if (r < 0 || r >= m || c < 0 || c >= n || dp[r][c] != Integer.MAX_VALUE) return;
+            dp[r][c] = cost;
+            bfs.offer(new int[]{r, c}); // add to try to change direction later
+            int nextDir = grid[r][c] - 1;
+            dfs(grid, r + DIR[nextDir][0], c + DIR[nextDir][1], dp, cost, bfs);
+        }
+    }
+
+    //0-1BFS
+    public int minCost2(int[][] grid) {
+        int m, n;
+        if (grid == null || (m = grid.length) < 1 || (n = grid[0].length) < 1) {
+            return -1;
+        }
+
+        int[] dx = {0, 0, 0, 1, -1};
+        int[] dy = {0, 1, -1, 0, 0};
+
+        Deque<Node> deq = new LinkedList<>();
+        deq.addFirst(new Node(0, 0, 0));
+
+        boolean[][] visit = new boolean[m][n];
+
+        while (!deq.isEmpty()) {
+            Node node = deq.pollFirst();
+            int x = node.x;
+            int y = node.y;
+            int cost = node.cost;
+            if (x == m-1 && y == n-1)
+                return cost;
+
+            visit[x][y] = true;
+
+            for (int i=1; i<=4; i++) {
+                int nx = x + dx[i];
+                int ny = y + dy[i];
+                if (nx < 0 || nx >= m || ny < 0 || ny >= n || visit[nx][ny]) continue;
+                if (grid[x][y] == i) {
+                    deq.addFirst(new Node(nx, ny, cost));
+                } else {
+                    deq.addLast(new Node(nx, ny, cost+1));
+                }
+            }
+        }
+
+        return -1;
+    }
+
+    class Node {
+        int x;
+        int y;
+        int cost;
+        Node(int x, int y, int cost) {
+            this.x = x;
+            this.y = y;
+            this.cost = cost;
+        }
+    }
+
+
     //搜索二叉树中子树
     public static boolean isSubPath(ListNode head, TreeNode root) {
         if (head == null) return true;
