@@ -17,9 +17,39 @@ public class DailyOneProblem {
 //        int i = lengthOfLIS(new int[]{10, 9, 2, 5, 3, 7, 101, 18});
 //        System.out.println(i);
 
+//        lengthOfLIS2(new int[]{10,9,2,5,3,7,21,18});
+
+
+
+    }
+    //岛屿最大面积
+    int [][] dir={{0,1},{0,-1},{1,0},{-1,0}};
+    int x,y;
+    public int maxAreaOfIsland(int[][] grid) {
+        int res=0;
+
+        for(int i=0;i<grid.length;i++)
+            for(int j=0;j<grid[0].length;j++)
+                res=Math.max(res,dfs(grid,i,j));
+        return res;
+
     }
 
-    //    最长上升子序列的长度。
+    public int dfs(int[][] grid, int a, int b) {
+        if(a<0||a>=grid.length||b<0||b>=grid[0].length|| grid[a][b]==0)
+            return 0;
+        grid[a][b]=0;//遍历标志
+        int ans=1;
+        for(int i=0;i<4;i++){
+            x=a+dir[i][0];
+            y=b+dir[i][1];
+            ans+=dfs(grid,x,y);
+
+        }
+        return ans;
+    }
+
+    //    最长上升子序列的长度。 O(n2)
     public static int lengthOfLIS(int[] nums) {
         if (nums.length == 0) {
             return 0;
@@ -34,10 +64,27 @@ public class DailyOneProblem {
                     maxval = Math.max(maxval, dp[j]);
                 }
             }
-            dp[i] = maxval + 1;
+            dp[i] = maxval + 1;//状态转移方程
             maxans = Math.max(maxans, dp[i]);
         }
         return maxans;
+    }
+
+    //    最长上升子序列的长度。 O(nlogn)
+    public static int lengthOfLIS2(int[] nums) {
+        int[] tails = new int[nums.length];
+        int res = 0;
+        for(int num : nums) {
+            int i = 0, j = res;
+            while(i < j) {//二分法
+                int m = (i + j) / 2;
+                if(tails[m] < num) i = m + 1;
+                else j = m;
+            }
+            tails[i] = num;
+            if(res == j) res++;
+        }
+        return res;
     }
 
     //多数元素
