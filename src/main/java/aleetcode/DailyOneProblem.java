@@ -20,8 +20,98 @@ public class DailyOneProblem {
 //        lengthOfLIS2(new int[]{10,9,2,5,3,7,21,18});
 
 
+//        String s = compressString("abbccd");
+//        System.out.println(s);
+
+
 
     }
+
+    //最长回文串
+    public int longestPalindrome(String s) {
+
+        Map<Character,Integer> map=new HashMap();
+        int res=0;
+
+        for(char c:s.toCharArray()){
+            map.put(c,map.getOrDefault(c,0)+1);
+        }
+        for(Map.Entry<Character,Integer> entry:map.entrySet()){
+
+            int value=entry.getValue();
+            res+=value/2*2;//ans 一直是偶数
+            if(value%2==1&&res%2==0){//碰到第一个基数的时候 +1
+                res++;
+            }
+
+        }
+        return res;
+
+    }
+
+    //拼写单词
+    public int countCharacters(String[] words, String chars) {
+
+        int [] count=count(chars);
+        int res=0;
+        //bt cat hat tree
+        for(String s:words){
+
+            int [] word_count=count(s);
+            if(contains(count,word_count)){
+                res+=s.length();
+            }
+        }
+        return res;
+
+    }
+
+    private boolean contains(int[] count, int[] word_count) {
+        for(int i=0;i<26;i++){
+            if(count[i]<word_count[i])
+                return false;
+        }
+        return true;
+    }
+
+    // 统计 26 个字母出现的次数
+    int[] count(String word) {
+        int[] counter = new int[26];
+        for (int i = 0; i < word.length(); i++) {
+            char c = word.charAt(i);
+            counter[c-'a']++;
+        }
+        return counter;
+    }
+
+
+
+
+
+    //字符串压缩
+    public static String compressString(String S) {
+        if(S.length()==0)
+            return S;
+        String ans="";
+        char[] chars = S.toCharArray();
+        char c=chars[0];
+        int cnt=1;
+        for(int i=1;i<S.length();++i){
+
+            if(c==chars[i]) cnt++;
+            else{
+                ans+=c+""+cnt;
+                c=chars[i];
+                cnt=1;
+            }
+
+        }
+        ans+=c+""+cnt;
+
+        return ans.length()>S.length()?S:ans;
+
+    }
+
     //岛屿最大面积
     int [][] dir={{0,1},{0,-1},{1,0},{-1,0}};
     int x,y;
