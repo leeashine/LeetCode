@@ -26,6 +26,23 @@ public class DailyOneProblem {
 
 
     }
+    //求最小的K个数
+    public int[] getLeastNumbers(int[] arr, int k) {
+
+        int [] res=new int [k];
+
+        Arrays.sort(arr);
+        for(int i=0;i<k;i++){
+
+            res[i]=arr[i];
+
+        }
+
+
+        return res;
+
+
+    }
 
     //最长回文串
     public int longestPalindrome(String s) {
