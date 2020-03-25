@@ -24,6 +24,7 @@ public class DailyOneProblem {
 //        System.out.println(s);
 
 
+        massage(new int []{1,1});
 
     }
 
@@ -37,15 +38,15 @@ public class DailyOneProblem {
 //    考虑dp[i][1]的转移方程，这个状态下第i个预约是接的，所以第i-1个是不接的,所以转移方程为：dp[i][1]=dp[i-1][0]+nums[i]
 //    答案即为 max(dp[n][0],dp[n][1])
 //    再回来看转移方程，我们发现计算 dp[i][0/1]时，只与前一个状态 dp[i-1][0/1] 有关，所以我们可以不用开数组，只用两个变量 dp_0和dp_1分别存储dp[i-1][0]和dp[i-1][1]的答案，然后去转移更新答案即可。
-    public int massage(int[] nums) {
+    public static int massage(int[] nums) {
 
         if(nums.length==0)
             return 0;
         int dp0=0;
         int dp1=nums[0];
-        for(int n:nums){
+        for(int i=1;i<nums.length;i++){
             int tdp0=Math.max(dp0,dp1);
-            int tdp1=dp0+n;
+            int tdp1=dp0+nums[i];
 
             dp0=tdp0;//更新状态
             dp1=tdp1;

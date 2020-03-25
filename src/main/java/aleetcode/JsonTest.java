@@ -37,6 +37,9 @@ public class JsonTest {
 //		map---->jsonString
 		//JSONObject.toJSONString(paramMap)
 
+//		map->json
+//		JSONObject是继承的map！所以不用转换 直接拿来用就行
+
 //		jsonString---->map
 //		String jsonStr3="{\"list\":{\"map\":{\"name\":\"2\",\"age\":\"12\"},\"mali\":{\"name\":\"3\",\"age\":\"18\"}}}";
 		String jsonStr3="{\n" +
