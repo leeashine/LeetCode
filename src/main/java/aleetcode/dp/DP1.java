@@ -1,4 +1,4 @@
-package dp;
+package aleetcode.dp;
 //5. Longest Palindromic Substring
 public class DP1 {
 
