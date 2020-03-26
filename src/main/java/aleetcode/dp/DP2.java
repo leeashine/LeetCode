@@ -1,4 +1,4 @@
-package dp;
+package aleetcode.dp;
 //动态规划经典问题 背包问题
 //https://blog.csdn.net/chanmufeng/article/details/82955730
 public class DP2 {

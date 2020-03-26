@@ -1,6 +1,5 @@
-package dp;
+package aleetcode.dp;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 
 import java.util.Arrays;

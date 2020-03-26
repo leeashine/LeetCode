@@ -24,8 +24,39 @@ public class DailyOneProblem {
 //        System.out.println(s);
 
 
+        massage(new int []{1,1});
 
     }
+
+    //按摩师
+    //dp0[]代表当前位置不按摩的最优解
+    //dp1[]代表当前位置按摩的最优解，也就是dp0位置的左边最优解
+//    定义 dp[i][0] 表示考虑前 i 个预约，第 i 个预约不接的最长预约时间，
+//    dp[i][1] 表示考虑前 i 个预约，第 i 个预约接的最长预约时间。
+//    首先考虑 dp[i][0] 的转移方程，由于这个状态下第 i 个预约是不接的，所以第 i-1 个预约接或不接都可以，
+//    故可以从 dp[i-1][0] 和 dp[i-1][1] 两个状态转移过来，转移方程即为：dp[i][0]=Max(dp[i-1][0],dp[i-1][1])
+//    考虑dp[i][1]的转移方程，这个状态下第i个预约是接的，所以第i-1个是不接的,所以转移方程为：dp[i][1]=dp[i-1][0]+nums[i]
+//    答案即为 max(dp[n][0],dp[n][1])
+//    再回来看转移方程，我们发现计算 dp[i][0/1]时，只与前一个状态 dp[i-1][0/1] 有关，所以我们可以不用开数组，只用两个变量 dp_0和dp_1分别存储dp[i-1][0]和dp[i-1][1]的答案，然后去转移更新答案即可。
+    public static int massage(int[] nums) {
+
+        if(nums.length==0)
+            return 0;
+        int dp0=0;
+        int dp1=nums[0];
+        for(int i=1;i<nums.length;i++){
+            int tdp0=Math.max(dp0,dp1);
+            int tdp1=dp0+nums[i];
+
+            dp0=tdp0;//更新状态
+            dp1=tdp1;
+
+        }
+
+        return Math.max(dp0,dp1);
+
+    }
+
     //求最小的K个数
     public int[] getLeastNumbers(int[] arr, int k) {
 
