@@ -1,5 +1,7 @@
 package aleetcode;
 
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -49,15 +51,7 @@ public class JsonTest {
 				"}";
 
 		JSONObject list=(JSONObject)JSONObject.parse(jsonStr3);
-		
-		Map<String, Object> map =(JSONObject)list.getJSONObject("creditScore");
-		for (Entry<String, Object> entry : map.entrySet()) {
-			//getKey获取Entry集合中的key、getValue获取value
-//                        System.out.println(entry.getKey()+"="+entry.getValue()); 
-
-			System.out.println(entry.getKey() + "=" + entry.getValue());
-
-		}
+		Map map=(Map) JSONObject.parse(jsonStr3);
 
         
         String jsonStr4="{\"SpouseCustomerName\": \"配偶\", 	\"loanAmount\": \"10000.0\", 	\"customerAddressCode\": \"999999\", 	\"customerSex\": \"2\", 	\"customerNumber\": \"WD2019073100000001\", 	\"customerPhone\": \"18271414002\", 	\"organization\": \"中国科技园q\", 	\"eventId\": \"netloan_taxSecondsLoan\", 	\"customerProperty\": \"\", 	\"EAccountID\": \"1122334455\", 	\"applicationNumber\": \"WD2019073100000001\", 	\"transTime\": \"2019-07-31 10:28:36\", 	\"partnerCode\": \"kratos\", 	\"ChannelNumber\": \"AH\", 	\"UnifiedSocialCredit\": \"666\", 	\"registered_address\": \"上海市教育路11号\", 	\"SpouseCertID\": \"320922197905138447\", 	\"loanTerm\": \"12\", 	\"ECustomerID\": \"1122334455\", 	\"pboPostAddress\": \"上海市教育路11号\", 	\"SpouseCertType\": \"Ind01\", 	\"customerName\": \"庾美\", 	\"customerType\": \"03\", 	\"SpousePhoneNo\": \"13131231234\", 	\"id_number\": \"522701199111237641\", 	\"productCode\": \"\", 	\"customerBirthday\": \"1991-11-23\", 	\"marriage\": \"10\", 	\"account_name\": \"庾美\", 	\"productId\": \"3076\", 	\"appName\": \"netloan\", 	\"secretKey\": \"2597b083866c4b419ea12dede2ed03eb\", 	\"transId\": \"WD2019073100000001\", 	\"customerAddress\": \"上海市教育路11号\", 	\"pouseCode\": \"522701199111237641\", 	\"pouseCerttype\": \"Ind01\" }";
@@ -74,6 +68,25 @@ public class JsonTest {
 		String zm_score=creditScore.getString("zm_score");
 
 		System.out.println(zm_score);
+
+		String jsonArr="{\"key\":[{\"id\":\"123\",\"courseID\":\"huangt-test\",\"title\":\"提交作业\"},{\"content\":null,\"beginTime\":1398873600000,\"endTime\":111111}]}";
+		JSONObject parse = (JSONObject)JSONObject.parse(jsonArr);
+
+		System.out.println("************");
+		JSONArray key = parse.getJSONArray("key");
+//		List key2 = parse.getJSONArray("key");
+		JSONObject jsonObject=key.getJSONObject(0);
+		JSONObject jsonObject2=key.getJSONObject(1);
+		System.out.println(jsonObject);
+		System.out.println(jsonObject2);
+
+		String jsonArr2="[{\"id\":\"123\",\"courseID\":\"huangt-test\",\"title\":\"提交作业\"},{\"content\":null,\"beginTime\":1398873600000,\"endTime\":111111}]";
+		JSONArray jsonArray=JSONArray.parseArray(jsonArr2);
+		System.out.println(jsonArray);
+		//遍历JsonArray（list）
+		for (Iterator<Object> iterator = jsonArray.iterator(); iterator.hasNext(); ){
+			JSONObject jo = (JSONObject) iterator.next();
+		}
 
 //
 //        for (Entry<String, Object> entry : map.entrySet()) {
