@@ -78,7 +78,7 @@ public class QuickSort2Ways {
         // 可以在1秒之内轻松处理100万数量级的数据
         int N = 1000000;
         Integer[] arr = SortTestHelper.generateRandomArray(N, 0, 100000);
-        SortTestHelper.testSort("bobo.algo.QuickSort2Ways", arr);
+        SortTestHelper.testSort("aleetcode.sort.QuickSort2Ways", arr);
 
         return;
     }
