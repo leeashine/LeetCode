@@ -2,7 +2,7 @@ package aleetcode.sort;
 
 import java.util.Arrays;
 
-public class QucikSort2 {
+public class QucikSortLeetCode {
 
 
     public static void main(String[] args) {

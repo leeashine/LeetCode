@@ -24,9 +24,83 @@ public class DailyOneProblem {
 //        System.out.println(s);
 
 
-        massage(new int []{1,1});
+//        massage(new int []{1,1});
+
+        int []deck=new int []{1,1};
+        hasGroupsSizeX(deck);
+
+//        int getyinshu = getyinshu(2,2);
+//        System.out.println(getyinshu);
+
+
 
     }
+    public int[] sortArray(int[] nums) {
+
+        sort(nums,0,nums.length-1);
+
+        return nums;
+    }
+    public void sort(int [] nums,int l,int r){
+
+        if (l >= r) return;
+        int p = partition(nums, l, r);
+        sort(nums, l, p - 1);
+        sort(nums, p + 1, r);
+
+    }
+
+    private int partition(int[] nums, int l, int r) {
+
+        swap(nums,l,(int)(Math.random()*(r-l+1))+l);
+
+        int v=nums[l];
+
+        int i=l+1;
+        int j=r;
+        while(true){
+
+            while(i<=r&&nums[i]<v) i++;
+            while(j>=l+1&&nums[j]>v) j--;
+            if(i>j) break;
+            swap(nums,i,j);
+            i++;
+            j--;
+        }
+        swap(nums,l,j);
+        return j;
+
+    }
+    public void swap(int []arr,int x,int y){
+        int tmp=arr[x];
+        arr[x]=arr[y];
+        arr[y]=tmp;
+    }
+
+
+    public static boolean hasGroupsSizeX(int[] deck) {
+
+        if(deck.length<=1)
+            return false;
+        int [] cnt=new int [10001];
+        for(int i=0;i<deck.length;i++){
+            cnt[deck[i]]++;
+        }
+        int X=cnt[deck[0]];
+
+        for(int i=0;i<cnt.length-1;i++){
+            if(cnt[i]>0)
+            X=gcd(X,cnt[i]);
+            if (X == 1) {
+                return false;
+            }
+
+        }
+
+        return true;
+    }
+
+
 
     //按摩师
     //dp0[]代表当前位置不按摩的最优解
