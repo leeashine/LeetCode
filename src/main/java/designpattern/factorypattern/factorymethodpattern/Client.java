@@ -8,5 +8,8 @@ public class Client {
         logger = factory.createLogger();
         logger.writeLog();
 
+//        可以将工厂方法隐藏，在工厂类中将直接调用产品类的业务方法
+//        LoggerFactory_FactoryHide loggerFactory=new FileLoggerFactory();
+//        loggerFactory.writeLog();
     }
 }

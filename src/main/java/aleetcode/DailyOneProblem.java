@@ -26,8 +26,8 @@ public class DailyOneProblem {
 
 //        massage(new int []{1,1});
 
-        int []deck=new int []{1,1};
-        hasGroupsSizeX(deck);
+//        int []deck=new int []{1,1};
+//        hasGroupsSizeX(deck);
 
 //        int getyinshu = getyinshu(2,2);
 //        System.out.println(getyinshu);
@@ -35,6 +35,10 @@ public class DailyOneProblem {
 
 
     }
+    public String replaceSpaces(String S, int length) {
+        return S.substring(0, length).replaceAll(" ", "%20");
+    }
+
     public int[] sortArray(int[] nums) {
 
         sort(nums,0,nums.length-1);
