@@ -1,5 +1,7 @@
 package designpattern.factorypattern.factorymethodpattern;
 
+//优点：当需要添加一个日志实现方法 只需要添加一个类实现LoggerFactory即可，不需要对原有代码进行修改
+//缺点：系统 中类的个数将成对增加，
 public class Client {
     public static void main(String[] args) {
         LoggerFactory factory;
