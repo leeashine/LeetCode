@@ -32,9 +32,55 @@ public class DailyOneProblem {
 //        int getyinshu = getyinshu(2,2);
 //        System.out.println(getyinshu);
 
+        new DailyOneProblem().numSteps("1101");
+        System.out.println(Integer.parseInt("1101",2));
+    }
+    //括号生成 n=2 ()() 或 (())
+    public List<String> generateParenthesis(int n) {
 
+        List<String> res=new ArrayList<>();
+        if (n == 0) {
+            return res;
+        }
+        //做减法
+        dfs("",n,n,res);
+        return res;
 
     }
+
+    private void dfs(String s, int left, int right, List<String> res) {
+
+        if (left == 0 && right == 0) {
+            res.add(s);
+            return;
+        }
+        //剪枝
+        if (left > right) {
+            return;
+        }
+        if (left > 0) {
+            dfs(s + "(", left - 1, right, res);
+        }
+
+        if (right > 0) {
+            dfs(s + ")", left, right - 1, res);
+        }
+
+    }
+
+    //二进制数进位操作 +1 /2
+    public int numSteps(String s) {
+        int res = 0, carry = 0;
+        for (int i = s.length() - 1; i > 0; --i) {
+            ++res;
+            if (s.charAt(i) - '0' + carry == 1) {
+                carry = 1;
+                ++res;
+            }
+        }
+        return res + carry;
+    }
+
     public List<Integer> minSubsequence(int[] nums) {
         List<Integer> res = new ArrayList<>();
         PriorityQueue<Integer> pq = new PriorityQueue<>(Collections.reverseOrder());

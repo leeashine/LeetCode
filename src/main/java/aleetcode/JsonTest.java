@@ -4,6 +4,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.UUID;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
@@ -16,6 +17,18 @@ public class JsonTest {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
+
+		String message="{\"SysHead\":{\"ServiceCode\":\"CFS000007010\",\"ClientSystemId\":\"M1\"},\"AppHead\":{\"requestSerialNo\":\""+ UUID.randomUUID()+"\"},\"Body\":{\"ApplySerialNo\":\"2018120400000002\",\"ContractNo\":\"WD2018112900000013\",\"FileList\":[{\"DocSuffix\":\"jpg\",\"DocType\":\"001\",\"FileName\":\"测试文件\"}]}}";
+//		JSONObject jsonObject1=JSON.parseObject(message);
+//		System.out.println(jsonObject1.toString());
+//		JSONObject body = jsonObject1.getJSONObject("Body");
+//		JSONArray fileList = body.getJSONArray("FileList");
+//		JSONArray filelist=JSONObject.parseArray(fileList.toString());
+//		System.out.println(fileList.toString());
+
+		String fileJson="\"FileList\":[{\"DocSuffix\":\"jpg\",\"DocType\":\"001\",\"FileName\":\"测试文件\"}]";
+		JSONArray filelist=JSONObject.parseArray(fileJson);
+		System.out.println(filelist);
 
 		String jsonStr="{\"aa\":\"123456789.1234\",\"bb\":\"123456789.1234\",\"cc\":\"1.0E+7\"}";
 		JSONObject json = (JSONObject) JSONObject.parse(jsonStr);
