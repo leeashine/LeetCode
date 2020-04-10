@@ -1,6 +1,8 @@
 package aleetcode;
 
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class DailyOneProblem {
 
@@ -32,9 +34,46 @@ public class DailyOneProblem {
 //        int getyinshu = getyinshu(2,2);
 //        System.out.println(getyinshu);
 
-        new DailyOneProblem().numSteps("1101");
-        System.out.println(Integer.parseInt("1101",2));
+//        new DailyOneProblem().numSteps("1101");
+//        System.out.println(Integer.parseInt("1101",2));
+
+//        String s = new DailyOneProblem().reverseWords("the sky is blue");
+//        System.out.println(s);
+//        String s="the sky is  blue";
+
+
     }
+
+    //翻转字符串里的单词（双指针去除两端空格 统计单词） 对比liststring解析
+    public String reverseWords(String s) {
+
+        int left = 0, right = s.length() - 1;
+        // 去掉字符串开头的空白字符
+        while (left <= right && s.charAt(left) == ' ') ++left;
+
+        // 去掉字符串末尾的空白字符
+        while (left <= right && s.charAt(right) == ' ') --right;
+
+        Deque<String> d = new ArrayDeque();
+        StringBuilder word = new StringBuilder();
+
+        while (left <= right) {
+            char c = s.charAt(left);
+            if ((word.length() != 0) && (c == ' ')) {
+                // 将单词 push 到队列的头部
+                d.offerFirst(word.toString());
+                word.setLength(0);
+            } else if (c != ' ') {
+                word.append(c);
+            }
+            ++left;
+        }
+        d.offerFirst(word.toString());
+
+        return String.join(" ", d);
+
+    }
+
     //括号生成 n=2 ()() 或 (())
     public List<String> generateParenthesis(int n) {
 

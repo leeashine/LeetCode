@@ -1,10 +1,7 @@
 package aleetcode;
 
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
-import java.util.UUID;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
@@ -18,6 +15,19 @@ public class JsonTest {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 
+		//liststring解析
+		String s="{id:123,title:提交作业,courseID:huangt-test},{beginTime:1398873600000,endTime:111111}";
+
+//		List list=new ArrayList();
+		while(s.indexOf('{')!=-1){
+			int idx1=s.indexOf('{');
+			int idx2=s.indexOf('}');
+			String ss=s.substring(idx1+1,idx2);
+			System.out.println(ss);
+//			list.add(ss);
+			s=s.substring(idx2+1);
+		}
+
 		String message="{\"SysHead\":{\"ServiceCode\":\"CFS000007010\",\"ClientSystemId\":\"M1\"},\"AppHead\":{\"requestSerialNo\":\""+ UUID.randomUUID()+"\"},\"Body\":{\"ApplySerialNo\":\"2018120400000002\",\"ContractNo\":\"WD2018112900000013\",\"FileList\":[{\"DocSuffix\":\"jpg\",\"DocType\":\"001\",\"FileName\":\"测试文件\"}]}}";
 //		JSONObject jsonObject1=JSON.parseObject(message);
 //		System.out.println(jsonObject1.toString());
@@ -26,9 +36,10 @@ public class JsonTest {
 //		JSONArray filelist=JSONObject.parseArray(fileList.toString());
 //		System.out.println(fileList.toString());
 
-		String fileJson="\"FileList\":[{\"DocSuffix\":\"jpg\",\"DocType\":\"001\",\"FileName\":\"测试文件\"}]";
-		JSONArray filelist=JSONObject.parseArray(fileJson);
-		System.out.println(filelist);
+//		String fileJson="\"FileList\":[{\"DocSuffix\":\"jpg\",\"DocType\":\"001\",\"FileName\":\"测试文件\"}]";
+//
+//		JSONArray filelist=JSONObject.parseArray(fileJson);
+//		System.out.println(filelist);
 
 		String jsonStr="{\"aa\":\"123456789.1234\",\"bb\":\"123456789.1234\",\"cc\":\"1.0E+7\"}";
 		JSONObject json = (JSONObject) JSONObject.parse(jsonStr);
