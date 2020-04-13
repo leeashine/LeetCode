@@ -77,7 +77,7 @@ public class Twitter {
                 }
             }
         }
-        //获取10条
+        //k个有序列表排序获取前10条
         List<Integer> res = new ArrayList<>(10);
         int count = 0;
         while (!maxHeap.isEmpty() && count < 10) {
