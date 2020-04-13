@@ -16,17 +16,33 @@ public class JsonTest {
 		// TODO Auto-generated method stub
 
 		//liststring解析
-		String s="{id:123,title:提交作业,courseID:huangt-test},{beginTime:1398873600000,endTime:111111}";
-
-//		List list=new ArrayList();
-		while(s.indexOf('{')!=-1){
-			int idx1=s.indexOf('{');
-			int idx2=s.indexOf('}');
-			String ss=s.substring(idx1+1,idx2);
-			System.out.println(ss);
-//			list.add(ss);
-			s=s.substring(idx2+1);
-		}
+//		String s="{id:123,title:提交作业,courseID:huangt-test},{beginTime:1398873600000,endTime:111111}";
+//
+//		int idx1,ix1;
+//		int idx2,ix2;
+//		String key,value;
+//		List list3=new ArrayList();
+//		while(s.indexOf('{')!=-1){
+//			Map map=new HashMap();
+//			idx1=s.indexOf('{');
+//			idx2=s.indexOf('}');
+//			String ss=s.substring(idx1+1,idx2);
+//			while(ss.indexOf(',')!=-1){
+//				ix1=ss.indexOf(':');
+//				ix2=ss.indexOf(',');
+//				key=ss.substring(0,ix1);
+//				value=ss.substring(ix1+1,ix2);
+//				System.out.println("key="+key+" value="+value);
+//				map.put(key,value);
+//				ss=ss.substring(ix2+1);
+//			}
+//			ix1=ss.indexOf(':');
+//			key=ss.substring(0,ix1);
+//			value=ss.substring(ix1+1);
+//			map.put(key,value);
+//			list3.add(map);
+//			s=s.substring(idx2+1);
+//		}
 
 		String message="{\"SysHead\":{\"ServiceCode\":\"CFS000007010\",\"ClientSystemId\":\"M1\"},\"AppHead\":{\"requestSerialNo\":\""+ UUID.randomUUID()+"\"},\"Body\":{\"ApplySerialNo\":\"2018120400000002\",\"ContractNo\":\"WD2018112900000013\",\"FileList\":[{\"DocSuffix\":\"jpg\",\"DocType\":\"001\",\"FileName\":\"测试文件\"}]}}";
 //		JSONObject jsonObject1=JSON.parseObject(message);
