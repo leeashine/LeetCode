@@ -7,7 +7,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class DailyOneProblem {
-
+    int [][] dir={{0,1},{0,-1},{1,0},{-1,0}};
     public static void main(String[] args) {
 
 //        int [] coins={2};
@@ -43,15 +43,42 @@ public class DailyOneProblem {
 //        System.out.println(s);
 //        String s="the sky is  blue";
 
-        ListNode l1=new ListNode(7);
-        l1.next=new ListNode(2);
-        l1.next.next=new ListNode(4);
-        l1.next.next.next=new ListNode(3);
-        ListNode l2=new ListNode(5);
-        l2.next=new ListNode(6);
-        l2.next.next=new ListNode(4);
-        new DailyOneProblem().addTwoNumbers(l1,l2);
 
+    }
+    //01矩阵 BFS
+    public int[][] updateMatrix(int[][] matrix) {
+        if (matrix == null || matrix.length == 0) return null;
+        int m = matrix.length, n = matrix[0].length;
+        int[][] res = new int[m][n];//结果集
+        boolean[][] visited = new boolean[m][n];//记录已经计算过的位置
+        Queue<int[]> queue = new LinkedList<>();//广搜队列
+        //遍历，将等于0的位置计入结果集并入队
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if (matrix[i][j] == 0) {
+                    res[i][j] = 0;
+                    visited[i][j] = true;
+                    queue.offer(new int[]{i, j});
+                }
+            }
+        }
+        //四个方向广搜
+        int[][] direction = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};//上下左右
+        while (!queue.isEmpty()) {
+            int[] poll = queue.poll();
+            int i = poll[0], j = poll[1];
+            //四个方向上找 1
+            for (int k = 0; k < 4; k++) {
+                int di = i + direction[k][0], dj = j + direction[k][1];
+                //没有计算过的地方一定是 1
+                if (di >= 0 && di < m && dj >= 0 && dj < n && !visited[di][dj]) {
+                    res[di][dj] = res[i][j] + 1;
+                    visited[di][dj] = true;
+                    queue.offer(new int[]{di, dj});
+                }
+            }
+        }
+        return res;
     }
 
     //两数相加（链表） 注意进位
@@ -459,7 +486,6 @@ public class DailyOneProblem {
     }
 
     //岛屿最大面积
-    int [][] dir={{0,1},{0,-1},{1,0},{-1,0}};
     int x,y;
     public int maxAreaOfIsland(int[][] grid) {
         int res=0;
