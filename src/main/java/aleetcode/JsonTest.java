@@ -76,7 +76,8 @@ public class JsonTest {
 		bankInfo.put("bank_encrypted_meta", sdk_version);
 		System.out.println(bankInfo.toJSONString());
 		
-//		map---->jsonString
+//		object---->jsonString
+// 		map---->jsonString
 		//JSONObject.toJSONString(paramMap)
 
 //		map->json
