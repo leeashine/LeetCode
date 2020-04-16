@@ -47,7 +47,7 @@ public class DailyOneProblem {
         merge(arr);
     }
 
-    //合并区间
+    //合并区间（双指针）
 //    merge最右端点>左端点合并
 //
     public static int[][] merge(int[][] arr) {
