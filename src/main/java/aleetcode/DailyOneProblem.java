@@ -43,8 +43,33 @@ public class DailyOneProblem {
 //        System.out.println(s);
 //        String s="the sky is  blue";
 
-
+        int [][]arr=new int [][]{{1,3},{2,6},{8,10},{15,18}};
+        merge(arr);
     }
+
+    //合并区间
+//    merge最右端点>左端点合并
+//
+    public static int[][] merge(int[][] arr) {
+        if(arr == null || arr.length<=1)
+            return arr;
+        List<int[]> list = new ArrayList<>();
+        Arrays.sort(arr, (o1, o2) -> o1[0]-o2[0]);
+        int i=0;
+        int n = arr.length;
+        while(i<n){
+            int left = arr[i][0];
+            int right = arr[i][1];
+            while(i<n-1 && right>=arr[i+1][0]){
+                right = Math.max(right,arr[i+1][1]);
+                i++;
+            }
+            list.add(new int[] {left,right});
+            i++;
+        }
+        return list.toArray(new int[list.size()][2]);
+    }
+
     //01矩阵 BFS
     public int[][] updateMatrix(int[][] matrix) {
         if (matrix == null || matrix.length == 0) return null;
