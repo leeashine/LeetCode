@@ -7,39 +7,92 @@ public class Contest185 {
 
 //        String s="covid2019";
 //        reformat(s);
-        List<List<String>> orders=new ArrayList<>();
-        List<String> list=new ArrayList<>();
-        list.add("David");
-        list.add("3");
-        list.add("Ceviche");
-        orders.add(list);
-        list=new ArrayList<>();
-        list.add("Corina");
-        list.add("10");
-        list.add("Beef Burrito");
-        orders.add(list);
-        list=new ArrayList<>();
-        list.add("David");
-        list.add("3");
-        list.add("Fried Chicken");
-        orders.add(list);
-        list=new ArrayList<>();
-        list.add("Carla");
-        list.add("5");
-        list.add("Water");
-        orders.add(list);
-        list=new ArrayList<>();
-        list.add("Carla");
-        list.add("5");
-        list.add("Ceviche");
-        orders.add(list);
-        list=new ArrayList<>();
-        list.add("Rous");
-        list.add("3");
-        list.add("Ceviche");
-        orders.add(list);
-        new Contest185().displayTable(orders);
+//        List<List<String>> orders=new ArrayList<>();
+//        List<String> list=new ArrayList<>();
+//        list.add("David");
+//        list.add("3");
+//        list.add("Ceviche");
+//        orders.add(list);
+//        list=new ArrayList<>();
+//        list.add("Corina");
+//        list.add("10");
+//        list.add("Beef Burrito");
+//        orders.add(list);
+//        list=new ArrayList<>();
+//        list.add("David");
+//        list.add("3");
+//        list.add("Fried Chicken");
+//        orders.add(list);
+//        list=new ArrayList<>();
+//        list.add("Carla");
+//        list.add("5");
+//        list.add("Water");
+//        orders.add(list);
+//        list=new ArrayList<>();
+//        list.add("Carla");
+//        list.add("5");
+//        list.add("Ceviche");
+//        orders.add(list);
+//        list=new ArrayList<>();
+//        list.add("Rous");
+//        list.add("3");
+//        list.add("Ceviche");
+//        orders.add(list);
+//        new Contest185().displayTable(orders);
+
+        String s="crcoakroak";
+        new Contest185().minNumberOfFrogs(s);
+
     }
+
+    //数青蛙
+//    特殊情况 一个青蛙叫2次 croakcroak
+//    crcoakroak
+    public int minNumberOfFrogs(String croakOfFrogs) {
+        int cnt[] = new int[5];
+        int frogs = 0, max_frogs = 0;
+        for (int i = 0; i < croakOfFrogs.length(); ++i) {
+            int ch = croakOfFrogs.charAt(i);
+            int n = "croak".indexOf(ch);
+            ++cnt[n];
+            if (n == 0)
+                max_frogs = Math.max(max_frogs, ++frogs);
+            else if (--cnt[n - 1] < 0)
+                return -1;
+            else if (n == 4)
+                --frogs;//防止一个青蛙叫2次
+        }
+        return frogs == 0 ? max_frogs : -1;
+    }
+    public int minNumberOfFrogs2(String croakOfFrogs) {
+        int c,r,o,a,k;
+        c = 0; r = 0; o = 0; a = 0;k = 0;
+        char []chars = croakOfFrogs.toCharArray();
+        int res = 0;
+        for(int i = 0;i < chars.length;i++){
+            if(chars[i] == 'c'){
+                if(k > 0){k--;}//防止一个青蛙叫多次
+                else{res++;}
+                c++;
+            }else if(chars[i] == 'r'){
+                c--;r++;
+            }else if(chars[i] == 'o'){
+                r--;o++;
+            }else if(chars[i] == 'a'){
+                o--;a++;
+            }else if(chars[i] == 'k'){
+                a--;k++;
+            }
+            if(c < 0 || r < 0 || o < 0 || a < 0){
+                break;
+            }
+        }
+        if(c != 0 || r != 0 || o != 0 || a != 0){
+            return -1;
+        }
+        return res;
+    }
+
 
 //    集合操作题  本体特殊在要填充没点的菜即为0
 //    输入：orders = [["David","3","Ceviche"],["Corina","10","Beef Burrito"],["David","3","Fried Chicken"],["Carla","5","Water"],["Carla","5","Ceviche"],["Rous","3","Ceviche"]]
