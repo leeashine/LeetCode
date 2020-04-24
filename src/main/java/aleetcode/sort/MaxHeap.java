@@ -1,6 +1,7 @@
 package aleetcode.sort;
 
 public class MaxHeap<Item extends Comparable> {
+
     protected Item[] data;
     protected int count;
     protected int capacity;

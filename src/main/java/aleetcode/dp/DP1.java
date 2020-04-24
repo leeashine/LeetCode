@@ -58,14 +58,14 @@ public class DP1 {
     }
 
 
-    public void zhaolin1(int money,int[]A){
+    public int zhaolin1(int money,int[]A){
         int dp[] = new int[money+1]; // dp[j] 表示 j元钱的零钱的组合方式
         dp[0] = 1;
         for(int i = 0;i<A.length;i++){
             for(int j = A[i];j<= money;j++){
-                dp[j] = dp[j] + dp[j -A[i]]; // 面值j的零钱可以写出：j = A[i] + (j - A[i]) 求出所有组合方式就是答案
+                dp[j] = (dp[j] + dp[j -A[i]])%1000000007; // 面值j的零钱可以写出：j = A[i] + (j - A[i]) 求出所有组合方式就是答案
             }
         }
-        System.out.println(dp[money]);
+       return dp[money];
     }
 }

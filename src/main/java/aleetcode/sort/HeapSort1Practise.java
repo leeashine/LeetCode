@@ -12,7 +12,7 @@ public class HeapSort1Practise {
     public static void sort(Comparable[] arr){
 
         int n = arr.length;
-        aleetcode.MaxHeap<Comparable> maxHeap = new aleetcode.MaxHeap<Comparable>(n);
+        MaxHeap<Comparable> maxHeap = new MaxHeap<Comparable>(n);
         for( int i = 0 ; i < n ; i ++ )
             maxHeap.insert(arr[i]);
 
@@ -23,9 +23,11 @@ public class HeapSort1Practise {
     // 测试 HeapSort1
     public static void main(String[] args) {
 
-        int N = 1000000;
-        Integer[] arr = SortTestHelper.generateRandomArray(N, 0, 100000);
-        SortTestHelper.testSort("bobo.algo.HeapSort1", arr);
+//        int N = 5;
+//        Integer[] arr = SortTestHelper.generateRandomArray(N, 0, 100);
+//        SortTestHelper.testSort("aleetcode.sort.HeapSort1Practise", arr);
+        Integer [] arr={10,88,76,44,8,16,24};
+        HeapSort1Practise.sort(arr);
 
         return;
     }
