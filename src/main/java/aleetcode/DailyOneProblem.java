@@ -46,10 +46,26 @@ public class DailyOneProblem {
         int [][]arr=new int [][]{{1,3},{2,6},{8,10},{15,18}};
         merge(arr);
     }
+//    输入: nums = [4,5,6,7,0,1,2], target = 0
+//    输出: 4
+    public int search(int[] nums, int target) {
+
+        int lo = 0, hi = nums.length - 1;
+        while (lo < hi) {
+            int mid = (lo + hi) / 2;
+//            (nums[0] > target) ^ (nums[0] > nums[mid]) ^ (target > nums[mid]) 3个条件有一个为真 逗向后规约
+            if ((nums[0] > target) ^ (nums[0] > nums[mid]) ^ (target > nums[mid]))
+                lo = mid + 1;
+            else
+                hi = mid;
+        }
+        return lo == hi && nums[lo] == target ? lo : -1;
+
+    }
 
     //合并区间（双指针）
 //    merge最右端点>左端点合并
-//
+//  {1,3},{2,6},{8,10}合并成 {1,10}
     public static int[][] merge(int[][] arr) {
         if(arr == null || arr.length<=1)
             return arr;
