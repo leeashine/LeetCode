@@ -45,7 +45,47 @@ public class DailyOneProblem {
 
         int [][]arr=new int [][]{{1,3},{2,6},{8,10},{15,18}};
         merge(arr);
+
+
+        new DailyOneProblem().new Solution().isHappy(191);
+
     }
+
+    //快乐数
+//    「快乐数」定义为：对于一个正整数，每一次将该数替换为它每个位置上的数字的平方和，然后重复这个过程直到这个数变为 1，也可能是 无限循环 但始终变不到 1。如果 可以变为  1，那么这个数就是快乐数。
+//
+//    如果 n 是快乐数就返回 True ；不是，则返回 False 。
+//    意识到我们实际有个链表，那么这个问题就可以转换为检测一个链表是否有环。因此我们在这里可以使用弗洛伊德循环查找算法。这个算法是两个奔跑选手，一个跑的快，一个跑得慢。在龟兔赛跑的寓言中，跑的快的称为 “乌龟”，跑得快的称为 “兔子”。
+//    方法：使用“快慢指针”思想找出循环：“快指针”每次走两步，“慢指针”每次走一步，
+//    当二者相等时，即为一个循环周期。此时，判断是不是因为1引起的循环，是的话就是快乐数，否则不是快乐数。
+//    注意：此题不建议用集合记录每次的计算结果来判断是否进入循环，因为这个集合可能大到无法存储；另外，也不建议使用递归，同理，如果递归层次较深，会直接导致调用栈崩溃。不要因为这个题目给出的整数是int型而投机取巧。
+//
+//    为啥一定不会出现死循环，因为int类型最大值为为‭‭2 147 483 647‬‬， 所以平方和最大的数是1 999 999 999，平方和为1 + 81*9 = 724。任何数的平方和都在1到724之间，724次循环之内一定有重复的
+//    链表找环 是一个很经典的问题了，使用快慢指针可破解。
+    public class Solution {
+        public int squareSum(int n) {
+            int sum = 0;
+            while(n > 0){
+                int digit = n % 10;
+                sum += digit * digit;
+                n /= 10;
+            }
+            return sum;
+        }
+
+        public boolean isHappy(int n) {
+            int slow = n, fast = squareSum(n);
+            while (fast!=1&&slow != fast){
+                slow = squareSum(slow);
+                fast = squareSum(squareSum(fast));
+            }
+            return fast == 1;
+        }
+    }
+
+
+
+
 //    输入: nums = [4,5,6,7,0,1,2], target = 0
 //    输出: 4
     public int search(int[] nums, int target) {

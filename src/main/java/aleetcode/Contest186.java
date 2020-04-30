@@ -1,10 +1,37 @@
 package aleetcode;
 
 public class Contest186 {
+
     public static void main(String[] args) {
 
         String s = "011101";
-        maxScore(s);
+//        maxScore(s);
+        int [] cardPoints={11,49,100,20,86,29,72};
+        maxScore(cardPoints,4);
+
+    }
+//    可获得的最大点数
+//    输入：cardPoints = [1,2,3,4,5,6,1], k = 3
+//    输出：12
+//    先求出前k个数的总和，然后前面去掉一个，后面加上一个，前面去掉一个，后面加上一个，求最大值
+    public static int maxScore(int[] cardPoints, int k) {
+
+        int s=0;
+        int t=k;
+        for (int i = 0; i < k; i++)
+        {
+            s+=cardPoints[i];
+        }
+        int max=s;
+        for (int i = cardPoints.length-1; i >=cardPoints.length-k; i--)
+        {
+            s=s-cardPoints[--t]+cardPoints[i];//前面去掉一个，后面加上一个
+            if (s>max)
+            {
+                max=s;
+            }
+        }
+        return max;
 
     }
 
