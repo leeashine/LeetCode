@@ -43,13 +43,45 @@ public class DailyOneProblem {
 //        System.out.println(s);
 //        String s="the sky is  blue";
 
-        int [][]arr=new int [][]{{1,3},{2,6},{8,10},{15,18}};
-        merge(arr);
+//        int [][]arr=new int [][]{{1,3},{2,6},{8,10},{15,18}};
+//        merge(arr);
+//        new DailyOneProblem().new Solution().isHappy(191);
 
 
-        new DailyOneProblem().new Solution().isHappy(191);
+        new DailyOneProblem().subarraySum(new int[]{1,2,3,4},3);
+    }
+//    给定一个整数数组和一个整数 k，你需要找到该数组中和为 k 的连续的子数组的个数。
+//    输入:nums = [1,1,1], k = 2
+//    输出: 2 , [1,1] 与 [1,1] 为两种不同的情况。
+    public int subarraySum(int[] nums, int k) {
+
+        int res=0;
+
+        int i=0,j=1;
+        while (i<nums.length){
+
+            int sum=nums[i];
+            if(sum==k){
+                res++;
+                j=0;
+            }else{
+                sum+=nums[i+j];
+
+                if(sum==k){
+                    res++;
+                    j=0;
+                }
+            }
+
+            i++;
+            j++;
+        }
+
+
+        return res;
 
     }
+
 
     //快乐数
 //    「快乐数」定义为：对于一个正整数，每一次将该数替换为它每个位置上的数字的平方和，然后重复这个过程直到这个数变为 1，也可能是 无限循环 但始终变不到 1。如果 可以变为  1，那么这个数就是快乐数。
