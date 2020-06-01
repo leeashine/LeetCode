@@ -25,7 +25,7 @@ public class IdWorker {
     
     public IdWorker(long workerId, long datacenterId, long sequence) {
         // sanity check for workerId
-        // Õâ¶ù²»¾Í¼ì²éÁËÒ»ÏÂ£¬ÒªÇó¾ÍÊÇÄã´«µÝ½øÀ´µÄ»ú·¿idºÍ»úÆ÷id²»ÄÜ³¬¹ý32£¬²»ÄÜÐ¡ÓÚ0
+        // è¿™å„¿ä¸å°±æ£€æŸ¥äº†ä¸€ä¸‹ï¼Œè¦æ±‚å°±æ˜¯ä½ ä¼ é€’è¿›æ¥çš„æœºæˆ¿idå’Œæœºå™¨idä¸èƒ½è¶…è¿‡32ï¼Œä¸èƒ½å°äºŽ0
         if (workerId > maxWorkerId || workerId < 0) {
             throw new IllegalArgumentException(
                     String.format("worker Id can't be greater than %d or less than 0", maxWorkerId));
@@ -48,10 +48,10 @@ public class IdWorker {
     private long workerIdBits = 5L;
     private long datacenterIdBits = 5L;
 
-    // Õâ¸öÊÇ¶þ½øÖÆÔËËã£¬¾ÍÊÇ 5 bit×î¶àÖ»ÄÜÓÐ31¸öÊý×Ö£¬Ò²¾ÍÊÇËµ»úÆ÷id×î¶àÖ»ÄÜÊÇ32ÒÔÄÚ
+    // è¿™ä¸ªæ˜¯äºŒè¿›åˆ¶è¿ç®—ï¼Œå°±æ˜¯ 5 bitæœ€å¤šåªèƒ½æœ‰31ä¸ªæ•°å­—ï¼Œä¹Ÿå°±æ˜¯è¯´æœºå™¨idæœ€å¤šåªèƒ½æ˜¯32ä»¥å†…
     private long maxWorkerId = -1L ^ (-1L << workerIdBits);
 
-    // Õâ¸öÊÇÒ»¸öÒâË¼£¬¾ÍÊÇ 5 bit×î¶àÖ»ÄÜÓÐ31¸öÊý×Ö£¬»ú·¿id×î¶àÖ»ÄÜÊÇ32ÒÔÄÚ
+    // è¿™ä¸ªæ˜¯ä¸€ä¸ªæ„æ€ï¼Œå°±æ˜¯ 5 bitæœ€å¤šåªèƒ½æœ‰31ä¸ªæ•°å­—ï¼Œæœºæˆ¿idæœ€å¤šåªèƒ½æ˜¯32ä»¥å†…
     private long maxDatacenterId = -1L ^ (-1L << datacenterIdBits);
     private long sequenceBits = 12L;
 
@@ -106,7 +106,7 @@ public class IdWorker {
 		return dateTime;
 	}
 //    public synchronized long nextId() {
-//        // Õâ¶ù¾ÍÊÇ»ñÈ¡µ±Ç°Ê±¼ä´Á£¬µ¥Î»ÊÇºÁÃë
+//        // è¿™å„¿å°±æ˜¯èŽ·å–å½“å‰æ—¶é—´æˆ³ï¼Œå•ä½æ˜¯æ¯«ç§’
 //        long timestamp = timeGen();
 //
 //        if (timestamp < lastTimestamp) {
@@ -116,8 +116,8 @@ public class IdWorker {
 //        }
 //
 //        if (lastTimestamp == timestamp) {
-//            // Õâ¸öÒâË¼ÊÇËµÒ»¸öºÁÃëÄÚ×î¶àÖ»ÄÜÓÐ4096¸öÊý×Ö
-//            // ÎÞÂÛÄã´«µÝ¶àÉÙ½øÀ´£¬Õâ¸öÎ»ÔËËã±£Ö¤Ê¼ÖÕ¾ÍÊÇÔÚ4096Õâ¸ö·¶Î§ÄÚ£¬±ÜÃâÄã×Ô¼º´«µÝ¸ösequence³¬¹ýÁË4096Õâ¸ö·¶Î§
+//            // è¿™ä¸ªæ„æ€æ˜¯è¯´ä¸€ä¸ªæ¯«ç§’å†…æœ€å¤šåªèƒ½æœ‰4096ä¸ªæ•°å­—
+//            // æ— è®ºä½ ä¼ é€’å¤šå°‘è¿›æ¥ï¼Œè¿™ä¸ªä½è¿ç®—ä¿è¯å§‹ç»ˆå°±æ˜¯åœ¨4096è¿™ä¸ªèŒƒå›´å†…ï¼Œé¿å…ä½ è‡ªå·±ä¼ é€’ä¸ªsequenceè¶…è¿‡äº†4096è¿™ä¸ªèŒƒå›´
 //            sequence = (sequence + 1) & sequenceMask;
 //            if (sequence == 0) {
 //                timestamp = tilNextMillis(lastTimestamp);
@@ -126,13 +126,13 @@ public class IdWorker {
 //            sequence = 0;
 //        }
 //
-//        // Õâ¶ù¼ÇÂ¼Ò»ÏÂ×î½üÒ»´ÎÉú³ÉidµÄÊ±¼ä´Á£¬µ¥Î»ÊÇºÁÃë
+//        // è¿™å„¿è®°å½•ä¸€ä¸‹æœ€è¿‘ä¸€æ¬¡ç”Ÿæˆidçš„æ—¶é—´æˆ³ï¼Œå•ä½æ˜¯æ¯«ç§’
 //        lastTimestamp = timestamp;
 //
-//        // Õâ¶ù¾ÍÊÇ½«Ê±¼ä´Á×óÒÆ£¬·Åµ½ 41 bitÄÇ¶ù£»
-//        // ½«»ú·¿ id×óÒÆ·Åµ½ 5 bitÄÇ¶ù£»
-//        // ½«»úÆ÷id×óÒÆ·Åµ½5 bitÄÇ¶ù£»½«ÐòºÅ·Å×îºó12 bit£»
-//        // ×îºóÆ´½ÓÆðÀ´³ÉÒ»¸ö 64 bitµÄ¶þ½øÖÆÊý×Ö£¬×ª»»³É 10 ½øÖÆ¾ÍÊÇ¸ö long ÐÍ
+//        // è¿™å„¿å°±æ˜¯å°†æ—¶é—´æˆ³å·¦ç§»ï¼Œæ”¾åˆ° 41 bité‚£å„¿ï¼›
+//        // å°†æœºæˆ¿ idå·¦ç§»æ”¾åˆ° 5 bité‚£å„¿ï¼›
+//        // å°†æœºå™¨idå·¦ç§»æ”¾åˆ°5 bité‚£å„¿ï¼›å°†åºå·æ”¾æœ€åŽ12 bitï¼›
+//        // æœ€åŽæ‹¼æŽ¥èµ·æ¥æˆä¸€ä¸ª 64 bitçš„äºŒè¿›åˆ¶æ•°å­—ï¼Œè½¬æ¢æˆ 10 è¿›åˆ¶å°±æ˜¯ä¸ª long åž‹
 //        return ((timestamp - twepoch) << timestampLeftShift) | (datacenterId << datacenterIdShift)
 //                | (workerId << workerIdShift) | sequence;
 //    }
@@ -149,7 +149,7 @@ public class IdWorker {
         return System.currentTimeMillis();
     }
 
-    // ---------------²âÊÔ---------------
+    // ---------------æµ‹è¯•---------------
     public static void main(String[] args) {
         IdWorker worker = new IdWorker(2, 2, 1);
         for (int i = 0; i < 30; i++) {

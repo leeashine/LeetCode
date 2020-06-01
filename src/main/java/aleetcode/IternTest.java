@@ -3,27 +3,27 @@ package aleetcode;
 public class IternTest {
 
 	public static void main(String[] args) {
-		String str1 = "¼ÆËã»ú";
-        String str2 = "¼ÆËã»ú";
+		String str1 = "è®¡ç®—æœº";
+        String str2 = "è®¡ç®—æœº";
         System.out.println("str1==str2:" + (str1 == str2));
         
-        String str3 = new String("¼ÆËã»ú");
+        String str3 = new String("è®¡ç®—æœº");
         System.out.println("str1==str3:" + (str1 == str3));
         System.out.println("str1==str3.intern():" + (str1 == str3.intern()));
         System.out.println("str2==str3.intern():" + (str2 == str3.intern()));
         
-        String str4 = new String("¼ÆËã»ú");
+        String str4 = new String("è®¡ç®—æœº");
         System.out.println("str3==str4:" + (str3 == str4));
         System.out.println("str3.intern()==str4.intern():" + (str3.intern() == str4.intern()));
 
 
-        String str5 = new StringBuilder("Èí¼ş").append("¹¤³Ì").toString();
+        String str5 = new StringBuilder("è½¯ä»¶").append("å·¥ç¨‹").toString();
         System.out.println("str5.intern() == str5:" + (str5.intern() == str5));
 
-        String str6 = new String(new StringBuilder("ÎïÁªÍø").append("¹¤³Ì").toString());
+        String str6 = new String(new StringBuilder("ç‰©è”ç½‘").append("å·¥ç¨‹").toString());
         System.out.println("str6.intern() == str6:" + (str6.intern() == str6));
 
-        String str7 = new String("ÎïÁªÍø");
+        String str7 = new String("ç‰©è”ç½‘");
         System.out.println("str7.intern() == str7:" + (str7.intern() == str7));
 	}
 	
