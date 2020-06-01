@@ -26,9 +26,9 @@ public class dongtaiguihua {
 		people.add(s3);
 		
 		smallestSufficientTeam(req_skills, people);
-//		|Òì»òÔËËã·û
+//		|å¼‚æˆ–è¿ç®—ç¬¦
 //		System.out.println(10|8);
-//		<<Î»ÔËËã·û  1<<8  2µÄ8´Î·½
+//		<<ä½è¿ç®—ç¬¦  1<<8  2çš„8æ¬¡æ–¹
 		int a=Integer.parseInt("09");
 		System.out.println(a);
 		
