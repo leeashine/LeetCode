@@ -1,4 +1,4 @@
-package aleetcode.Contest2020;
+package aleetcode.contest2020;
 
 import java.util.ArrayList;
 import java.util.Arrays;
