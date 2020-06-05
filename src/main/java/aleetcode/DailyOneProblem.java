@@ -49,12 +49,60 @@ public class DailyOneProblem {
 ////
 ////        new DailyOneProblem().new Solution().isHappy(191);
 
-        int [] arr={0,0,0,0,0};
-        int k=0;
-        int res=new DailyOneProblem().subarraySum(arr,k);
-        System.out.println(res);
+//        int [] arr={0,0,0,0,0};
+//        int k=0;
+//        int res=new DailyOneProblem().subarraySum(arr,k);
+//        System.out.println(res);
+        int[][] matrix={{1,2,3,4},{5,6,7,8},{9,10,11,12}};
+//        int[][] matrix={{1,2,3},{4,5,6},{7,8,9}};
+        int []res=new DailyOneProblem().spiralOrder(matrix);
+        System.out.println(Arrays.toString(res));
 
     }
+//    输入：matrix = [[1,2,3],[4,5,6],[7,8,9]]
+//    输出：[1,2,3,6,9,8,7,4,5]
+    public int[] spiralOrder(int[][] matrix) {
+        if (matrix == null || matrix.length == 0 || matrix[0].length == 0) {
+            return new int[0];
+        }
+        int rows = matrix.length, columns = matrix[0].length;
+        boolean[][] visited = new boolean[rows][columns];
+        int total = rows * columns;
+        int[] order = new int[total];
+        int row = 0, column = 0;
+//        顺时针顺序 右 下 左 上
+        int[][] directions = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
+        int directionIndex = 0;
+        for (int i = 0; i < total; i++) {
+            order[i] = matrix[row][column];
+            visited[row][column] = true;
+            int nextRow = row + directions[directionIndex][0], nextColumn = column + directions[directionIndex][1];
+            if (nextRow < 0 || nextRow >= rows || nextColumn < 0 || nextColumn >= columns || visited[nextRow][nextColumn]) {
+                directionIndex = (directionIndex + 1) % 4;
+            }
+            row += directions[directionIndex][0];
+            column += directions[directionIndex][1];
+        }
+        return order;
+    }
+
+
+    //除自身以外数组的乘积
+    public int[] productExceptSelf(int[] nums) {
+        int[] res = new int[nums.length];
+        int k = 1;
+        for(int i = 0; i < res.length; i++){
+            res[i] = k;
+            k = k * nums[i]; // 此时数组存储的是除去当前元素左边的元素乘积
+        }
+        k = 1;
+        for(int i = res.length - 1; i >= 0; i--){
+            res[i] *= k; // k为该数右边的乘积。
+            k *= nums[i]; // 此时数组等于左边的 * 该数右边的。
+        }
+        return res;
+    }
+
 
     //    给定一个整数数组和一个整数 k，你需要找到该数组中和为 k 的连续的子数组的个数。
 //    输入:nums = [1,1,1], k = 2
