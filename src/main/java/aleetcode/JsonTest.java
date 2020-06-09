@@ -15,6 +15,13 @@ public class JsonTest {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 
+		JSONObject req=new JSONObject();
+		Map mapp=new HashMap();
+		mapp.put("name","llll");
+		mapp.put("age","18");
+		req.putAll(mapp);
+		System.out.println(req);
+
 		//liststring解析
 //		String s="{id:123,title:提交作业,courseID:huangt-test},{beginTime:1398873600000,endTime:111111}";
 //
