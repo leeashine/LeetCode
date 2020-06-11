@@ -59,6 +59,27 @@ public class DailyOneProblem {
         System.out.println(Arrays.toString(res));
 
     }
+//    给定一个列表 temperatures = [73, 74, 75, 71, 69, 72, 76, 73]，
+//    你的输出应该是 [1, 1, 4, 2, 1, 1, 0, 0]
+//    本题从最后一天倒推到第一天会简单很多
+//    j += res[j]因为res[j]位置已经代表最近比这大的数相隔的位置 那第i个位置上想要找出比这大的最近位置至少也要加上res[j](j里面都比他小了其实)
+    public int[] dailyTemperatures(int[] T) {
+        int[] res = new int[T.length];
+        res[T.length - 1] = 0;
+        for (int i = T.length - 2; i >= 0; i--) {
+            for (int j = i + 1; j < T.length; j += res[j]) {
+                if (T[i] < T[j]) {
+                    res[i] = j - i;
+                    break;
+                } else if (res[j] == 0) {
+                    res[i] = 0;
+                    break;
+                }
+            }
+        }
+        return res;
+    }
+
 //    输入：matrix = [[1,2,3],[4,5,6],[7,8,9]]
 //    输出：[1,2,3,6,9,8,7,4,5]
 //    螺旋数组
