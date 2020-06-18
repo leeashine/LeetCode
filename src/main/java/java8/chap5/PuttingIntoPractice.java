@@ -115,8 +115,9 @@ public class PuttingIntoPractice{
                     }
                 }
             }).findFirst();
-            Transaction resultBiz = op.isPresent()?op.get():null;
-            return resultBiz;
+//            Transaction resultBiz = op.isPresent()?op.get():null;
+//            return resultBiz;
+            return op.orElse(null);
         }
         finally
         {
