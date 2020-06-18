@@ -14,7 +14,49 @@ public class Contest193 {
         int n=new Contest193().findLeastNumOfUniqueInts2(arr,78);
         System.out.println(n);
 
+
+
     }
+
+//    制作 m 束花所需的最少天数
+//    如果mid天满足，那么mid+1天也满足，满足单调性，可以二分check
+//    对于当前天数mid，
+//    贪心计算有多少个连续的小于等于mid的k天，假设有cnt个连续k天，判断cnt是否大于等于m即可
+    boolean check(int []a,int m,int k,int mid){
+        int n=a.length;
+        int cnt=0;
+        int len=0;
+        for(int i=0;i<n;i++){
+            if(a[i]<=mid){
+                len++;
+                if(len==k){
+                    cnt++;
+                    len-=k;
+                }
+            }else{
+                len=0;
+            }
+        }
+        return cnt>=m;
+    }
+
+    int minDays(int[] a, int m, int k) {
+        int l=1;
+        int r= (int) 1e9;
+        int ans=-1;
+        while(l<=r){
+            int mid=(l+r)/2;
+            if(check(a,m,k,mid)){
+                ans=mid;
+                r=mid-1;
+            }else{
+                l=mid+1;
+            }
+        }
+        return ans;
+    }
+
+
     public int[] runningSum(int[] nums) {
         int sum=0;
         for(int i=0;i<nums.length;i++){
