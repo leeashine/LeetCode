@@ -29,7 +29,7 @@ class TreeAncestor {
     public int getKthAncestor(int node, int k) {
         if(k ==0 || node == -1) return node;
 //        对于每一个查询 k，把 k 拆解成二进制表示，然后根据二进制表示中 1 的位置，累计向上查询。
-//        p代表位置 k-(1<<p)代表最接近k的偶数
+//        p代表位置 (1<<p)代表最接近k的偶数
         int p = (int)(Math.log(k) / Math.log(2));
         return getKthAncestor(dp[node][p], k - (1<<p));
     }
