@@ -1,9 +1,6 @@
 package aleetcode;
 
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 public class Contest195 {
     public static void main(String[] args) {
@@ -19,6 +16,31 @@ public class Contest195 {
 
 
 
+    }
+
+//    [3,5,6,7]
+//    输入：nums = [3,5,6,7], target = 9
+//    输出：4
+//    [3] -> 最小元素 + 最大元素 <= target (3 + 3 <= 9)
+//    [3,5] -> (3 + 5 <= 9)
+//    [3,5,6] -> (3 + 6 <= 9)
+//    [3,6] -> (3 + 6 <= 9)
+//    双指针
+    public int numSubseq(int[] A, int target) {
+        Arrays.sort(A);
+        int res = 0, n = A.length, l = 0, r = n - 1, mod = (int)1e9 + 7;
+        int[] pows = new int[n];
+        pows[0] = 1;
+        for (int i = 1 ; i < n ; ++i)
+            pows[i] = pows[i - 1] * 2 % mod;
+        while (l <= r) {
+            if (A[l] + A[r] > target) {
+                r--;
+            } else {
+                res = (res + pows[r - l++]) % mod;
+            }
+        }
+        return res;
     }
 
 //    输入：arr = [1,2,3,4,5,10,6,7,8,9], k = 5
