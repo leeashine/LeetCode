@@ -6,10 +6,12 @@ public class Contest191 {
     public static void main(String[] args) {
 //        new Contest191().maxArea(8,3,new int []{5,7,3,4,6},new int[]{2});
 
-//        int res=new Contest191().minReorder(6,new int[][]{{0,1},{1,3},{2,3},{4,0},{4,5}});
+        int res=new Contest191().minReorder2(6,new int[][]{{0,1},{1,3},{2,3},{4,0},{4,5}});
 //        int res=new Contest191().minReorder(5,new int[][]{{1,0},{1,2},{3,2},{3,4}});
-        int res=new Contest191().minReorder(3,new int[][]{{1,0},{2,0}});
+//        int res=new Contest191().minReorder(3,new int[][]{{1,0},{2,0}});
         System.out.println(res);
+
+
     }
 
 //    重新规划路线问题
@@ -82,6 +84,7 @@ public class Contest191 {
         for (int i = 0; i < arr.length; i++) {
             int from=arr[i][0];
             int to=arr[i][1];
+
             if(visited[from]==1&&visited[to]==1)
                 continue;
             if(from==n){

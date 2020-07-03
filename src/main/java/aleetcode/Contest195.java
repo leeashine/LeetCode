@@ -2,6 +2,7 @@ package aleetcode;
 
 import java.util.*;
 
+
 public class Contest195 {
     public static void main(String[] args) {
 
@@ -9,16 +10,38 @@ public class Contest195 {
 //        System.out.println(b);
 
 //        int [] arr={1,2,3,4,5,10,6,7,8,9};
-        int [] arr={-1,1,-2,2,-3,3,-4,4};
-        int k=3;
-        boolean b = new Contest195().canArrange(arr, k);
-        System.out.println(b);
+//        int [] arr={-1,1,-2,2,-3,3,-4,4};
+//        int k=3;
+//        boolean b = new Contest195().canArrange(arr, k);
+//        System.out.println(b);
 
 
+        int [][] connections = {{0,1},{2,3},{3,6},{1,2}};
+
+        int[][] ints = new Contest195().makeConnected(connections);
+        System.out.println(Arrays.toString(ints));
 
     }
+    public int [][] makeConnected(int[][] connections){
+        int [][] res=new int[connections.length][2];
+        Map<Integer,Integer> map=new HashMap();
+        for (int i = 0; i < connections.length; i++) {
+            map.put(connections[i][0],connections[i][1]);
+        }
+        int value=map.get(0);
+        res[0]=connections[0];
+        int i=1;
+        while (map.get(value)!=null){
+            res[i][0]=value;
+            value=map.get(value);
+            res[i][1]=value;
+            i++;
+        }
+        return res;
+    }
 
-//    [3,5,6,7]
+
+    //    [3,5,6,7]
 //    输入：nums = [3,5,6,7], target = 9
 //    输出：4
 //    [3] -> 最小元素 + 最大元素 <= target (3 + 3 <= 9)
