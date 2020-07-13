@@ -62,6 +62,43 @@ public class DailyOneProblem {
 
     }
 
+//    dictionary = ["looked","just","like","her","brother"]
+//    sentence = "jesslookedjustliketimherbrother"
+//    恢复空格问题：把文章断开，要求未识别的字符最少，返回未识别的字符数。
+    public int respace(String[] dictionary, String sentence) {
+
+        int n = sentence.length();
+
+        Trie root = new Trie();
+        for (String word: dictionary) {
+            root.insert(word);
+        }
+
+        int[] dp = new int[n + 1];
+        Arrays.fill(dp, Integer.MAX_VALUE);
+        dp[0] = 0;
+        for (int i = 1; i <= n; ++i) {
+            //没有找到的话我们可以复用 dp[i-1] 的状态再加上当前未被识别的第 i 个字符
+            dp[i] = dp[i - 1] + 1;
+
+            Trie curPos = root;
+            for (int j = i; j >= 1; --j) {
+                int t = sentence.charAt(j - 1) - 'a';
+                if (curPos.next[t] == null) {
+                    break;
+                } else if (curPos.next[t].isEnd) {
+                    dp[i] = Math.min(dp[i], dp[j - 1]);
+                }
+                if (dp[i] == 0) {
+                    break;
+                }
+                curPos = curPos.next[t];
+            }
+        }
+        return dp[n];
+
+    }
+
     //将有序数组转化一颗高度平衡二叉搜索树
 //    二叉搜索树的中序遍历是升序序列，题目给定的数组是按照升序排序的有序数组，因此可以确保数组是二叉搜索树的中序遍历序列。
     public TreeNode sortedArrayToBST(int[] nums) {
