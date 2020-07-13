@@ -61,6 +61,37 @@ public class DailyOneProblem {
         new DailyOneProblem().sortedArrayToBST(new int[]{-10,-3,0,5,9});
 
     }
+    //给定两个数组，编写一个函数来计算它们的交集。
+//    如果给定的数组已经排好序呢？你将如何优化你的算法？
+//    如果 nums1 的大小比 nums2 小很多，哪种方法更优？
+//    如果 nums2 的元素存储在磁盘上，磁盘内存是有限的，并且你不能一次加载所有的元素到内存中，你该怎么办？
+
+    public int[] intersect(int[] nums1, int[] nums2) {
+        if (nums1.length > nums2.length) {
+            return intersect(nums2, nums1);
+        }
+        Map<Integer, Integer> map = new HashMap<Integer, Integer>();
+        for (int num : nums1) {
+            int count = map.getOrDefault(num, 0) + 1;
+            map.put(num, count);
+        }
+        int[] intersection = new int[nums1.length];
+        int index = 0;
+        for (int num : nums2) {
+            int count = map.getOrDefault(num, 0);
+            if (count > 0) {
+                intersection[index++] = num;
+                count--;
+                if (count > 0) {
+                    map.put(num, count);
+                } else {
+                    map.remove(num);
+                }
+            }
+        }
+        return Arrays.copyOfRange(intersection, 0, index);
+    }
+
 
 //    dictionary = ["looked","just","like","her","brother"]
 //    sentence = "jesslookedjustliketimherbrother"
