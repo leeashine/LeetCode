@@ -61,6 +61,25 @@ public class DailyOneProblem {
         new DailyOneProblem().sortedArrayToBST(new int[]{-10,-3,0,5,9});
 
     }
+
+    //二分法查找该插入的位置
+//    在一个有序数组中找第一个大于等于 target 的下标
+    public int searchInsert(int[] nums, int target) {
+        int n = nums.length;
+        int left = 0, right = n - 1, ans = n;
+        while (left <= right) {
+            int mid = ((right - left) >> 1) + left;
+            if (target <= nums[mid]) {
+                ans = mid;
+                right = mid - 1;
+            } else {
+                left = mid + 1;
+            }
+        }
+        return ans;
+    }
+
+
     //给定两个数组，编写一个函数来计算它们的交集。
 //    如果给定的数组已经排好序呢？你将如何优化你的算法？
 //    如果 nums1 的大小比 nums2 小很多，哪种方法更优？
