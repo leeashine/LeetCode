@@ -62,6 +62,93 @@ public class DailyOneProblem {
 
     }
 
+    //二分法查找该插入的位置
+//    在一个有序数组中找第一个大于等于 target 的下标
+    public int searchInsert(int[] nums, int target) {
+        int n = nums.length;
+        int left = 0, right = n - 1, ans = n;
+        while (left <= right) {
+            int mid = ((right - left) >> 1) + left;
+            if (target <= nums[mid]) {
+                ans = mid;
+                right = mid - 1;
+            } else {
+                left = mid + 1;
+            }
+        }
+        return ans;
+    }
+
+
+    //给定两个数组，编写一个函数来计算它们的交集。
+//    如果给定的数组已经排好序呢？你将如何优化你的算法？
+//    如果 nums1 的大小比 nums2 小很多，哪种方法更优？
+//    如果 nums2 的元素存储在磁盘上，磁盘内存是有限的，并且你不能一次加载所有的元素到内存中，你该怎么办？
+
+    public int[] intersect(int[] nums1, int[] nums2) {
+        if (nums1.length > nums2.length) {
+            return intersect(nums2, nums1);
+        }
+        Map<Integer, Integer> map = new HashMap<Integer, Integer>();
+        for (int num : nums1) {
+            int count = map.getOrDefault(num, 0) + 1;
+            map.put(num, count);
+        }
+        int[] intersection = new int[nums1.length];
+        int index = 0;
+        for (int num : nums2) {
+            int count = map.getOrDefault(num, 0);
+            if (count > 0) {
+                intersection[index++] = num;
+                count--;
+                if (count > 0) {
+                    map.put(num, count);
+                } else {
+                    map.remove(num);
+                }
+            }
+        }
+        return Arrays.copyOfRange(intersection, 0, index);
+    }
+
+
+//    dictionary = ["looked","just","like","her","brother"]
+//    sentence = "jesslookedjustliketimherbrother"
+//    恢复空格问题：把文章断开，要求未识别的字符最少，返回未识别的字符数。
+    public int respace(String[] dictionary, String sentence) {
+
+        int n = sentence.length();
+
+        Trie root = new Trie();
+        for (String word: dictionary) {
+            root.insert(word);
+        }
+
+        int[] dp = new int[n + 1];
+        Arrays.fill(dp, Integer.MAX_VALUE);
+        dp[0] = 0;
+        for (int i = 1; i <= n; ++i) {
+            //没有找到的话我们可以复用 dp[i-1] 的状态再加上当前未被识别的第 i 个字符
+            dp[i] = dp[i - 1] + 1;
+
+            Trie curPos = root;
+            for (int j = i; j >= 1; --j) {
+                int t = sentence.charAt(j - 1) - 'a';
+                if (curPos.next[t] == null) {
+                    break;
+                } else if (curPos.next[t].isEnd) {
+                    dp[i] = Math.min(dp[i], dp[j - 1]);
+                }
+                if (dp[i] == 0) {
+                    break;
+                }
+                curPos = curPos.next[t];
+            }
+        }
+        return dp[n];
+
+    }
+
     //将有序数组转化一颗高度平衡二叉搜索树
 //    二叉搜索树的中序遍历是升序序列，题目给定的数组是按照升序排序的有序数组，因此可以确保数组是二叉搜索树的中序遍历序列。
     public TreeNode sortedArrayToBST(int[] nums) {
