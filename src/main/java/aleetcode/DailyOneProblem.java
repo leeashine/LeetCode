@@ -53,12 +53,45 @@ public class DailyOneProblem {
 //        int k=0;
 //        int res=new DailyOneProblem().subarraySum(arr,k);
 //        System.out.println(res);
-        int[][] matrix={{1,2,3,4},{5,6,7,8},{9,10,11,12}};
+//        int[][] matrix={{1,2,3,4},{5,6,7,8},{9,10,11,12}};
 //        int[][] matrix={{1,2,3},{4,5,6},{7,8,9}};
-        int []res=new DailyOneProblem().spiralOrder(matrix);
-        System.out.println(Arrays.toString(res));
+//        int []res=new DailyOneProblem().spiralOrder(matrix);
+//        System.out.println(Arrays.toString(res));
+//
+//        new DailyOneProblem().sortedArrayToBST(new int[]{-10,-3,0,5,9});
 
-        new DailyOneProblem().sortedArrayToBST(new int[]{-10,-3,0,5,9});
+        int[][] grid={{1,3,1},{1,5,1},{4,2,1}};
+        new DailyOneProblem().minPathSum(grid);
+
+    }
+
+    //最小路径和
+    //每次只能向下或者向右移动一步。
+    public int minPathSum(int[][] grid) {
+
+        if (grid == null || grid.length == 0 || grid[0].length == 0) {
+            return 0;
+        }
+        int[][]dp=new int[grid.length][grid[0].length];
+
+        dp[0][0]=grid[0][0];
+        for(int i=1;i<grid.length;i++){
+            dp[i][0]=dp[i-1][0]+grid[i][0];
+        }
+        for(int i=1;i<grid[0].length;i++){
+            dp[0][i]=dp[0][i-1]+grid[0][i];
+        }
+        for(int i=1;i<grid.length;i++){
+            for(int j=1;j<grid[0].length;j++){
+
+                dp[i][j]=grid[i][j]+Math.min(dp[i-1][j],dp[i][j-1]);
+
+            }
+        }
+
+
+
+        return dp[grid.length-1][grid[0].length-1];
 
     }
 
