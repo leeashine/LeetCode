@@ -65,6 +65,14 @@ public class DailyOneProblem {
 
     }
 
+    //除数博弈
+    public boolean divisorGame(int N) {
+
+
+        return true;
+
+    }
+
     //最小路径和
     //每次只能向下或者向右移动一步。
     public int minPathSum(int[][] grid) {
