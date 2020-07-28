@@ -39,7 +39,7 @@ public class LRU3<k,v>{
             }
             node=new Node<>(key,value);
             //添加节点
-            addToHead(node);
+            addNode(node);
         }else{
             //移动到头结点
             addToHead(node);
