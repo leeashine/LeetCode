@@ -1,7 +1,7 @@
 package juc.print1A2B3C;
 
 import java.util.concurrent.locks.LockSupport;
-
+// 如果加了sleep 假死 状态 死锁
 public class lock_support {
     static Thread t1 = null, t2 = null;
 
@@ -30,6 +30,7 @@ public class lock_support {
         }, "t2");
 
         t1.start();
+        Thread.sleep(100);
         t2.start();
     }
 }
