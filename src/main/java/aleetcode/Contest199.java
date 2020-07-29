@@ -11,6 +11,26 @@ public class Contest199 {
 
     }
 
+
+    public class TreeNode {
+        int val;
+        TreeNode left;
+        TreeNode right;
+
+        TreeNode() {
+        }
+
+        TreeNode(int val) {
+            this.val = val;
+        }
+
+        TreeNode(int val, TreeNode left, TreeNode right) {
+            this.val = val;
+            this.left = left;
+            this.right = right;
+        }
+    }
+
 //    输入：s = "codeleet", indices = [4,5,6,7,0,2,1,3]
 //    输出："leetcode"
     public String restoreString(String s, int[] indices) {
