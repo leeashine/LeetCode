@@ -8,7 +8,7 @@ public class IDGenerator {
 	private final static  IdWorker idWorker = new IdWorker(0);
 	
 	/**
-	 * »ñµÃ32Î»Ëæ»úÁ÷Ë®ºÅ£¬²ÉÓÃTWRITERËã·¨»ñÈ¡
+	 * è·å¾—32ä½éšæœºæµæ°´å·ï¼Œé‡‡ç”¨TWRITERç®—æ³•è·å–
 	 * */
 	public final static String getID32()
 	{
@@ -17,8 +17,8 @@ public class IDGenerator {
 
 	
 	/**
-	 * »ñµÃ25Î»Ëæ»úÁ÷Ë®ºÅ£¬Éè¼Æ¹æÔò
-	 * <br>13Î»Ê±¼ä£¨¾«È·µ½ºÁÃë£©+2Î»Ëæ»úÊı+3Î»Ëæ»úÊı+2Î»Ëæ»úÊı+4Î»ÄÚ´æË³ĞòºÅ=25Î»Á÷Ë®ºÅ
+	 * è·å¾—25ä½éšæœºæµæ°´å·ï¼Œè®¾è®¡è§„åˆ™
+	 * <br>13ä½æ—¶é—´ï¼ˆç²¾ç¡®åˆ°æ¯«ç§’ï¼‰+2ä½éšæœºæ•°+3ä½éšæœºæ•°+2ä½éšæœºæ•°+4ä½å†…å­˜é¡ºåºå·=25ä½æµæ°´å·
 	 * */
 	public final static String getID25()
 	{
@@ -29,8 +29,8 @@ public class IDGenerator {
 	}
 	
 	/**
-	 * »ñµÃ25Î»Ëæ»úÁ÷Ë®ºÅ£¬Éè¼Æ¹æÔò
-	 * <br>13Î»Ê±¼ä£¨¾«È·µ½ºÁÃë£©+3Î»Ëæ»úÊı+2Î»Ëæ»úÊı+3Î»Ëæ»úÊı=25Î»Á÷Ë®ºÅ
+	 * è·å¾—25ä½éšæœºæµæ°´å·ï¼Œè®¾è®¡è§„åˆ™
+	 * <br>13ä½æ—¶é—´ï¼ˆç²¾ç¡®åˆ°æ¯«ç§’ï¼‰+3ä½éšæœºæ•°+2ä½éšæœºæ•°+3ä½éšæœºæ•°=25ä½æµæ°´å·
 	 * */
 	public final static String getID21()
 	{
@@ -42,7 +42,7 @@ public class IDGenerator {
 
 	
 	/**
-	 * »ñµÃÏìÓ¦Î»ÊıµÄËæ»úÊı
+	 * è·å¾—å“åº”ä½æ•°çš„éšæœºæ•°
 	 * */
 	private static String random(int length)
 	{
@@ -64,7 +64,7 @@ public class IDGenerator {
 		return lpad(String.valueOf(STATIC_SEQ),4,"0");
 	}
 	/**
-	 * ×óÌî³ä×Ö·û
+	 * å·¦å¡«å……å­—ç¬¦
 	 * */
 	public static final String lpad(String value,int len,String reg)
 	{
@@ -88,7 +88,7 @@ public class IDGenerator {
 	}
 	
 	/**
-	 * »ñµÃUUIDÁ÷Ë®ºÅ
+	 * è·å¾—UUIDæµæ°´å·
 	 * */
 	public static final String UUID(boolean upperflag)
 	{
