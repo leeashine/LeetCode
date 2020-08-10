@@ -1,12 +1,40 @@
 package aleetcode;
 
+import java.util.*;
+
 public class Contest200 {
     public static void main(String[] args) {
 
+//        int [][] grid={{0,0,1},{1,1,0},{1,0,0}};
+//        new Contest200().minSwaps(grid);
 
+        int[] arr={1,2,3,4,5};
+        int k=100;
+        new Contest200().getWinner(arr,k);
 
 
     }
+
+    public int minSwaps(int[][] grid) {
+        int n = grid.length, res=0;
+        List<Integer> row = new LinkedList<>();
+        for (int i=0; i<n; i++){
+            int trailingZeroCnt=0;
+            for (int j=n-1; j>-1 && grid[i][j]==0; j--) trailingZeroCnt++;
+            row.add(trailingZeroCnt);
+        }
+        for (int curRowIdx=0, minTrailingZeros=n-1; curRowIdx<n; curRowIdx++, minTrailingZeros--){
+            int satisfiedRowIdx =curRowIdx;
+            while (satisfiedRowIdx <n && row.get(satisfiedRowIdx)<minTrailingZeros) satisfiedRowIdx++;
+            if (satisfiedRowIdx ==n) return -1;
+            int toRemove = row.remove(satisfiedRowIdx);
+            row.add(curRowIdx, toRemove);
+            //需要移动的次数 1要移动到3位置上 需要3-1=2次 3移动到3位置上需要3-3=0次
+            res+=satisfiedRowIdx -curRowIdx;
+        }
+        return res;
+    }
+
 //    找出数组游戏的赢家
     //输入：arr = [2,1,3,5,4,6,7], k = 2
     //输出：5
