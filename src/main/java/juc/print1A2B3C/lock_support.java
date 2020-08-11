@@ -1,7 +1,7 @@
 package juc.print1A2B3C;
 
 import java.util.concurrent.locks.LockSupport;
-
+// 解决假死
 public class lock_support {
     static Thread t1 = null, t2 = null;
 
@@ -16,20 +16,22 @@ public class lock_support {
                 LockSupport.unpark(t2); //叫醒T2
                 LockSupport.park(); //T1阻塞
             }
+            LockSupport.unpark(t2);
 
         }, "t1");
 
         t2 = new Thread(() -> {
 
             for(char c : aC) {
-                LockSupport.park(); //t2阻塞
                 System.out.print(c);
                 LockSupport.unpark(t1); //叫醒t1
+                LockSupport.park(); //t2阻塞
             }
-
+            LockSupport.unpark(t1);
         }, "t2");
 
         t1.start();
+        Thread.sleep(100);
         t2.start();
     }
 }

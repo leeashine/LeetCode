@@ -3,6 +3,7 @@ package aleetcode;
 import util.TreeNode;
 
 import java.text.BreakIterator;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -16,7 +17,15 @@ public class Contest198 {
         String labels="abaedcd";
         new Contest198().countSubTrees(n,edges,labels);
 
-
+        double refuseCount = 158;
+        double totalappcount = 525;
+        double approverefuserate=0.00d;
+        DecimalFormat df   = new DecimalFormat("#0.00");
+        if(totalappcount>0)
+            approverefuserate=refuseCount/totalappcount*100;
+        System.out.println(approverefuserate);
+        approverefuserate=Double.valueOf(df.format(approverefuserate));
+        System.out.println(approverefuserate);
     }
 
     //子树中标签相同的节点数

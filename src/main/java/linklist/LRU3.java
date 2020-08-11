@@ -18,6 +18,7 @@ public class LRU3<k,v>{
         	throw new IllegalArgumentException(String.valueOf(capacity));
         }
         //哨兵模式
+//        带哨兵节点的链表，需要额外的一个节点，但 插入和删除等操作不需要额外的判断；
         Node headNode=new Node(null, null);
         Node tailNode=new Node(null, null);
         headNode.next=tailNode;
@@ -38,7 +39,7 @@ public class LRU3<k,v>{
             }
             node=new Node<>(key,value);
             //添加节点
-            addToHead(node);
+            addNode(node);
         }else{
             //移动到头结点
             addToHead(node);

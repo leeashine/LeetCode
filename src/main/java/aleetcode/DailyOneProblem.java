@@ -53,12 +53,86 @@ public class DailyOneProblem {
 //        int k=0;
 //        int res=new DailyOneProblem().subarraySum(arr,k);
 //        System.out.println(res);
-        int[][] matrix={{1,2,3,4},{5,6,7,8},{9,10,11,12}};
+//        int[][] matrix={{1,2,3,4},{5,6,7,8},{9,10,11,12}};
 //        int[][] matrix={{1,2,3},{4,5,6},{7,8,9}};
-        int []res=new DailyOneProblem().spiralOrder(matrix);
-        System.out.println(Arrays.toString(res));
+//        int []res=new DailyOneProblem().spiralOrder(matrix);
+//        System.out.println(Arrays.toString(res));
+//
+//        new DailyOneProblem().sortedArrayToBST(new int[]{-10,-3,0,5,9});
 
-        new DailyOneProblem().sortedArrayToBST(new int[]{-10,-3,0,5,9});
+//        int[][] grid={{1,3,1},{1,5,1},{4,2,1}};
+//        new DailyOneProblem().minPathSum(grid);
+
+
+    }
+//    优势洗牌 贪心算法
+//    输入：A = [12,24,8,32], B = [13,25,32,11]
+//    输出：[24,32,8,12]
+    public int[] advantageCount(int[] A, int[] B) {
+        int[] sortedA = A.clone();
+        Arrays.sort(sortedA);
+        int[] sortedB = B.clone();
+        Arrays.sort(sortedB);
+
+        // assigned[b] = list of a that are assigned to beat b
+        Map<Integer, Deque<Integer>> assigned = new HashMap();
+        for (int b: B) assigned.put(b, new LinkedList());
+        // remaining = list of a that are not assigned to any b
+
+        Deque<Integer> remaining = new LinkedList();
+
+        // populate (assigned, remaining) appropriately
+        // sortedB[j] is always the smallest unassigned element in B
+        int j = 0;
+        for (int a: sortedA) {
+            if (a > sortedB[j]) {
+                assigned.get(sortedB[j++]).add(a);
+            } else {
+                remaining.add(a);
+            }
+        }
+
+        // Reconstruct the answer from annotations (assigned, remaining)
+        int[] ans = new int[B.length];
+        for (int i = 0; i < B.length; ++i) {
+            // if there is some a assigned to b...
+            if (assigned.get(B[i]).size() > 0)
+                ans[i] = assigned.get(B[i]).pop();
+            else
+                ans[i] = remaining.pop();
+        }
+        return ans;
+    }
+
+
+
+    //最小路径和
+    //每次只能向下或者向右移动一步。
+    public int minPathSum(int[][] grid) {
+
+        if (grid == null || grid.length == 0 || grid[0].length == 0) {
+            return 0;
+        }
+        int[][]dp=new int[grid.length][grid[0].length];
+
+        dp[0][0]=grid[0][0];
+        for(int i=1;i<grid.length;i++){
+            dp[i][0]=dp[i-1][0]+grid[i][0];
+        }
+        for(int i=1;i<grid[0].length;i++){
+            dp[0][i]=dp[0][i-1]+grid[0][i];
+        }
+        for(int i=1;i<grid.length;i++){
+            for(int j=1;j<grid[0].length;j++){
+
+                dp[i][j]=grid[i][j]+Math.min(dp[i-1][j],dp[i][j-1]);
+
+            }
+        }
+
+
+
+        return dp[grid.length-1][grid[0].length-1];
 
     }
 
