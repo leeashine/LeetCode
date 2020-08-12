@@ -9,12 +9,15 @@ public class Contest201 {
 //        char b=(char) (c-32);
 //        System.out.println(b);
 
-        String s="leEeetcode";
-        String s1 = makeGood(s);
-        System.out.println(s1);
+//        String s="leEeetcode";
+//        String s1 = makeGood(s);
+//        System.out.println(s1);
+
 
 
     }
+
+
 //    整理字符串 题目描述 删除相邻两个相同字符（不区分大小写）直到字符串整理好为止。
 //    输入：s = "abBAcC"
 //    输出：""
