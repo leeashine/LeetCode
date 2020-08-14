@@ -17,7 +17,7 @@ public class ProducerAndConsumerService {
             }
             System.out.println("生产消息");
             sum++;
-            condition.signal();
+            condition.signalAll();
         }catch (InterruptedException e){
             e.printStackTrace();
         }finally {
@@ -32,7 +32,7 @@ public class ProducerAndConsumerService {
             }
             System.out.println("消费消息");
             sum--;
-            condition.signal();
+            condition.signalAll();
         }catch (InterruptedException e){
             e.printStackTrace();
         }finally {
