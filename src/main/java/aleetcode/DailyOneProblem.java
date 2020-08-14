@@ -1000,6 +1000,7 @@ public class DailyOneProblem {
     }
 
     //求最大公共除数
+    //最大公约数
     private static int gcd(int a, int b) {
         return b == 0 ? a : gcd(b, a % b);
     }
