@@ -1,8 +1,8 @@
 package aleetcode;
 
-import java.util.Arrays;
-import java.util.Scanner;
-import java.util.Stack;
+import util.TreeNode;
+
+import java.util.*;
 
 public class Practise {
 
@@ -27,8 +27,120 @@ public class Practise {
 //        int gcd = gcd(3, 6);
 //        System.out.println(gcd);
 
-        String s="xcopy /s \"C:\\program files\" \"d:\"";
+//        ListNode listNode=new ListNode(1);
+//        listNode.next=new ListNode(2);
+//        listNode.next.next=new ListNode(3);
+//
+//        ListNode re= reverseList(listNode);
+
     }
+
+
+    public static ListNode reverseList(ListNode listNode){
+
+        ListNode pre=null;
+        ListNode tmp=null;
+        while (listNode!=null){
+
+            tmp=listNode.next;
+            listNode.next=pre;
+            pre=listNode;
+            listNode=tmp;
+
+        }
+        return pre;
+
+    }
+
+    //二维数组的查找
+    public boolean findNumberIn2DArray(int[][] matrix, int target) {
+
+        if(matrix==null||matrix.length==0||matrix[0].length==0)
+            return false;
+        int rows=matrix.length;
+        int cols=matrix[0].length;
+        int row=0;
+        int col=matrix[0].length-1;
+        while(row<rows&&col>=0){
+            if(matrix[row][col]==target)
+                return true;
+            else if(matrix[row][col]>target){
+                col--;
+            }else{
+                row++;
+            }
+        }
+        return false;
+
+    }
+
+    //树的深度 bfs
+    public int maxDepth2(TreeNode root) {
+        if(root == null) return 0;
+        List<TreeNode> queue = new LinkedList<>(), tmp;
+        queue.add(root);
+        int res = 0;
+        while(!queue.isEmpty()) {
+            tmp = new LinkedList<>();
+            for(TreeNode node : queue) {
+                if(node.left != null) tmp.add(node.left);
+                if(node.right != null) tmp.add(node.right);
+            }
+            queue = tmp;
+            res++;
+        }
+        return res;
+    }
+
+    //树的深度 dfs
+    public int getHight(TreeNode node){
+        return dfs(node);
+    }
+
+    public int dfs(TreeNode node){
+        if(node==null){
+            return 0;
+        }
+        int ln=dfs(node.left);
+        int rn=dfs(node.right);
+        return Math.max(ln,rn)+1;
+    }
+
+    //())
+    public int minAddToMakeValid(String S) {
+
+        Stack stack=new Stack();
+        char[] chars = S.toCharArray();
+        int res=0;
+        for(char c:chars){
+
+            if(c=='('){
+                stack.push('c');
+            }else{
+                if(stack.isEmpty())
+                  res++;
+                stack.pop();
+            }
+        }
+        while (!stack.isEmpty()){
+            stack.pop();
+            res++;
+        }
+        return res;
+
+    }
+
+//    public int rand10() {
+//        // 首先得到一个数
+//        int num = (rand7() - 1) * 7 + rand7();
+//        // 只要它还大于40，那你就给我不断生成吧
+//        while (num > 40)
+//            num = (rand7() - 1) * 7 + rand7();
+//        // 返回结果，+1是为了解决 40%10为0的情况
+//        return 1 + num % 10;
+//
+//    }
+
 
     public void jiexi(String str){
 
@@ -79,7 +191,6 @@ public class Practise {
             stack.push(value);
             return last;
         }
-
 
     }
 
@@ -222,5 +333,14 @@ public class Practise {
         arr[i]=arr[j];
         arr[j]=tmp;
 
+    }
+    public static class
+    ListNode {
+        int val;
+        ListNode next;
+
+        ListNode(int x) {
+            val = x;
+        }
     }
 }
