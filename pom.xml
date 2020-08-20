@@ -51,6 +51,15 @@
             <version>4.1.42.Final</version>
         </dependency>
 
+
+        <!-- https://mvnrepository.com/artifact/org.apache.httpcomponents/httpmime -->
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpmime</artifactId>
+            <version>4.4.1</version>
+        </dependency>
+
+
     </dependencies>
 
 
