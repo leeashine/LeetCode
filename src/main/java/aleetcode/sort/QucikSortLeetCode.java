@@ -6,7 +6,7 @@ public class QucikSortLeetCode {
 
 
     public static void main(String[] args) {
-        int [] arr=new int [] {10,2,4,6,7,2};
+        int [] arr=new int [] {10,2,4,6,7,2,21,18,29,2};
         sort(arr);
         System.out.println(Arrays.toString(arr));
 
