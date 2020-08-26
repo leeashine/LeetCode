@@ -3,11 +3,12 @@ package aleetcode;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Scanner;
 
 public class Contest203 {
     public static void main(String[] args) {
 
-        mostVisited(7,new int[]{1,3,5,7});
+//        mostVisited(7,new int[]{1,3,5,7});
 
     }
     public static List<Integer> mostVisited2(int n, int[] rounds) {
