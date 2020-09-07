@@ -12,6 +12,7 @@ public class InsertSort {
 
     }
 
+
     public static void sort2(int[] arr){
 
         int n=arr.length;

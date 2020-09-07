@@ -33,8 +33,35 @@ public class Practise {
 //
 //        ListNode re= reverseList(listNode);
 
+        TreeNode node=new TreeNode(1);
+        node.left=new TreeNode(2);
+        node.right=new TreeNode(3);
+        node.left.left=new TreeNode(4);
+        node.left.right=new TreeNode(5);
+        node.right.left=new TreeNode(6);
+        int i = new Practise().countNodes(node);
+        System.out.println(i);
 
-        numWays(3);
+    }
+
+    int sum=0;
+    public int countNodes(TreeNode root) {
+
+        dfs2(root);
+        return sum;
+
+    }
+    public void dfs2(TreeNode root){
+
+        if(root==null)
+            return;
+        sum++;
+        if(root.left!=null){
+            dfs2(root.left);
+        }
+        if(root.right!=null){
+            dfs2(root.right);
+        }
 
     }
 

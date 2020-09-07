@@ -189,6 +189,7 @@ public class DailyOneProblem {
 //    dictionary = ["looked","just","like","her","brother"]
 //    sentence = "jesslookedjustliketimherbrother"
 //    恢复空格问题：把文章断开，要求未识别的字符最少，返回未识别的字符数。
+//    Trie+dp
     public int respace(String[] dictionary, String sentence) {
 
         int n = sentence.length();
