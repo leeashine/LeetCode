@@ -65,7 +65,39 @@ public class DailyOneProblem {
 
 
     }
-//    优势洗牌 贪心算法
+
+    public List<List<Integer>> combinationSum(int[] candidates, int target) {
+
+        List<List<Integer>> list=new ArrayList<>();
+        List<Integer> combine=new ArrayList<>();
+        dfs(candidates,target,list,combine,0);
+        return list;
+
+    }
+
+    private void dfs(int[] candidates, int target, List<List<Integer>> list, List<Integer> combine, int idx) {
+
+        if(idx==candidates.length)
+            return;
+        if(target==0){
+            list.add(new ArrayList<>(combine));
+            return;
+        }
+        //直接跳过
+        dfs(candidates,target,list,combine,idx+1);
+        //选择当前数
+        if(target-candidates[idx]>=0){
+            combine.add(candidates[idx]);
+            dfs(candidates,target-candidates[idx],list,combine,idx);
+            //还原
+            combine.remove(combine.size()-1);
+        }
+
+
+    }
+
+
+    //    优势洗牌 贪心算法
 //    输入：A = [12,24,8,32], B = [13,25,32,11]
 //    输出：[24,32,8,12]
     public int[] advantageCount(int[] A, int[] B) {
