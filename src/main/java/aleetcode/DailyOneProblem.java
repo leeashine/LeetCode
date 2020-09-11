@@ -66,6 +66,43 @@ public class DailyOneProblem {
 
     }
 
+    //组合问题
+    //从n个数当中选k个的所有方案对应的枚举是组合型枚举
+    //https://leetcode-cn.com/problems/combinations/solution/zu-he-by-leetcode-solution/
+    //https://leetcode-cn.com/problems/combination-sum-iii/solution/zu-he-zong-he-iii-by-leetcode-solution/
+    // dfs(cur,n)参数表示当前位置是cur，原序列总长度为n
+    List<Integer> temp = new ArrayList<Integer>();
+    List<List<Integer>> ans = new ArrayList<List<Integer>>();
+
+    public List<List<Integer>> combine(int n, int k) {
+        dfs(1, n, k);
+        return ans;
+    }
+
+    public void dfs(int cur, int n, int k) {
+        // 剪枝：temp 长度加上区间 [cur, n] 的长度小于 k，不可能构造出长度为 k 的 temp
+        if (temp.size() + (n - cur + 1) < k) {
+            return;
+        }
+        // 记录合法的答案
+        if (temp.size() == k) {
+            ans.add(new ArrayList<Integer>(temp));
+            return;
+        }
+        //第三处  if 可以删除
+        // cur == n + 1 的时候结束递归
+        //    if (cur == n + 1) {
+        //        return;
+        //    }
+
+        // 考虑选择当前位置
+        temp.add(cur);
+        dfs(cur + 1, n, k);
+        temp.remove(temp.size() - 1);
+        // 考虑不选择当前位置
+        dfs(cur + 1, n, k);
+    }
+
     public List<List<Integer>> combinationSum(int[] candidates, int target) {
 
         List<List<Integer>> list=new ArrayList<>();
