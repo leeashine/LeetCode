@@ -6,6 +6,12 @@ import java.util.*;
 //https://leetcode-cn.com/problems/permutations-ii/solution/quan-pai-lie-ii-by-leetcode-solution/
 public class Quan_Pai_Lie2 {
 
+    public static void main(String[] args) {
+        int []nums={1,1,2};
+        List<List<Integer>> lists = new Quan_Pai_Lie2().permuteUnique(nums);
+        System.out.println(lists.toString());
+    }
+
     boolean[] vis;
 
     public List<List<Integer>> permuteUnique(int[] nums) {
