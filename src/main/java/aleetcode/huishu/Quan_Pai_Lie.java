@@ -1,10 +1,9 @@
 package aleetcode.huishu;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
+
 //求一个数组的全排列
+//不重复
 public class Quan_Pai_Lie {
     public static void main(String[] args) {
 
@@ -38,6 +37,7 @@ public class Quan_Pai_Lie {
             backtrack(n, output, res, first + 1);
             // 撤销操作
             Collections.swap(output, first, i);
+
         }
     }
 

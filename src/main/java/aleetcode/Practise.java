@@ -44,6 +44,48 @@ public class Practise {
 
     }
 
+    //解数独  优化 利用位运算压缩 0 1000 0001 表示0和8出现过
+//    其中 i 个元素的值为 True，当且仅当数字 i+1出现过。例如我们用 line[2][3]=True 表示数字 4 在第 2 行已经出现过
+//    https://leetcode-cn.com/problems/sudoku-solver/solution/jie-shu-du-by-leetcode-solution/
+    private boolean[][] line = new boolean[9][9];
+    private boolean[][] column = new boolean[9][9];
+    private boolean[][][] block = new boolean[3][3][9];
+    private boolean valid = false;
+    private List<int[]> spaces = new ArrayList<int[]>();
+
+    public void solveSudoku(char[][] board) {
+        for (int i = 0; i < 9; ++i) {
+            for (int j = 0; j < 9; ++j) {
+                if (board[i][j] == '.') {
+                    spaces.add(new int[]{i, j});
+                } else {
+                    int digit = board[i][j] - '0' - 1;
+                    line[i][digit] = column[j][digit] = block[i / 3][j / 3][digit] = true;
+                }
+            }
+        }
+
+        dfs(board, 0);
+    }
+
+    public void dfs(char[][] board, int pos) {
+        if (pos == spaces.size()) {
+            valid = true;
+            return;
+        }
+
+        int[] space = spaces.get(pos);
+        int i = space[0], j = space[1];
+        for (int digit = 0; digit < 9 && !valid; ++digit) {
+            if (!line[i][digit] && !column[j][digit] && !block[i / 3][j / 3][digit]) {
+                line[i][digit] = column[j][digit] = block[i / 3][j / 3][digit] = true;
+                board[i][j] = (char) (digit + '0' + 1);
+                dfs(board, pos + 1);
+                line[i][digit] = column[j][digit] = block[i / 3][j / 3][digit] = false;
+            }
+        }
+    }
+
     //统计素数质数的个数 Sieve of Eratosthenes
     int countPrimes(int n) {
         boolean[] isPrim = new boolean[n];
