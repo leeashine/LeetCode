@@ -21,42 +21,10 @@
     </build>
 
     <dependencies>
-        <!-- https://mvnrepository.com/artifact/com.lmax/disruptor -->
-        <dependency>
-            <groupId>com.lmax</groupId>
-            <artifactId>disruptor</artifactId>
-            <version>3.4.2</version>
-        </dependency>
-        <!-- https://mvnrepository.com/artifact/com.alibaba/fastjson -->
-        <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>fastjson</artifactId>
-            <version>1.2.62</version>
-        </dependency>
         <dependency>
             <groupId>dom4j</groupId>
             <artifactId>dom4j</artifactId>
             <version>1.6.1</version>
-        </dependency>
-        <dependency>
-            <groupId>org.jetbrains</groupId>
-            <artifactId>annotations</artifactId>
-            <version>RELEASE</version>
-            <scope>compile</scope>
-        </dependency>
-        <!-- https://mvnrepository.com/artifact/io.netty/netty-all -->
-        <dependency>
-            <groupId>io.netty</groupId>
-            <artifactId>netty-all</artifactId>
-            <version>4.1.42.Final</version>
-        </dependency>
-
-
-        <!-- https://mvnrepository.com/artifact/org.apache.httpcomponents/httpmime -->
-        <dependency>
-            <groupId>org.apache.httpcomponents</groupId>
-            <artifactId>httpmime</artifactId>
-            <version>4.4.1</version>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/commons-collections/commons-collections -->
@@ -65,16 +33,6 @@
             <artifactId>commons-collections</artifactId>
             <version>3.2.2</version>
         </dependency>
-
-        <!-- https://mvnrepository.com/artifact/com.google.guava/guava -->
-        <dependency>
-            <groupId>com.google.guava</groupId>
-            <artifactId>guava</artifactId>
-            <version>10.0.1</version>
-        </dependency>
-
-
-
 
     </dependencies>
 
