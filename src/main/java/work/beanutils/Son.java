@@ -7,20 +7,20 @@ import org.springframework.beans.BeanUtils;
  BeanUtils.copyProperties(Object source, Object target)方法，source对象和target对象相应属性的名称和类型必须都一样才可以成功拷贝属性值
 <p>
  BeanUtils.copyProperties只对bean属性进行复制，这里的复制属于浅复制。BeanUtils.copyProperties<b>利用反射，直接将对象的引用set进去，并不是深拷贝<b/>。
-
+总结：bean里有引用对象的需要注意！！！
  */
 public class Son extends Father{
     private Life life;
 
-    @Override
-    public Life getLife() {
-        return life;
-    }
-
-    @Override
-    public void setLife(Life life) {
-        this.life = life;
-    }
+//    @Override
+//    public Life getLife() {
+//        return life;
+//    }
+//
+//    @Override
+//    public void setLife(Life life) {
+//        this.life = life;
+//    }
 
     public static void main(String[] args) {
         Father cuishan = new Father();
@@ -41,5 +41,14 @@ public class Son extends Father{
 
         System.out.println(JSON.toJSONString(cuishan));
         System.out.println(JSON.toJSONString(wuji));
+
+        System.out.println("****************");
+        Wife wife=new Wife();
+        BeanUtils.copyProperties(cuishan,wife);
+        Life life = cuishan.getLife();
+        life.setStatus("alive");
+        System.out.println(JSON.toJSONString(cuishan));
+        System.out.println(JSON.toJSONString(wife));
+
     }
 }
