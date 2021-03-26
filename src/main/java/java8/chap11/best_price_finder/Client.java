@@ -28,11 +28,16 @@ public class Client {
             //才引发了这样的失效。为了让客户端能了解商店无法提供请求商品价格的原因，你需要使用
             //CompletableFuture的completeExceptionally方法将导致CompletableFuture内发生问
             //题的异常抛出。
-            Double price = futurePrice.get(1, TimeUnit.SECONDS);
+            Double price = futurePrice.get(5, TimeUnit.SECONDS);
             System.out.printf("Price is %.2f%n ", price);
         }catch (Exception e){
             throw new RuntimeException(e);
         }
+//        CompletableFuture futurePrice1 = (CompletableFuture) futurePrice;
+//        ((CompletableFuture<Double>) futurePrice).thenAccept(price->{
+//            System.out.printf("Price is %.2f%n ", price);
+//        });
+//        ((CompletableFuture<Double>) futurePrice).join();
         long retrievalTime = (System.nanoTime() - start) / 1_000_000;
         System.out.println("Price returned after " + retrievalTime + " msecs");
 

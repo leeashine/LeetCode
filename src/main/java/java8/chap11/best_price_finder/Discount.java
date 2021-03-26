@@ -15,7 +15,7 @@ public class Discount {
     }
 
     public static String applyDiscount(Quote quote){
-        return quote.getShopName() + "price is " +
+        return quote.getShopName() + " price is " +
                 Discount.apply(quote.getPrice(), quote.getDiscountCode());
     }
 

@@ -24,10 +24,10 @@ public class Shop {
     public String getPrice(String product) {
         double price = calculatePrice(product);
         Discount.Code code = Discount.Code.values()[new SecureRandom().nextInt(Discount.Code.values().length)];
-        return String.format("%s:%.2f%s", name, price , code);
+        return String.format("%s:%.2f:%s", name, price , code);
     }
 
-    //异步api
+    //单个调用远程服务 同步变异步api
     public Future<Double> getPriceAsync(String product) {
 //        CompletableFuture<Double> futurePrice = new CompletableFuture<>();
 //        new Thread(()->{
@@ -48,7 +48,7 @@ public class Shop {
     }
 
     private double calculatePrice(String product) {
-        delay();
+        ranDomDelay();
         return new SecureRandom().nextDouble() * product.charAt(0) + product.charAt(1);
     }
 
@@ -57,6 +57,18 @@ public class Shop {
 
         try {
             Thread.sleep(1000L);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+
+
+    public static void ranDomDelay(){
+
+        int delay = 500 + new SecureRandom().nextInt(2000);
+        try {
+            Thread.sleep(delay);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
