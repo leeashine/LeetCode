@@ -1,10 +1,6 @@
 package aleetcode;
 
-import linklist.LinkedReverse;
-
 import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class DailyOneProblem {
     int [][] dir={{0,1},{0,-1},{1,0},{-1,0}};
@@ -63,6 +59,73 @@ public class DailyOneProblem {
 //        int[][] grid={{1,3,1},{1,5,1},{4,2,1}};
 //        new DailyOneProblem().minPathSum(grid);
 
+        int num = monotoneIncreasingDigits(332);
+        System.out.println(num);
+
+    }
+
+    /**
+     * 输入: N = 332
+     * 输出: 299
+     * @param N
+     * @return
+     */
+    public static int monotoneIncreasingDigits(int N) {
+        int ones = 111111111;
+        int res = 0;
+        for(int i=0;i<9;i++){
+            while(res+ones>N){
+                ones/=10;
+            }
+            res += ones;
+            if(ones==0)
+                break;
+        }
+        return res;
+    }
+
+
+//    在柠檬水摊上，每一杯柠檬水的售价为 5 美元。
+//
+//    顾客排队购买你的产品，（按账单 bills 支付的顺序）一次购买一杯。
+//
+//    每位顾客只买一杯柠檬水，然后向你付 5 美元、10 美元或 20 美元。你必须给每个顾客正确找零，也就是说净交易是每位顾客向你支付 5 美元。
+//
+//    注意，一开始你手头没有任何零钱。
+//
+//    如果你能给每位顾客正确找零，返回 true ，否则返回 false 。
+//    贪心 找零
+//    来源：力扣（LeetCode）
+//    链接：https://leetcode-cn.com/problems/lemonade-change
+//    输入：[5,5,5,10,20]
+//    输出：true
+//    输入：[5,5,10,10,20]
+//    输出：false
+    public boolean lemonadeChange(int[] bills) {
+
+        int five = 0, ten = 0;
+        for (int bill : bills) {
+            if (bill == 5) {
+                five++;
+            } else if (bill == 10) {
+                if (five == 0) {
+                    return false;
+                }
+                five--;
+                ten++;
+            } else {
+                //20块 找零15块 分2种情况 5+10 和5+5+5 如果找不了就返回false
+                if (five > 0 && ten > 0) {
+                    five--;
+                    ten--;
+                } else if (five >= 3) {
+                    five -= 3;
+                } else {
+                    return false;
+                }
+            }
+        }
+        return true;
 
     }
 

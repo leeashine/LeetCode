@@ -15,18 +15,17 @@ public class LinkedReverse {
         System.out.println(reverse(node));
     }
 
-    public static Node reverse(Node node){
+    public static Node reverse(Node head){
 
-        Node pre=null;
-        Node temp=null;
-        while(node!=null){
-            temp=node.next;//把下一个节点赋值给临时节点
-            node.next=pre;//连接新的一个位置
-            pre=node;//把node 和 pre对调
-            node=temp;//此时这个节点就是反转链表里的下一个节点
-
+        Node prev = null;
+        Node curr = head;
+        while (curr != null) {
+            Node nextTemp = curr.next;
+            curr.next = prev;
+            prev = curr;
+            curr = nextTemp;
         }
-        return pre;
+        return prev;
 
     }
 
