@@ -1,12 +1,13 @@
 package designpattern;
 
+import java.io.Serializable;
 import java.util.function.Supplier;
 
 public abstract class AbstractController {
 
-    public ResultDTO wrapper(String resource, Supplier supplier) {
+    public <T extends Serializable> ResultDTO<T> wrapper(String resource, Supplier<T> supplier) {
 
-        ResultDTO resultDTO = new ResultDTO();
+        ResultDTO<T> resultDTO = new ResultDTO<>();
         try {
 
             supplier.get();
