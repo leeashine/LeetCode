@@ -14,9 +14,9 @@ public abstract class AbstractController {
 
         } catch (Exception e) {
             e.printStackTrace();
-        } finally {
             return resultDTO;
         }
+        return resultDTO;
     }
 
 }
