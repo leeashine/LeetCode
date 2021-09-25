@@ -1,8 +1,15 @@
 package java8.chap11;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.google.common.collect.Lists;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
+import work.FcInvoiceDO;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.*;
+import java.util.stream.Collectors;
 
 /**
  * 使用Future中提供的方法完成这样
@@ -20,21 +27,69 @@ public class FutureDemo {
 
     public static void main(String[] args) {
 
-        ExecutorService executor =  new ThreadPoolExecutor(
-                5,
+        ExecutorService executor = new ThreadPoolExecutor(
+                10,
                 20,
                 0,
                 TimeUnit.SECONDS,
                 new ArrayBlockingQueue<>(100),
-                new ThreadFactoryBuilder().setNameFormat("retryClient-pool-%d").build(),
+                new ThreadFactoryBuilder().setNameFormat("retryClient-pool-%d").setDaemon(true).build(),
                 new ThreadPoolExecutor.DiscardPolicy());
 
+//        test01(executor);
+        compFerureTest(executor);
+
+
+    }
+
+    /**
+     * 多次调用RPC接口可以考虑用future
+     * 之前是调用一次接口耗时1秒，如果调用10此就是10秒
+     * 而现在用CompletableFuture可以10次请求并行调用返回结果，只要1秒
+     * 注意：返回的结果是无序的
+     */
+    private static void compFerureTest(ExecutorService executor) {
+
+        long start = System.currentTimeMillis();
+        List<FcInvoiceDO> list = new ArrayList<>();
+        List<CompletableFuture<List<FcInvoiceDO>>> futures = new ArrayList<>();
+        for (int i = 0; i < 10; i++) {
+            int finalI = i;
+            CompletableFuture<List<FcInvoiceDO>> future = CompletableFuture.supplyAsync(() -> {
+                        try {
+                            Thread.sleep(1000);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                        System.out.println("调用第三方接口获取结果。。。");
+                        FcInvoiceDO invoiceDO = new FcInvoiceDO();
+                        invoiceDO.setId((long) finalI);
+                        invoiceDO.setName("" + finalI);
+                        List<FcInvoiceDO> rpcResult = Lists.newArrayList(invoiceDO);
+                        list.addAll(rpcResult);
+                        return list;
+                    }, executor)
+                    .exceptionally(e -> {
+                        e.printStackTrace();
+                        return list;
+                    });
+            futures.add(future);
+        }
+        //等待所有结果返回
+        List<List<FcInvoiceDO>> collect = futures.stream().map(CompletableFuture::join).collect(Collectors.toList());
+
+        System.out.println("总共耗时：" + (System.currentTimeMillis() - start));
+        System.out.println(JSONObject.toJSONString(list));
+    }
+
+    private static void test01(ExecutorService executor) {
         //以异步的方式在新的线程中执行耗时的操作
         Future<Double> future = executor.submit(new Callable<Double>() {
             @Override
             public Double call() throws Exception {
                 return doSomeLongComutation();
             }
+
             private Double doSomeLongComutation() {
                 return 0.0;
             }
@@ -48,15 +103,13 @@ public class FutureDemo {
             // 如果操作已经完成，该方法会立刻返回操作的结果，否则它会阻塞你的线程，直到操作完成，返回相应的结果。
             //获取异步操作的结果，如果最终被阻塞，无法得到结果，那么在最多等待一秒后退出
             Double result = future.get(1, TimeUnit.SECONDS);
-        }catch (ExecutionException e){
+        } catch (ExecutionException e) {
             //计算抛出一个异常
-        }catch (InterruptedException e){
+        } catch (InterruptedException e) {
             //当前线程在等待过程中被中断
-        }catch (TimeoutException e){
+        } catch (TimeoutException e) {
             //在Future对象完成之前超过已过期
         }
-
-
     }
 
     private static void doSomethingElse() {
