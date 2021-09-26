@@ -1,12 +1,11 @@
 package aleetcode;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import util.TreeNode;
+import aleetcode.util.TreeNode;
 
 
 public class DeleteNodesAndReturnForest {

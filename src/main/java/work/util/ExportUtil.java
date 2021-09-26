@@ -1,4 +1,4 @@
-package util;
+package work.util;
 
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.ListeningExecutorService;
@@ -8,6 +8,8 @@ import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import aleetcode.util.ImportExportDetailDO;
+import aleetcode.util.ImportExportResultDO;
 
 import java.io.ByteArrayOutputStream;
 import java.util.concurrent.*;

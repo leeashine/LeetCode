@@ -1,6 +1,6 @@
 package aleetcode.contest2020;
 
-import util.TreeNode;
+import aleetcode.util.TreeNode;
 
 import java.util.ArrayList;
 import java.util.HashMap;

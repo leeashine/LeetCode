@@ -1,8 +1,7 @@
-package designpattern.statuspatern.work;
+package work.io;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
-import util.ShuCangUtil;
 
 import java.io.File;
 import java.io.FileOutputStream;

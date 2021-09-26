@@ -1,4 +1,4 @@
-package util;
+package aleetcode.util;
 
 import java.util.LinkedHashMap;
 import java.util.Map;

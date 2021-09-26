@@ -3,7 +3,7 @@ package aleetcode.contest2019;
 import java.util.LinkedList;
 import java.util.Queue;
 
-import util.TreeNode;
+import aleetcode.util.TreeNode;
 
 public class Contest150 {
 

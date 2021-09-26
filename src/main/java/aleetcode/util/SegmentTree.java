@@ -1,4 +1,4 @@
-package util;
+package aleetcode.util;
 
 public class SegmentTree<E> {
 

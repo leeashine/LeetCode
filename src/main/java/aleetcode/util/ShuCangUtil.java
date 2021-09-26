@@ -1,4 +1,4 @@
-package util;
+package aleetcode.util;
 
 public class ShuCangUtil {
     public static String toStringHex1(String s) {

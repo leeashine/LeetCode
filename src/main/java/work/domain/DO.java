@@ -1,4 +1,4 @@
-package work;
+package work.domain;
 
 public class DO extends BaseDO{
     public static void main(String[] args) {

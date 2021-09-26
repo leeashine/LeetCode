@@ -1,4 +1,4 @@
-package work;
+package work.domain;
 
 /**
  * Created by LIZIXUAN560 on 2020/11/3.

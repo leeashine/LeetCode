@@ -1,10 +1,9 @@
 package java8.chap11;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.Lists;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
-import work.FcInvoiceDO;
+import work.domain.FcInvoiceDO;
 
 import java.util.ArrayList;
 import java.util.List;

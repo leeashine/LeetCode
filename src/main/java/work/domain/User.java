@@ -1,4 +1,4 @@
-package work;
+package work.domain;
 
 /**
  * Created by LIZIXUAN560 on 2020/11/3.
@@ -7,8 +7,12 @@ package work;
  */
 public class User {
 
+    private Long id;
     private String name;
     private int age;
+
+    public User() {
+    }
 
     public User(String name, int age) {
         this.name = name;
@@ -29,5 +33,13 @@ public class User {
 
     public void setAge(int age) {
         this.age = age;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 }

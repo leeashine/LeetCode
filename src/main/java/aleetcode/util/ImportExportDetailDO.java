@@ -1,4 +1,4 @@
-package util;
+package aleetcode.util;
 
 import java.io.ByteArrayOutputStream;
 import java.io.Serializable;

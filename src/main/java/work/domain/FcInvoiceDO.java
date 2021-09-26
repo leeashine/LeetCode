@@ -1,4 +1,4 @@
-package work;
+package work.domain;
 
 import java.util.Date;
 

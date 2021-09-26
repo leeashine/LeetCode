@@ -1,4 +1,4 @@
-package designpattern.statuspatern.work;
+package work.domain.enums;
 
 /**
  * XX流程的状态流
@@ -129,9 +129,9 @@ public enum FlowState {
     };
 
 
-    private Integer value;
-    private String desc;
-    private String phase;
+    private final Integer value;
+    private final String desc;
+    private final String phase;
 
     FlowState(Integer value, String desc, String phase) {
         this.value = value;

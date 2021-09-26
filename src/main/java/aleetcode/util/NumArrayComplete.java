@@ -1,4 +1,4 @@
-package util;
+package aleetcode.util;
 
 /// 303. Range Sum Query - Immutable
 /// https://leetcode.com/problems/range-sum-query-immutable/description/
@@ -27,7 +27,7 @@ public class NumArrayComplete {
           buildSegmentTree(0, 0, arr.length - 1);
       }
 
-      // ÔÚtreeIndexµÄÎ»ÖÃ´´½¨±íÊ¾Çø¼ä[l...r]µÄÏß¶ÎÊ÷
+      // ï¿½ï¿½treeIndexï¿½ï¿½Î»ï¿½Ã´ï¿½ï¿½ï¿½ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½[l...r]ï¿½ï¿½ï¿½ß¶ï¿½ï¿½ï¿½
       private void buildSegmentTree(int treeIndex, int l, int r){
 
           if(l == r){
@@ -56,17 +56,17 @@ public class NumArrayComplete {
           return data[index];
       }
 
-      // ·µ»ØÍêÈ«¶þ²æÊ÷µÄÊý×é±íÊ¾ÖÐ£¬Ò»¸öË÷ÒýËù±íÊ¾µÄÔªËØµÄ×óº¢×Ó½ÚµãµÄË÷Òý
+      // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È«ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¾ï¿½Ð£ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¾ï¿½ï¿½Ôªï¿½Øµï¿½ï¿½ï¿½ï¿½Ó½Úµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
       private int leftChild(int index){
           return 2*index + 1;
       }
 
-      // ·µ»ØÍêÈ«¶þ²æÊ÷µÄÊý×é±íÊ¾ÖÐ£¬Ò»¸öË÷ÒýËù±íÊ¾µÄÔªËØµÄÓÒº¢×Ó½ÚµãµÄË÷Òý
+      // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È«ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¾ï¿½Ð£ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¾ï¿½ï¿½Ôªï¿½Øµï¿½ï¿½Òºï¿½ï¿½Ó½Úµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
       private int rightChild(int index){
           return 2*index + 2;
       }
 
-      // ·µ»ØÇø¼ä[queryL, queryR]µÄÖµ
+      // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½[queryL, queryR]ï¿½ï¿½Öµ
       public E query(int queryL, int queryR){
 
           if(queryL < 0 || queryL >= data.length ||
@@ -76,14 +76,14 @@ public class NumArrayComplete {
           return query(0, 0, data.length - 1, queryL, queryR);
       }
 
-      // ÔÚÒÔtreeIndexÎª¸ùµÄÏß¶ÎÊ÷ÖÐ[l...r]µÄ·¶Î§Àï£¬ËÑË÷Çø¼ä[queryL...queryR]µÄÖµ
+      // ï¿½ï¿½ï¿½ï¿½treeIndexÎªï¿½ï¿½ï¿½ï¿½ï¿½ß¶ï¿½ï¿½ï¿½ï¿½ï¿½[l...r]ï¿½Ä·ï¿½Î§ï¿½ï£¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½[queryL...queryR]ï¿½ï¿½Öµ
       private E query(int treeIndex, int l, int r, int queryL, int queryR){
 
           if(l == queryL && r == queryR)
               return tree[treeIndex];
 
           int mid = l + (r - l) / 2;
-          // treeIndexµÄ½Úµã·ÖÎª[l...mid]ºÍ[mid+1...r]Á½²¿·Ö
+          // treeIndexï¿½Ä½Úµï¿½ï¿½Îª[l...mid]ï¿½ï¿½[mid+1...r]ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 
           int leftTreeIndex = leftChild(treeIndex);
           int rightTreeIndex = rightChild(treeIndex);

@@ -1,4 +1,4 @@
-package designpattern.statuspatern.work;
+package work.domain.enums;
 
 /**
  * 事件定义
@@ -10,7 +10,7 @@ public enum Event {
     APPROVE("同意"),
     REFUSE("拒绝");
 
-    private String value;
+    private final String value;
 
     Event(String value) {
         this.value = value;
