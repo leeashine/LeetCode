@@ -8,7 +8,7 @@ import com.google.common.util.concurrent.RateLimiter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 import java.util.function.Function;
 
 public class Limiter {
@@ -39,6 +39,14 @@ public class Limiter {
             return true;
         }
         return false;
+    }
+
+    public static void main(String[] args) throws ExecutionException, InterruptedException {
+        Limiter limiter = new Limiter();
+        for (int i = 0; i < 100; i++) {
+            boolean b = limiter.isLimit("123");
+            System.out.println(b);
+        }
     }
 
 

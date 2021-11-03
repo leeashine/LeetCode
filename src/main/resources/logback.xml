@@ -225,7 +225,7 @@
 <!--        <appender-ref ref="MONITOR"/>-->
 <!--    </logger>-->
 
-<!--    <logger name="com.pajk.intimecity.core.dao.mapper" level="DEBUG" additivity="false">-->
+<!--    <logger name="com.wings.core.dao.mapper" level="DEBUG" additivity="false">-->
 <!--        <appender-ref ref="MYBATIS"/>-->
 <!--    </logger>-->
 
