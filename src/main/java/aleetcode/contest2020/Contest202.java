@@ -1,4 +1,4 @@
-package aleetcode;
+package aleetcode.contest2020;
 
 public class Contest202 {
     public static void main(String[] args) {

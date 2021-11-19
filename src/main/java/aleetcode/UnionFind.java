@@ -1,8 +1,8 @@
 package aleetcode;
 
 public class UnionFind {
-    final int[] parents;
-    int count;
+    public final int[] parents;
+    public int count;
 
     public UnionFind(int n){
         this.parents = new int[n];
