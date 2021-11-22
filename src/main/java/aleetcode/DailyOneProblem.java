@@ -2,7 +2,11 @@ package aleetcode;
 
 import aleetcode.util.TreeNode;
 
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
 import java.util.*;
+import java.util.concurrent.*;
 
 public class DailyOneProblem {
 
@@ -13,10 +17,43 @@ public class DailyOneProblem {
 //        int i = new DailyOneProblem().maxProduct(words);
 //        System.out.println(i);
 
+        int i = new DailyOneProblem().integerReplacement(8);
+        System.out.println(i);
+
+        ExecutorService service = new ThreadPoolExecutor(10, 20, 1000 * 60, TimeUnit.SECONDS, new ArrayBlockingQueue<>(1000), new ThreadFactory() {
+            @Override
+            public Thread newThread(Runnable r) {
+                Thread thread = new Thread(r);
+                thread.setName("");
+                return thread;
+            }
+        });
+
+        Class clazz = DailyOneProblem.class;
+        Proxy.newProxyInstance(clazz.getClassLoader(), new Class[]{clazz}, new InvocationHandler() {
+            @Override
+            public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+                return null;
+            }
+        });
 
     }
 
     int sum = 0;
+
+    public int integerReplacement(int n) {
+        if (n == 1) {
+            return 0;
+        }
+        if (n % 2 == 0) {
+            return 1 + integerReplacement(n / 2);
+        }
+        //变成偶数
+        return 2 + Math.min(integerReplacement(n / 2), integerReplacement(n / 2 + 1));
+
+    }
+
+//    int sum = 0;
 
     public int findTilt(TreeNode root) {
         dfs(root);

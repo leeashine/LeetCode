@@ -12,8 +12,15 @@ public class Son extends Father{
         System.out.println("子类中的非静态代码块");
     }
 
+    @Override
+    public void say() {
+        System.out.println("son.say...");
+    }
+
     public static void main(String[] args) {
         System.out.println("子类中的main方法");
-        new Son();
+        Father son = new Son();
+        son.say();
+
     }
 }
