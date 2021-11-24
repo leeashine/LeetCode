@@ -20,6 +20,7 @@ public class DailyOneProblem {
         int i = new DailyOneProblem().integerReplacement(8);
         System.out.println(i);
 
+        //线程池
         ExecutorService service = new ThreadPoolExecutor(10, 20, 1000 * 60, TimeUnit.SECONDS, new ArrayBlockingQueue<>(1000), new ThreadFactory() {
             @Override
             public Thread newThread(Runnable r) {
@@ -28,7 +29,9 @@ public class DailyOneProblem {
                 return thread;
             }
         });
+        service.submit(() -> { });
 
+        //jdk动态代理
         Class clazz = DailyOneProblem.class;
         Proxy.newProxyInstance(clazz.getClassLoader(), new Class[]{clazz}, new InvocationHandler() {
             @Override
