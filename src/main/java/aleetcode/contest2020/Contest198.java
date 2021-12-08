@@ -1,4 +1,4 @@
-package aleetcode;
+package aleetcode.contest2020;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;

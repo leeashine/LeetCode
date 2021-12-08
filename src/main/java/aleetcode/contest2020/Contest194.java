@@ -1,4 +1,6 @@
-package aleetcode;
+package aleetcode.contest2020;
+
+import aleetcode.UnionFind;
 
 import java.util.*;
 
