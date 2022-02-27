@@ -7,6 +7,7 @@ import java.util.concurrent.Executors;
 
 /**
  * Created by 13 on 2017/5/5.
+ * 场景：等待所有任务完成好再执行B任务
  */
 public class CountDownLatchDemo implements Runnable {
     static final CountDownLatch end = new CountDownLatch(10);
@@ -29,9 +30,9 @@ public class CountDownLatchDemo implements Runnable {
         for (int i = 0; i < 10; i++) {
             executorService.submit(demo);
         }
-        //�ȴ����
+        //等待
         end.await();
-        //������
+        //执行下面步骤
         System.out.println("Fire!");
         executorService.shutdown();
     }
