@@ -36,7 +36,7 @@ public class FutureDemo {
                 new ThreadPoolExecutor.DiscardPolicy());
 
 //        test01(executor);
-        compFerureTest(executor);
+        compFutureTest(executor);
 
 
     }
@@ -47,7 +47,7 @@ public class FutureDemo {
      * 而现在用CompletableFuture可以10次请求并行调用返回结果，只要1秒
      * 注意：(1)返回的结果是无序的 (2)合理的设置线程池大小，如果线程池满了的化请求还是会"同步"执行
      */
-    private static void compFerureTest(ExecutorService executor) {
+    private static void compFutureTest(ExecutorService executor) {
 
         long start = System.currentTimeMillis();
         //多线程环境下要注意线程安全
