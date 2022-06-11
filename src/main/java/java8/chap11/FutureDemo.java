@@ -28,7 +28,7 @@ public class FutureDemo {
 
         ExecutorService executor = new ThreadPoolExecutor(
                 10,
-                20,
+                10,
                 0,
                 TimeUnit.SECONDS,
                 new ArrayBlockingQueue<>(100),
@@ -45,18 +45,18 @@ public class FutureDemo {
      * 多次调用RPC接口可以考虑用future
      * 之前是调用一次接口耗时1秒，如果调用10此就是10秒
      * 而现在用CompletableFuture可以10次请求并行调用返回结果，只要1秒
-     * 注意：返回的结果是无序的
+     * 注意：(1)返回的结果是无序的 (2)合理的设置线程池大小，如果线程池满了的化请求还是会"同步"执行
      */
     private static void compFerureTest(ExecutorService executor) {
 
         long start = System.currentTimeMillis();
         List<FcInvoiceDO> list = new ArrayList<>();
         List<CompletableFuture<List<FcInvoiceDO>>> futures = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 15; i++) {
             int finalI = i;
             CompletableFuture<List<FcInvoiceDO>> future = CompletableFuture.supplyAsync(() -> {
                         try {
-                            Thread.sleep(1000);
+                            Thread.sleep(5000);
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
