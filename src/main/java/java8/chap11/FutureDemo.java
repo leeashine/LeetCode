@@ -51,7 +51,7 @@ public class FutureDemo {
 
         long start = System.currentTimeMillis();
         //多线程环境下要注意线程安全
-        List<FcInvoiceDO> list = new CopyOnWriteArrayList<>();
+        List<FcInvoiceDO> list = new ArrayList<>();
         List<CompletableFuture<List<FcInvoiceDO>>> futures = new ArrayList<>();
         for (int i = 0; i < 100; i++) {
             int finalI = i;
@@ -66,17 +66,21 @@ public class FutureDemo {
                         invoiceDO.setId((long) finalI);
                         invoiceDO.setName("" + finalI);
                         List<FcInvoiceDO> rpcResult = Lists.newArrayList(invoiceDO);
-                        list.addAll(rpcResult);
-                        return list;
+                        return rpcResult;
                     }, executor)
                     .exceptionally(e -> {
                         e.printStackTrace();
-                        return list;
+                        return new ArrayList<>();
                     });
             futures.add(future);
         }
         //等待所有结果返回
-        List<List<FcInvoiceDO>> collect = futures.stream().map(CompletableFuture::join).collect(Collectors.toList());
+        for (CompletableFuture<List<FcInvoiceDO>> future : futures) {
+            List<FcInvoiceDO> fcInvoiceDOS = null;
+            //join()抛出未经检查的异常 get()会抛出经检查的异常，可被捕获，自定义处理或者直接抛出。
+            fcInvoiceDOS = future.join();
+            list.addAll(fcInvoiceDOS);
+        }
 
         System.out.println("总共耗时：" + (System.currentTimeMillis() - start));
         System.out.println(JSONObject.toJSONString(list));
