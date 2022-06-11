@@ -50,13 +50,14 @@ public class FutureDemo {
     private static void compFerureTest(ExecutorService executor) {
 
         long start = System.currentTimeMillis();
-        List<FcInvoiceDO> list = new ArrayList<>();
+        //多线程环境下要注意线程安全
+        List<FcInvoiceDO> list = new CopyOnWriteArrayList<>();
         List<CompletableFuture<List<FcInvoiceDO>>> futures = new ArrayList<>();
-        for (int i = 0; i < 15; i++) {
+        for (int i = 0; i < 100; i++) {
             int finalI = i;
             CompletableFuture<List<FcInvoiceDO>> future = CompletableFuture.supplyAsync(() -> {
                         try {
-                            Thread.sleep(5000);
+                            Thread.sleep(1000);
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
@@ -79,6 +80,8 @@ public class FutureDemo {
 
         System.out.println("总共耗时：" + (System.currentTimeMillis() - start));
         System.out.println(JSONObject.toJSONString(list));
+        System.out.println(list.size());
+
     }
 
     private static void test01(ExecutorService executor) {
