@@ -12,6 +12,7 @@ public class EvenetPublishThread extends Thread{
     private String eventType;
     private EventQueue eventQueue;
     private RingBuffer ringBuffer;
+    private volatile boolean running;
 
     public EvenetPublishThread(String eventType, EventQueue eventQueue, RingBuffer ringBuffer) {
         this.eventType = eventType;
@@ -29,20 +30,27 @@ public class EvenetPublishThread extends Thread{
     @Override
     public void run() {
 
-        //获取数据 写
-        try {
-            long next = ringBuffer.tryNext();
-            Object o = ringBuffer.get(next);
-            //转成对应处理数据结构体
-            ByteBuffer buffer = ByteBuffer.allocate(8);
-            translate((SeckillEvent) o, next, buffer);
-            //发布消息
-            ringBuffer.publish(next);
+        while (running) {//当掉用shutdown方法是，设置为false即可
+            //获取数据 写
+            try {
+                long next = ringBuffer.tryNext();
+                Object o = ringBuffer.get(next);
+                //转成对应处理数据结构体
+                ByteBuffer buffer = ByteBuffer.allocate(8);
+                translate((SeckillEvent) o, next, buffer);
+                //发布消息
+                ringBuffer.publish(next);
 
-        } catch (InsufficientCapacityException e) {
-            e.printStackTrace();
+            } catch (InsufficientCapacityException e) {
+                e.printStackTrace();
+            }
         }
 
 
+
+    }
+
+    public void shutdown() {
+        running = false;
     }
 }

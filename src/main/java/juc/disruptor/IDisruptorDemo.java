@@ -67,7 +67,7 @@ public class IDisruptorDemo {
 
     public void stop() {
         for (EvenetPublishThread evenetPublishThread : evenetPublishThreads) {
-            evenetPublishThread.interrupt();
+            evenetPublishThread.shutdown();
         }
         disruptor.shutdown();
     }
