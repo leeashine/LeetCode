@@ -3,11 +3,21 @@ package juc.disruptor;
 import com.lmax.disruptor.EventTranslatorTwoArg;
 import com.lmax.disruptor.RingBuffer;
 import juc.disruptor.miaosha.SeckillEvent;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.nio.ByteBuffer;
 import java.util.concurrent.atomic.AtomicInteger;
 
+/**
+ * eventQueue#next方法将从Redis等待队列pop一个任务，然后推送到本地任务队列(该队列名称是:queueName+jvm实例所在机器IP),
+ * 并发布到Disruptor RingBuffer
+ *
+ * @author hahaha
+ */
 public class EventPublishThread extends Thread {
+
+    private static Logger logger = LoggerFactory.getLogger(EventPublishThread.class);
 
     private String eventType;
     private EventQueue eventQueue;
@@ -35,14 +45,18 @@ public class EventPublishThread extends Thread {
     @Override
     public void run() {
         while (running) {
+            String nextKey = null;
             try {
-                ringBuffer.publishEvent(EVENT_TRANSLATOR, String.valueOf(atomicInteger.incrementAndGet()), eventType);
-//                Thread.sleep(300);
-                if (atomicInteger.get() >= 10000) {
-                    running = false;
+                // 从EventQueue获取下一个任务
+                if (nextKey == null) {
+                    nextKey = eventQueue.next();
                 }
+                if (nextKey != null) {
+                    ringBuffer.publishEvent(EVENT_TRANSLATOR, nextKey, eventType);
+                }
+//                Thread.sleep(300);
             } catch (Exception e) {
-                e.printStackTrace();
+                logger.error("EventPublishThread error,key:{}", nextKey, e);
             }
         }
 
