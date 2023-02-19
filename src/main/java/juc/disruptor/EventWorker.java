@@ -25,7 +25,14 @@ public class EventWorker {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(EventWorker.class);
 
+    /**
+     * 用于配置EventQueue与EventHandler的关系
+     */
     private Map<EventQueue, EventHandler> eventHandlerMap;
+
+    /**
+     * queueName与EventQueue的关系
+     */
     private Map<String, EventQueue> eventQueueMap;
     private Disruptor<Event> disruptor;
     private RingBuffer<Event> ringBuffer;
@@ -43,15 +50,15 @@ public class EventWorker {
 
         //1.创建Disruptor
         disruptor = new Disruptor<Event>(
-                new DefaultEventFactory(),
-                ringBufferSize,
+                new DefaultEventFactory(), // 使用默认事件工厂
+                ringBufferSize, //RingBuffer大小
                 Executors.newFixedThreadPool(threadPollSize), //消费者线程池
                 ProducerType.MULTI,//支持多事件发布者
                 new BlockingWaitStrategy() //阻塞等待策略
         );
-        //获取ringBuffer
+        //2.获取ringBuffer
         ringBuffer = disruptor.getRingBuffer();
-        //1.全局异常处理器
+        //3.全局异常处理器
         final DisruptorExceptionHandler<Event> exceptionHandler = new DisruptorExceptionHandler<>("main", (ex, seq) -> {
             LOGGER.error("exception thrown on seq={}", seq, ex);
         });
@@ -63,13 +70,16 @@ public class EventWorker {
             @Override
             public void onEvent(Event event) throws Exception {
                 String type = event.getType();
+                //4.1 根据事件类型获取EventQueue
                 EventQueue queue = eventQueueMap.get(type);
+                //4.2 根据EventQueue获取该队列的事件处理器（xml中配置了关系）
                 EventHandler<ProductEventHandler> handler = eventHandlerMap.get(queue);
+                //4.3 交由EventHandler处理该事件
 //                handler.onEvent(event.getKey(), type, queue);
             }
         };
 
-        //5.1创建工作者处理器（数量为线程池大小
+        //5.1创建工作者处理器（数量为线程池大小）
         WorkHandler[] workHandlers = new WorkHandler[threadPollSize];
         for (int i = 0; i < threadPollSize; i++) {
             workHandlers[i] = workHandler;
