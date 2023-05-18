@@ -48,7 +48,6 @@ public class Limiter {
         long now = System.currentTimeMillis();
         Stopwatch stopwatch = Stopwatch.createStarted();
         Limiter limiter = new Limiter();
-        ExecutorService executorService = Executors.newFixedThreadPool(20);
         for (int i = 0; i < 20; i++) {
 
             boolean b = limiter.isLimit("123");
