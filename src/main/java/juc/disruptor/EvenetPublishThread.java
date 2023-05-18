@@ -27,12 +27,14 @@ public class EvenetPublishThread extends Thread{
     }
 
 
+
     @Override
     public void run() {
 
         while (running) {//当掉用shutdown方法是，设置为false即可
             //获取数据 写
             try {
+                //从Redis等待队列pop一个任务，然后推送到本地任务队列（queueName+机器ip）
                 long next = ringBuffer.tryNext();
                 Object o = ringBuffer.get(next);
                 //转成对应处理数据结构体

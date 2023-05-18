@@ -4,6 +4,7 @@ package iguava;
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
 
+import com.google.common.base.Stopwatch;
 import com.google.common.util.concurrent.RateLimiter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,19 +35,44 @@ public class Limiter {
                 return RateLimiter.create(limit);
             }
         });
-        if (limiter != null && !limiter.tryAcquire(LIMIT_TIME, TimeUnit.MILLISECONDS)) {
+        // tryAcquire不等待立即返回
+        if (limiter != null && !limiter.tryAcquire()) {
             LOGGER.error("access_key_id:{} limited", accessKeyID);
+            LOGGER.info("access_key_id:" + accessKeyID + " limited");
             return true;
         }
         return false;
     }
 
     public static void main(String[] args) throws ExecutionException, InterruptedException {
+        long now = System.currentTimeMillis();
+        Stopwatch stopwatch = Stopwatch.createStarted();
         Limiter limiter = new Limiter();
-        for (int i = 0; i < 100; i++) {
+        ExecutorService executorService = Executors.newFixedThreadPool(20);
+        for (int i = 0; i < 20; i++) {
+
             boolean b = limiter.isLimit("123");
-            System.out.println(b);
+            LOGGER.info("limit:{}", b);
         }
+
+        stopwatch.stop();
+        LOGGER.info("cost:" + stopwatch.elapsed(TimeUnit.MILLISECONDS));
+        Thread.sleep(500);
+        stopwatch = Stopwatch.createStarted();
+        boolean b = limiter.isLimit("123");
+        stopwatch.stop();
+        LOGGER.info("limit:{}", b);
+        LOGGER.info("cost:" + stopwatch.elapsed(TimeUnit.MILLISECONDS));
+        Thread.sleep(500);
+        stopwatch = Stopwatch.createStarted();
+        b = limiter.isLimit("123");
+        stopwatch.stop();
+        LOGGER.info("limit:{}", b);
+        LOGGER.info("cost:" + stopwatch.elapsed(TimeUnit.MILLISECONDS));
+
+        b = limiter.isLimit("123");
+        LOGGER.info("*********,{}", b);
+
     }
 
 
