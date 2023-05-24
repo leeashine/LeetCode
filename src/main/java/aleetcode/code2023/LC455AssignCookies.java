@@ -2,7 +2,7 @@ package aleetcode.code2023;
 
 import java.util.Arrays;
 
-public class LC455_AssignCookies {
+public class LC455AssignCookies {
 
     public static void main(String[] args) {
         int[] g = {10, 9, 8, 7};
