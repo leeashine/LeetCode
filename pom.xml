@@ -51,7 +51,7 @@
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>
-            <version>1.2.70</version>
+            <version>1.2.79</version>
         </dependency>
 
         <dependency>
@@ -59,6 +59,12 @@
             <artifactId>spring-beans</artifactId>
             <version>4.3.2.RELEASE</version>
 
+        </dependency>
+
+        <dependency>
+            <groupId>net.openhft</groupId>
+            <artifactId>affinity</artifactId>
+            <version>3.0.6</version>
         </dependency>
         <dependency>
             <groupId>com.google.guava</groupId>
@@ -85,11 +91,32 @@
             <version>${commons-io.version}</version>
         </dependency>
 
+        <!-- hikari -->
+        <dependency>
+            <groupId>com.zaxxer</groupId>
+            <artifactId>HikariCP</artifactId>
+            <version>3.4.1</version>
+        </dependency>
+
+        <!-- mysql驱动 -->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>8.0.18</version>
+        </dependency>
+
         <!-- https://mvnrepository.com/artifact/com.lmax/disruptor -->
         <dependency>
             <groupId>com.lmax</groupId>
             <artifactId>disruptor</artifactId>
             <version>3.4.2</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/com.zaxxer/HikariCP -->
+        <dependency>
+            <groupId>com.zaxxer</groupId>
+            <artifactId>HikariCP</artifactId>
+            <version>3.4.5</version>
         </dependency>
 
 
@@ -99,7 +126,23 @@
             <artifactId>netty-all</artifactId>
             <version>4.1.42.Final</version>
         </dependency>
-
+        <dependency>
+            <groupId>redis.clients</groupId>
+            <artifactId>jedis</artifactId>
+            <version>3.0.1</version>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.13.1</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.13.1</version>
+            <scope>compile</scope>
+        </dependency>
 
 
     </dependencies>

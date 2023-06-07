@@ -12,6 +12,10 @@ public class Father {
         System.out.println("父类中的非静态代码块");
     }
 
+    public void say() {
+        System.out.println("father.say...");
+    }
+
     public static void main(String[] args) {
         System.out.println("父类中的main方法");
         new Father();

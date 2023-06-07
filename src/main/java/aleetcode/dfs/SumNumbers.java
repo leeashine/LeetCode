@@ -1,6 +1,6 @@
 package aleetcode.dfs;
 
-import util.TreeNode;
+import aleetcode.util.TreeNode;
 
 /**
  * Created by LIZIXUAN560 on 2020/10/30.

@@ -1,6 +1,6 @@
 package aleetcode;
 
-import util.TreeNode;
+import aleetcode.util.TreeNode;
 
 import java.util.*;
 

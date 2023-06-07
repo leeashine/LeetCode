@@ -1,6 +1,6 @@
 package aleetcode.contest2019;
 
-import util.TreeNode;
+import aleetcode.util.TreeNode;
 
 public class leet8_9 {
 
