@@ -1,7 +1,7 @@
 package aleetcode.contest2020;
 
 
-import util.TreeNode;
+import aleetcode.util.TreeNode;
 
 public class Contest190 {
     public static void main(String[] args) {

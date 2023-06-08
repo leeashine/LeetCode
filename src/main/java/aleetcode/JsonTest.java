@@ -1,13 +1,10 @@
 package aleetcode;
 
 import java.util.*;
-import java.util.Map.Entry;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import designpattern.commandpattern.sample2.XMLUtil;
-import util.XmlTool;
+import aleetcode.util.XmlTool;
 
 
 public class JsonTest {

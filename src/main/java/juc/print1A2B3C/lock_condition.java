@@ -38,8 +38,8 @@ public class lock_condition {
                 lock.lock();
 
                 for(char c : aC) {
-                    condition.signal();
                     System.out.print(c);
+                    condition.signal();
                     condition.await();
                 }
 

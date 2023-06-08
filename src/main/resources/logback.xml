@@ -188,9 +188,9 @@
         </layout>
     </appender>
 
-    <appender name="MONITOR" class="com.pajk.troy.client.metrics.log.MonitorLogbackAppender">
-        <noneStackEnable>true</noneStackEnable>
-    </appender>
+<!--    <appender name="MONITOR" class="com.pajk.troy.client.metrics.log.MonitorLogbackAppender">-->
+<!--        <noneStackEnable>true</noneStackEnable>-->
+<!--    </appender>-->
 
 
 <!--    <logger name="com.pajk.skyline.client.SkylineApi" additivity="false">-->
@@ -225,12 +225,12 @@
 <!--        <appender-ref ref="MONITOR"/>-->
 <!--    </logger>-->
 
-<!--    <logger name="com.pajk.intimecity.core.dao.mapper" level="DEBUG" additivity="false">-->
+<!--    <logger name="com.wings.core.dao.mapper" level="DEBUG" additivity="false">-->
 <!--        <appender-ref ref="MYBATIS"/>-->
 <!--    </logger>-->
 
-    <root level="DEBUG">
-        <appender-ref ref="MONITOR"/>
+    <root level="INFO">
+<!--        <appender-ref ref="MONITOR"/>-->
         <appender-ref ref="STDOUT"/>
         <appender-ref ref="DEBUG"/>
         <appender-ref ref="INFO"/>

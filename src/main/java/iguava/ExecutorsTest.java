@@ -4,7 +4,10 @@ import com.google.common.util.concurrent.ListeningExecutorService;
 import com.google.common.util.concurrent.MoreExecutors;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 
-import java.util.concurrent.*;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ThreadFactory;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 /**
  * 上例中，如果没有调用MoreExecutors.addDelayedShutdownHook()方法的话，只会打印888，不会打印666。
@@ -15,7 +18,13 @@ public class ExecutorsTest {
 
     public static void main(String[] args) {
         ThreadFactory threadFactory = new ThreadFactoryBuilder().setDaemon(true).setNameFormat("async-pool-%d").build();
-        ThreadPoolExecutor poolExecutor = new ThreadPoolExecutor(5, 20, 0, TimeUnit.MINUTES, new LinkedBlockingQueue<>(3000), threadFactory);
+        ThreadPoolExecutor poolExecutor = new ThreadPoolExecutor(
+                5,
+                20,
+                0,
+                TimeUnit.MINUTES,
+                new LinkedBlockingQueue<>(3000),
+                threadFactory);
         ListeningExecutorService listeningExecutor = MoreExecutors.listeningDecorator(poolExecutor);
         listeningExecutor.submit(() -> {
             try {
@@ -28,7 +37,7 @@ public class ExecutorsTest {
         System.out.println(Thread.currentThread().getName() + "@888");
         //获得一个随着jvm关闭而关闭的线程池，通过Runtime.getRuntime().addShutdownHook(hook)实现
         //修改ThreadFactory为创建守护线程，默认jvm关闭时最多等待120秒关闭线程池，重载方法可以设置时间
-        MoreExecutors.getExitingExecutorService(poolExecutor,10,TimeUnit.SECONDS);
+        MoreExecutors.getExitingExecutorService(poolExecutor, 10, TimeUnit.SECONDS);
         //只增加关闭线程池的钩子，不改变ThreadFactory
         //在线程池中的线程是守护线程(daemon thread)时有用，用户线程(user thread)执行完后，jvm不会立即关闭，而是等待一定时间。
         MoreExecutors.addDelayedShutdownHook(poolExecutor, 120, TimeUnit.SECONDS);
