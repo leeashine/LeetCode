@@ -27,6 +27,31 @@ public class LC167TwoSumIIInputArrayIsSorted {
 
     public static int[] twoSum(int[] numbers, int target) {
         // 双指针 当和<target继续右遍历。=target停止遍历 >target结束当前轮次进入下一轮次遍历
+        int i = 0;
+        int j = numbers.length - 1;
+        while (i < j) {
+            int sum = numbers[i] + numbers[j];
+            if (sum == target) {
+                break;
+            }
+            if (sum < target) {
+                i++;
+            }
+            if (sum > target) {
+                j--;
+            }
+        }
+        return new int[]{i+1,j+1};
+    }
+
+    /**
+     * 这其实没有真正用到双指针的精髓，因为它还是会有重复的路要走
+     * @param numbers
+     * @param target
+     * @return
+     */
+    public static int[] twoSum2(int[] numbers, int target) {
+        // 双指针 当和<target继续右遍历。=target停止遍历 >target结束当前轮次进入下一轮次遍历
         for (int i = 0; i < numbers.length - 1; i++) {
             for (int j = i + 1; j < numbers.length; j++) {
                 if (numbers[i] + numbers[j] == target) {
