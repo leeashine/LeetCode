@@ -447,13 +447,13 @@ public class Practise {
         arr[j]=tmp;
 
     }
-    public static class
-    ListNode {
+    public static class ListNode {
         int val;
         ListNode next;
 
-        ListNode(int x) {
+        public ListNode(int x) {
             val = x;
+            next = null;
         }
     }
 }
