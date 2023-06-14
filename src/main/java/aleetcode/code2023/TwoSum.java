@@ -7,7 +7,7 @@ public class TwoSum {
         System.out.println(-5&-3);
         System.out.println(-2&-3);
 //        System.out.println(calculateSum(Integer.MIN_VALUE, Integer.MIN_VALUE));
-        System.out.println(calculateSum2(Integer.MIN_VALUE, Integer.MIN_VALUE));
+        System.out.println(calculateSum2(Integer.MAX_VALUE, Integer.MAX_VALUE));
     }
 
     public static int calculateSum(int x, int y) {
@@ -24,6 +24,20 @@ public class TwoSum {
             throw new ArithmeticException("integer overflow2");
         }
         return a + b;
+    }
+
+    /**
+     * 简洁易懂
+     * @param a
+     * @param b
+     * @return
+     */
+    public static int calculateSum3(int a, int b) {
+        int sum = a + b;
+        if ((a > 0 && b > 0 && sum < 0) || (a < 0 && b < 0 && sum >= 0)) {
+            throw new ArithmeticException("integer overflow");
+        }
+        return sum;
     }
 
 }
