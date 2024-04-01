@@ -1,9 +1,6 @@
 package aleetcode;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class L100Problem {
 
@@ -19,6 +16,70 @@ public class L100Problem {
         List<List<String>> lists2 = s.groupAnagrams2(strs);
 //        System.out.println(lists);
         System.out.println(lists2);
+    }
+
+    /**
+     * 128. 最长连续序列
+     *     给定一个未排序的整数数组 nums ，找出数字连续的最长序列（不要求序列元素在原数组中连续）的长度。
+     *
+     *     请你设计并实现时间复杂度为 O(n) 的算法解决此问题。
+     *
+     *     示例 1：
+     *     输入：nums = [100,4,200,1,3,2]
+     *     输出：4
+     *     解释：最长数字连续序列是 [1, 2, 3, 4]。它的长度为 4。
+     *     示例 2：
+     *     输入：nums = [0,3,7,2,5,8,4,6,0,1]
+     *     输出：9
+     * @param nums
+     * @return
+     */
+    public int longestConsecutive(int[] nums) {
+
+        // 利用set去重!
+        Set<Integer> set = new HashSet<>();
+        for (int num : nums) {
+            set.add(num);
+        }
+        int result = 0;
+        for (int num : set) {
+            // 倒过来看 如果num-1不在集合中，说明他断掉了，他只最多可能是子序列的起点，这时候找即可
+            if (!set.contains(num - 1)) {
+                int curNum = num;
+                int curLen = 1;
+                // 向后寻找连续的数字
+                while (set.contains(curNum + 1)) {
+                    curLen++;
+                    curNum++;
+                }
+                // 更新最长连续序列长度
+                result = Math.max(result, curLen);
+            }
+        }
+
+        return result;
+    }
+
+    public int longestConsecutive2(int[] nums) {
+        Set<Integer> num_set = new HashSet<Integer>();
+        for (int num : nums) {
+            num_set.add(num);
+        }
+
+        int longestStreak = 0;
+        for (int num : num_set) {
+            if (!num_set.contains(num - 1)) {
+                int curNum = num;
+                int curStreak = 1;
+                while (num_set.contains(curNum + 1)) {
+                    curStreak++;
+                    curNum++;
+                }
+                longestStreak = Math.max(longestStreak, curStreak);
+            }
+        }
+
+        return longestStreak;
     }
 
     /**
