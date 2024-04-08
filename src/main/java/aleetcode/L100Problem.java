@@ -18,9 +18,57 @@ public class L100Problem {
 //        System.out.println(Arrays.toString(ints));
 
 
-        int[] nums = new int[]{0, 1, 0, 3, 12};
-        problem.moveZeroes2(nums);
-        System.out.println(Arrays.toString(nums));
+//        int[] nums = new int[]{0, 1, 0, 3, 12};
+//        problem.moveZeroes2(nums);
+//        System.out.println(Arrays.toString(nums));
+
+        int[] height = new int[]{1, 8, 6, 2, 5, 4, 8, 3, 7};
+        int i = problem.maxArea(height);
+        System.out.println(i);
+    }
+
+
+    /**
+     * 双指针2
+     * 11. 盛最多水的容器
+     * 给定一个长度为 n 的整数数组 height 。有 n 条垂线，第 i 条线的两个端点是 (i, 0) 和 (i, height[i]) 。
+     * 找出其中的两条线，使得它们与 x 轴共同构成的容器可以容纳最多的水。
+     * 返回容器可以储存的最大水量。
+     * 说明：你不能倾斜容器。
+     * 输入：[1,8,6,2,5,4,8,3,7]
+     * 输出：49
+     * 解释：图中垂直线代表输入数组 [1,8,6,2,5,4,8,3,7]。在此情况下，容器能够容纳水（表示为蓝色部分）的最大值为 49。
+     * 示例 2：
+     * 输入：height = [1,1]
+     * 输出：1
+     *
+     * 思路：
+     * 使用两个指针 left 和 right，分别指向数组的起始位置和结束位置。
+     * 初始时，容器的宽度为 n-1，即两个指针之间的距离。
+     * 计算当前容器能容纳的水的容量，取决于两个指针指向的高度较小的那个，以及它们之间的距离。
+     * 移动指针的规则是，每次移动高度较小的指针，因为移动较小的指针可能会有机会找到更高的柱子，从而使容器的容量增大。
+     * 继续迭代，直到两个指针相遇为止。在迭代过程中，不断更新最大的容量值。
+     * 最终返回最大的容量值作为结果。
+     */
+    public int maxArea(int[] height) {
+
+        int left = 0, right = height.length - 1;
+        int n = height.length;
+        int max = 0;
+        while (left < right) {
+
+            int a = height[left];
+            int b = height[right];
+            max = Math.max(max, (right - left) * Math.min(a, b));
+            if (a <= b) {
+                left++;
+            } else {
+                right--;
+            }
+        }
+
+        return max;
+
     }
 
     /**
