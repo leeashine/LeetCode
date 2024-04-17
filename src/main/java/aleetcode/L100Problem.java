@@ -1,5 +1,7 @@
 package aleetcode;
 
+import com.google.common.collect.Lists;
+
 import java.util.*;
 
 public class L100Problem {
@@ -22,9 +24,90 @@ public class L100Problem {
 //        problem.moveZeroes2(nums);
 //        System.out.println(Arrays.toString(nums));
 
-        int[] height = new int[]{1, 8, 6, 2, 5, 4, 8, 3, 7};
-        int i = problem.maxArea(height);
-        System.out.println(i);
+//        int[] height = new int[]{1, 8, 6, 2, 5, 4, 8, 3, 7};
+//        int i = problem.maxArea(height);
+//        System.out.println(i);
+
+        int[] nums = new int[]{0, 0, 0, 0};
+        problem.threeSum(nums);
+
+
+    }
+
+    /**
+     * 15. 三数之和
+     * 给你一个整数数组 nums ，判断是否存在三元组 [nums[i], nums[j], nums[k]] 满足 i != j、i != k 且 j != k ，同时还满足 nums[i] + nums[j] + nums[k] == 0 。请
+     * 你返回所有和为 0 且不重复的三元组。
+     * 注意：答案中不可以包含重复的三元组。
+     *
+     * 示例 1：
+     * 输入：nums = [-1,0,1,2,-1,-4]
+     * 输出：[[-1,-1,2],[-1,0,1]]
+     * 解释：
+     * nums[0] + nums[1] + nums[2] = (-1) + 0 + 1 = 0 。
+     * nums[1] + nums[2] + nums[4] = 0 + 1 + (-1) = 0 。
+     * nums[0] + nums[3] + nums[4] = (-1) + 2 + (-1) = 0 。
+     * 不同的三元组是 [-1,0,1] 和 [-1,-1,2] 。
+     * 注意，输出的顺序和三元组的顺序并不重要。
+     * 示例 2：
+     * 输入：nums = [0,1,1]
+     * 输出：[]
+     * 解释：唯一可能的三元组和不为 0 。
+     * 示例 3：
+     * 输入：nums = [0,0,0]
+     * 输出：[[0,0,0]]
+     * 解释：唯一可能的三元组和为 0 。
+     *
+     *
+     * 提示：
+     * 3 <= nums.length <= 3000
+     * -105 <= nums[i] <= 105
+     */
+    public List<List<Integer>> threeSum(int[] nums) {
+        // 1.排序，处理重复数据并且使得后续查找更加高效！！！
+//        2.使用三个指针：外层指针 i 用于遍历数组，内层的双指针 left 和 right 用于在剩余数组中查找满足条件的两个元素。
+//        3.在遍历过程中，对于每个元素 nums[i]，使用双指针 left 和 right 在 i+1 到数组末尾之间寻找两个元素，使得它们的和等于 -nums[i]。
+//        4.如果找到了满足条件的两个元素，将它们和 nums[i] 组成一个满足条件的三元组，并将其加入结果集中。
+//        5.为了避免重复，需要跳过相邻的相同元素 ？？？？？？？
+//        6.最终返回结果集中的所有不重复的三元组。
+        List<List<Integer>> result = new ArrayList();
+        // 排序，为了后面处理重复数据和后续查找更加高效！
+        Arrays.sort(nums);
+        for (int i = 0; i < nums.length - 2; i++) {
+            // 优化1:如果当前元素大于0，后续元素之和必然大于0，直接结束循环
+            if (nums[i] > 0) {
+                break;
+            }
+            // 跳过相邻的相同元素！！！
+            if (i > 0 && nums[i] == nums[i - 1])
+                continue;
+            int target = -nums[i];
+            int left = i + 1;
+            int right = nums.length - 1;
+            while (left < right) {
+                int sum = nums[left] + nums[right];
+                if(sum == target) {
+                    result.add(Arrays.asList(nums[i], nums[left], nums[right]));
+                    //移动指针的规则：1.每次移动？如果相等 继续便利 如果<target  2.如果相同元素移动(跳过)
+                    // 跳过相邻的相同元素！！！
+                    while (left < right && nums[left] == nums[left + 1]) {
+                        left++;
+                    }
+                    while (left < right && nums[right] == nums[right - 1]) {
+                        right--;
+                    }
+                    left++;
+                    right--;
+                } else if (sum < target) {
+                    //如果sum<target 那么为了使得和更接近目标值，我们可以尝试将 left 指针向右移动，因为右边的元素更大，可能可以使得和变大。
+                    left++;
+                } else {
+                    //同理
+                    right--;
+                }
+            }
+        }
+        return result;
     }
 
 
