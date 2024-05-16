@@ -28,10 +28,44 @@ public class L100Problem {
 //        int i = problem.maxArea(height);
 //        System.out.println(i);
 
-        int[] nums = new int[]{0, 0, 0, 0};
-        problem.threeSum(nums);
+//        int[] nums = new int[]{0, 0, 0, 0};
+//        problem.threeSum(nums);
 
+        String str = "pwwkew";
+        int i = problem.lengthOfLongestSubstring(str);
+        System.out.println(i);
+    }
 
+    /**
+     * 无重复字符的最长字串
+     * 给定一个字符串 s ，请你找出其中不含有重复字符的 最长字串的长度
+     * 滑动窗口
+     * 先定义一个定点，然后动点一直在扩大直到遇到重复为止。当前就代表这个定点开始最长的无重复子串
+     * 然后这个定点再移动，以此类推最后就能找到最大值
+     * 复杂度分析
+     * 时间复杂度：O(n)，其中 n 是字符串的长度。每个字符最多被访问两次（一次被添加到哈希集，一次被移除）。
+     * 空间复杂度：O(min(m, n))，其中 m 是字符集的大小，n 是字符串的长度。哈希集最多包含 m 或 n 个字符。
+     * @param s
+     * @return
+     */
+    public int lengthOfLongestSubstring(String s) {
+        Set<Character> set = new HashSet<>();
+        int maxLength = 0;
+        int start = 0, end = 0;
+        while (end < s.length()) {
+            // 右边没访问过，继续扩大，找最大值
+            if (!set.contains(s.charAt(end))) {
+                set.add(s.charAt(end));
+                end++;
+                maxLength = Math.max(maxLength, end - start);
+            } else {
+                // 右边访问过，代表这次结束了，动点该移动进入下次计算了。
+                set.remove(s.charAt(start));
+                start++;
+            }
+        }
+
+        return maxLength;
     }
 
     /**
@@ -39,7 +73,7 @@ public class L100Problem {
      * 给你一个整数数组 nums ，判断是否存在三元组 [nums[i], nums[j], nums[k]] 满足 i != j、i != k 且 j != k ，同时还满足 nums[i] + nums[j] + nums[k] == 0 。请
      * 你返回所有和为 0 且不重复的三元组。
      * 注意：答案中不可以包含重复的三元组。
-     *
+     * <p>
      * 示例 1：
      * 输入：nums = [-1,0,1,2,-1,-4]
      * 输出：[[-1,-1,2],[-1,0,1]]
@@ -57,8 +91,8 @@ public class L100Problem {
      * 输入：nums = [0,0,0]
      * 输出：[[0,0,0]]
      * 解释：唯一可能的三元组和为 0 。
-     *
-     *
+     * <p>
+     * <p>
      * 提示：
      * 3 <= nums.length <= 3000
      * -105 <= nums[i] <= 105
@@ -86,7 +120,7 @@ public class L100Problem {
             int right = nums.length - 1;
             while (left < right) {
                 int sum = nums[left] + nums[right];
-                if(sum == target) {
+                if (sum == target) {
                     result.add(Arrays.asList(nums[i], nums[left], nums[right]));
                     //移动指针的规则：1.每次移动？如果相等 继续便利 如果<target  2.如果相同元素移动(跳过)
                     // 跳过相邻的相同元素！！！
@@ -124,7 +158,7 @@ public class L100Problem {
      * 示例 2：
      * 输入：height = [1,1]
      * 输出：1
-     *
+     * <p>
      * 思路：
      * 使用两个指针 left 和 right，分别指向数组的起始位置和结束位置。
      * 初始时，容器的宽度为 n-1，即两个指针之间的距离。
