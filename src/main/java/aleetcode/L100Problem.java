@@ -31,9 +31,137 @@ public class L100Problem {
 //        int[] nums = new int[]{0, 0, 0, 0};
 //        problem.threeSum(nums);
 
-        String str = "pwwkew";
-        int i = problem.lengthOfLongestSubstring(str);
-        System.out.println(i);
+//        String str = "pwwkew";
+//        int i = problem.lengthOfLongestSubstring(str);
+//        System.out.println(i);
+
+        String s = "cbaebabacd";
+        String p = "abc";
+        List<Integer> anagrams = problem.findAnagrams(s, p);
+        System.out.println(anagrams);
+
+
+    }
+
+    public List<Integer> findAnagrams(String s, String p) {
+        List<Integer> result = new ArrayList<>();
+        if (s == null || p == null || s.length() < p.length()) {
+            return result;
+        }
+
+        // 创建字符计数数组
+        int[] pCount = new int[26];
+        int[] sCount = new int[26];
+
+        // 初始化 p 的字符计数
+        for (char c : p.toCharArray()) {
+            pCount[c - 'a']++;
+        }
+
+        // p是固定窗口 所以只要窗口一直在移动对比即可
+        int windowSize = p.length();
+        int sLength = s.length();
+
+        // 初始化窗口的字符计数
+        for (int i = 0; i < windowSize; i++) {
+            sCount[s.charAt(i) - 'a']++;
+        }
+
+        // 比较初始窗口 第一个窗口直接比
+        if (matches(pCount, sCount)) {
+            result.add(0);
+        }
+
+        // 滑动窗口
+        for (int i = windowSize; i < sLength; i++) {
+            // 增加新字符到窗口
+            sCount[s.charAt(i) - 'a']++;
+            // 移除窗口中最左边的字符
+            sCount[s.charAt(i - windowSize) - 'a']--;
+            // 比较当前窗口
+            if (matches(pCount, sCount)) {
+                result.add(i - windowSize + 1);
+            }
+        }
+
+        return result;
+    }
+
+    // 比较两个字符计数数组是否相同
+    private boolean matches(int[] pCount, int[] sCount) {
+        for (int i = 0; i < 26; i++) {
+            if (pCount[i] != sCount[i]) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * 给定两个字符串 s 和 p，找到 s 中所有 p 的 异位词 的子串，返回这些子串的起始索引。不考虑答案输出的顺序。
+     * 异位词 指由相同字母重排列形成的字符串（包括相同的字符串）。
+     * 示例 1:
+     * 输入: s = "cbaebabacd", p = "abc"
+     * 输出: [0,6]
+     * 解释:
+     * 起始索引等于 0 的子串是 "cba", 它是 "abc" 的异位词。
+     * 起始索引等于 6 的子串是 "bac", 它是 "abc" 的异位词。
+     *  示例 2:
+     * 输入: s = "abab", p = "ab"
+     * 输出: [0,1,2]
+     * 解释:
+     * 起始索引等于 0 的子串是 "ab", 它是 "ab" 的异位词。
+     * 起始索引等于 1 的子串是 "ba", 它是 "ab" 的异位词。
+     * 起始索引等于 2 的子串是 "ab", 它是 "ab" 的异位词。
+     * 提示:
+     * 1 <= s.length, p.length <= 3 * 104
+     * s 和 p 仅包含小写字母
+     * @param s
+     * @param p
+     * @return
+     */
+    public List<Integer> findAnagrams2(String s, String p) {
+
+        Map<Character, Integer> set = new HashMap<>();
+        for (char c : p.toCharArray()) {
+            set.put(c, set.getOrDefault(c, 0) + 1);
+        }
+        List<Integer> result = new ArrayList<>();
+        char[] charArray = s.toCharArray();
+        // 动态窗口 一定点 一动点 i是定点 j是动点
+        for (int i = 0; i < charArray.length; i++) {
+            int j = i;
+            // 如果包含 说明动点可以动 更新值
+            while (j < charArray.length && set.getOrDefault(charArray[j], 0) > 0) {
+                set.put(charArray[j], set.get(charArray[j]) - 1);
+                j++;
+            }
+
+            // 遍历set看有没有都用完
+            boolean flag = false;
+            for (Map.Entry<Character, Integer> entry : set.entrySet()) {
+                Integer value = entry.getValue();
+                if (value != 0) {
+                    flag = true;
+                    break;
+                }
+            }
+
+            // 如果都遍历完 发现都有，则这个动点就是所要的起始位置
+            if (!flag) {
+                result.add(i);
+            }
+            // 进入下一次寻找。同时初始化
+            set.clear();
+            for (char c : p.toCharArray()) {
+                set.put(c, set.getOrDefault(c, 0) + 1);
+            }
+
+
+        }
+
+
+        return result;
     }
 
     /**
