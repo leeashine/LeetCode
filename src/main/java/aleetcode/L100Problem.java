@@ -35,12 +35,59 @@ public class L100Problem {
 //        int i = problem.lengthOfLongestSubstring(str);
 //        System.out.println(i);
 
-        String s = "cbaebabacd";
-        String p = "abc";
-        List<Integer> anagrams = problem.findAnagrams(s, p);
-        System.out.println(anagrams);
+//        String s = "cbaebabacd";
+//        String p = "abc";
+//        List<Integer> anagrams = problem.findAnagrams(s, p);
+//        System.out.println(anagrams);
+
+        int[] nums = {1, 1, 1};
+        int k = 2;
+        int i = problem.subarraySum(nums, k);
+        System.out.println(i);
 
 
+    }
+
+    /**
+     * 560. 和为 K 的子数组
+     * 给你一个整数数组 nums 和一个整数 k ，请你统计并返回 该数组中和为 k 的子数组的个数 。
+     * 子数组是数组中元素的连续非空序列。
+     * 示例 1：
+     *
+     * 输入：nums = [1,1,1], k = 2
+     * 输出：2
+     * 示例 2：
+     *
+     * 输入：nums = [1,2,3], k = 3
+     * 输出：2
+     *
+     * 方法一的瓶颈在于对每个 i，我们需要枚举所有的 j 来判断是否符合条件，这一步是否可以优化呢？答案是可以的。
+     * 由条件得 pre[i]-pre[j-1]=k 移向得pre[j-1]=pre[i]-k(pre代表前缀和数组)
+     * @return
+     */
+    public int subarraySum(int[] nums, int k) {
+
+        int result = 0;
+        // 子数组+和  =》 前缀和
+        int sum = 0;
+//        int[] prefixSum = new int[nums.length];
+        Map<Integer, Integer> prefixSumCount = new HashMap<>();
+        // 初始化 前缀和为0的 出现1次
+        prefixSumCount.put(0, 1);
+        for (int i = 0; i < nums.length; i++) {
+            sum += nums[i];
+            // 1 2 3
+//            prefixSum[i] = sum;
+            if (prefixSumCount.containsKey(sum - k)) {
+                result += prefixSumCount.get(sum - k);
+            }
+
+            // 出现次数更新到Map中
+            prefixSumCount.put(sum, prefixSumCount.getOrDefault(sum, 0) + 1);
+        }
+
+
+        return result;
     }
 
     public List<Integer> findAnagrams(String s, String p) {
