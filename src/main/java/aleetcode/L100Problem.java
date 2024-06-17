@@ -40,12 +40,86 @@ public class L100Problem {
 //        List<Integer> anagrams = problem.findAnagrams(s, p);
 //        System.out.println(anagrams);
 
-        int[] nums = {1, 1, 1};
-        int k = 2;
-        int i = problem.subarraySum(nums, k);
-        System.out.println(i);
+//        int[] nums = {1, 1, 1};
+//        int k = 2;
+//        int i = problem.subarraySum(nums, k);
+//        System.out.println(i);
 
+        int[] nums = {1,3,-1,-3,5,3,6,7};
+        int[] ints = problem.maxSlidingWindow2(nums, 3);
+        System.out.println(Arrays.toString(ints));
 
+    }
+
+    /**
+     * 给你一个整数数组 nums，有一个大小为 k 的滑动窗口从数组的最左侧移动到数组的最右侧。你只可以看到在滑动窗口内的 k 个数字。滑动窗口每次只向右移动一位。
+     * 返回 滑动窗口中的最大值 。
+     * 分析：本题难点在如何动态维护滑动窗口的最大值
+     * 堆 大根堆实时维护一系列元素的最大值
+     * 时间复杂度 nlogk
+     * @param nums
+     * @param k
+     * @return
+     */
+    public int[] maxSlidingWindow(int[] nums, int k) {
+        int n = nums.length;
+        // 最大堆：存储二元祖(num,index) 表示元素 num在数组中的下标为 index
+        PriorityQueue<int[]> pq = new PriorityQueue<int[]>(new Comparator<int[]>() {
+            public int compare(int[] pair1, int[] pair2) {
+                return pair1[0] != pair2[0] ? pair2[0] - pair1[0] : pair2[1] - pair1[1];
+            }
+        });
+        // 插入时间复杂度logk 插入k个 就是klogk
+        for (int i = 0; i < k; ++i) {
+            pq.offer(new int[]{nums[i], i});
+        }
+        int[] ans = new int[n - k + 1];
+        ans[0] = pq.peek()[0];
+        for (int i = k; i < n; ++i) {
+            pq.offer(new int[]{nums[i], i});
+            // 不断地移除堆顶的元素，直到其确实出现在滑动窗口中
+            while (pq.peek()[1] <= i - k) {
+                pq.poll();
+            }
+            ans[i - k + 1] = pq.peek()[0];
+        }
+        return ans;
+    }
+
+    /**
+     * 这种单调性的双端队列一般称作「单调队列」
+     * @param nums
+     * @param k
+     * @return
+     */
+    public int[] maxSlidingWindow2(int[] nums, int k) {
+        int n = nums.length;
+        // 队列插入的时间复杂度是n
+        Deque<Integer> deque = new LinkedList<Integer>();
+        for (int i = 0; i < k; ++i) {
+            while (!deque.isEmpty() && nums[i] >= nums[deque.peekLast()]) {
+                deque.pollLast();
+            }
+            deque.offerLast(i);
+        }
+
+        int[] ans = new int[n - k + 1];
+        ans[0] = nums[deque.peekFirst()];
+        for (int i = k; i < n; ++i) {
+            // 当当前元素>=队列末尾元素 弹出队列。因为要维护k里最大值
+            while (!deque.isEmpty() && nums[i] >= nums[deque.peekLast()]) {
+                deque.pollLast();
+            }
+            // 添加当前元素到队列中
+            deque.offerLast(i);
+            // 当最大元素不在此窗口里了，移除 保留窗口内元素
+            while (deque.peekFirst() <= i - k) {
+                deque.pollFirst();
+            }
+            // 更新结果
+            ans[i - k + 1] = nums[deque.peekFirst()];
+        }
+        return ans;
     }
 
     /**
