@@ -45,10 +45,53 @@ public class L100Problem {
 //        int i = problem.subarraySum(nums, k);
 //        System.out.println(i);
 
-        int[] nums = {1,3,-1,-3,5,3,6,7};
-        int[] ints = problem.maxSlidingWindow2(nums, 3);
-        System.out.println(Arrays.toString(ints));
+//        int[] nums = {1,3,-1,-3,5,3,6,7};
+//        int[] ints = problem.maxSlidingWindow2(nums, 3);
+//        System.out.println(Arrays.toString(ints));
 
+        int[][] intervals = {{1, 3}, {2, 6}, {8, 10}, {15, 18}};
+        int[][] merge = problem.merge(intervals);
+        System.out.println(merge);
+    }
+
+    /**
+     * 合并区间
+     * 以数组 intervals 表示若干个区间的集合，其中单个区间为 intervals[i] = [starti, endi] 。请你合并所有重叠的区间，并返回 一个不重叠的区间数组，该数组需恰好覆盖输入中的所有区间 。
+     * 示例 1：
+     *
+     * 输入：intervals = [[1,3],[2,6],[8,10],[15,18]]
+     * 输出：[[1,6],[8,10],[15,18]]
+     * 解释：区间 [1,3] 和 [2,6] 重叠, 将它们合并为 [1,6].
+     * 示例 2：
+     *
+     * 输入：intervals = [[1,4],[4,5]]
+     * 输出：[[1,5]]
+     * 解释：区间 [1,4] 和 [4,5] 可被视为重叠区间。
+     * @param intervals
+     * @return
+     */
+    public static int[][] merge(int[][] intervals) {
+
+        // 1.排序 按第一个数字从小到大排序
+        Arrays.sort(intervals, Comparator.comparingInt(o -> o[0]));
+        List<int[]> merged = new ArrayList<>();
+        for (int i = 0; i < intervals.length; i++) {
+            // 如果为空 添加
+            if (merged.isEmpty()) {
+                merged.add(intervals[i]);
+            }
+//            检查当前区间是否与上一个区间有重叠。只要比较当前区间和上一个区间
+            // 上一个
+            int[] arr = merged.get(merged.size() - 1);
+            // 当前
+            if (intervals[i][0] <= arr[1]) {
+                arr[1] = Math.max(arr[1], intervals[i][1]);
+            } else {
+                // 没有重叠 直接添加
+                merged.add(intervals[i]);
+            }
+        }
+        return merged.toArray(new int[merged.size()][]);
     }
 
     /**

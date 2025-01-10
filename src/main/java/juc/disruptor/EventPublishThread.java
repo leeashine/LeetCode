@@ -10,9 +10,8 @@ import java.nio.ByteBuffer;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * eventQueue#next方法将从Redis等待队列pop一个任务，然后推送到本地任务队列(该队列名称是:queueName+jvm实例所在机器IP),
- * 并发布到Disruptor RingBuffer
- *
+ * 业务组件，通过EventQueue拉取RedisWaitQueue任务，首先被移动到LocalProcessQueue,然后被放入Disruptor内存队列处理
+ * 队列名称：queueName+JVM所在机器ip
  * @author hahaha
  */
 public class EventPublishThread extends Thread {
