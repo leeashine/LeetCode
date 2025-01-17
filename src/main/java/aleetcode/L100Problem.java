@@ -49,9 +49,29 @@ public class L100Problem {
 //        int[] ints = problem.maxSlidingWindow2(nums, 3);
 //        System.out.println(Arrays.toString(ints));
 
-        int[][] intervals = {{1, 3}, {2, 6}, {8, 10}, {15, 18}};
-        int[][] merge = problem.merge(intervals);
-        System.out.println(merge);
+//        int[][] intervals = {{1, 3}, {2, 6}, {8, 10}, {15, 18}};
+//        int[][] merge = problem.merge(intervals);
+//        System.out.println(merge);
+
+        int[] nums = {1, 2, 3, 4, 5, 6, 7};
+        int k = 3;
+        problem.rotate(nums, k);
+        System.out.println(Arrays.toString(nums));
+    }
+
+    /**
+     * 给定一个整数数组 nums，将数组中的元素向右轮转 k 个位置，其中 k 是非负数。
+     * // 0+3=3 1+3=4 2+3=5 3+3=6 (4+3)%7=0 (5+3)%7=1   (7+3)%7=2
+     * @param nums
+     * @param k
+     */
+    public void rotate(int[] nums, int k) {
+        int length = nums.length;
+        int[] oldNums = Arrays.copyOf(nums, length);
+        for (int i = 0; i < length; i++) {
+            int newIndex = (i + k) % length;
+            nums[newIndex] = oldNums[i];
+        }
     }
 
     /**
