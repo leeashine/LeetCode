@@ -53,10 +53,64 @@ public class L100Problem {
 //        int[][] merge = problem.merge(intervals);
 //        System.out.println(merge);
 
-        int[] nums = {1, 2, 3, 4, 5, 6, 7};
-        int k = 3;
-        problem.rotate(nums, k);
-        System.out.println(Arrays.toString(nums));
+//        int[] nums = {1, 2, 3, 4, 5, 6, 7};
+//        int k = 3;
+//        problem.rotate(nums, k);
+//        System.out.println(Arrays.toString(nums));
+
+        int [] nums = {5,4,-1,7,8};
+        problem.maxSubArray(nums);
+    }
+
+    /**
+     * 给你一个整数数组 nums ，请你找出一个具有最大和的连续子数组（子数组最少包含一个元素），返回其最大和。
+     * 子数组是数组中的一个连续部分。
+     * @param nums
+     * @return
+     */
+    public int maxSubArray(int[] nums) {
+//        if (nums.length == 1) {
+//            return nums[0];
+//        }
+//        int max = 0;
+//        int min = Integer.MAX_VALUE;
+//        int[] sumPrefix = new int[nums.length + 1];
+//        sumPrefix[0] = nums[0];
+//        for (int i = 1; i < nums.length; i++) {
+//            sumPrefix[i] = nums[i] + sumPrefix[i - 1];
+//        }
+//
+//        // 5,4,-1,7,8
+//        // 5 9 8 15 23
+//        for (int prefix : sumPrefix) {
+//            max = Math.max(max, prefix);
+//            min = Math.min(min, prefix);
+//        }
+//        return max - min;
+        // 动态规划 dp[i] = max(dp[i-1]+nums[i],nums[i])
+        // 只和前一个有关，可以用一个变量，从而让空间复杂度降为O(1) 2.2次遍历，可以在第一次遍历时直接更新最大值。
+//        int[] dp = new int[nums.length];
+//        dp[0] = nums[0];
+//        for (int i = 1; i < nums.length; i++) {
+//            dp[i] = Math.max(dp[i - 1] + nums[i], nums[i]);
+//        }
+//        int max = Integer.MIN_VALUE;
+//        for (int i = 0; i < nums.length; i++) {
+//            max = Math.max(max, dp[i]);
+//        }
+//        return max;
+
+        // pre 代表以当前元素结尾的最大子数组和
+        int pre = nums[0];
+        // max 代表全局的最大子数组和
+        int max = nums[0];
+        for (int i = 1; i < nums.length; i++) {
+            // 当前元素结尾的最大子数组和 = max(当前+当前元素，当前元素)
+            pre = Math.max(pre + nums[i], nums[i]);
+            max = Math.max(max, pre);
+        }
+        return max;
+
     }
 
     /**
