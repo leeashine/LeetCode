@@ -39,10 +39,10 @@ public class CompletableFutureAndFutureDemo {
 
         ExecutorService executor = new ThreadPoolExecutor(
                 20,
-                20,
+                30,
                 60,
                 TimeUnit.SECONDS,
-                new ArrayBlockingQueue<>(100),
+                new ArrayBlockingQueue<>(2000),
                 new ThreadFactoryBuilder().setNameFormat("retryClient-pool-%d").setDaemon(true).build(),
                 new ThreadPoolExecutor.DiscardPolicy());
 
@@ -50,7 +50,7 @@ public class CompletableFutureAndFutureDemo {
 //        test02(executor);
 //        compFutureTest(executor);
         List<Future> futureList = new ArrayList<>();
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 1; i++) {
             CompletableFuture<Object> future = CompletableFuture.supplyAsync(() -> {
 //                test03(40);
 //                test04(40);

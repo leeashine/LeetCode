@@ -1,4 +1,4 @@
-package java8.chap11;
+package juc;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -7,6 +7,8 @@ import java.util.concurrent.locks.ReentrantLock;
 /**
  * 写多读少的线程安全的list
  * TODO 不知道性能如何？
+ * ConcurrentLinkedQueue、BlockingQueue都适合频繁的写入
+ * {@link ch.qos.logback.core.util.COWArrayList} 是对jdk的cow进行的优化，能做到gc-free
  * @author: Lee
  * @create: 2023/05/07 10:01
  **/

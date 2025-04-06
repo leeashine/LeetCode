@@ -3,6 +3,8 @@ package juc.disruptor;
 import com.lmax.disruptor.*;
 import com.lmax.disruptor.dsl.Disruptor;
 import com.lmax.disruptor.dsl.ProducerType;
+import net.openhft.affinity.AffinityStrategies;
+import net.openhft.affinity.AffinityThreadFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -21,12 +23,18 @@ public class IDisruptorDemo {
     public static void main(String[] args) {
         //1.创建Disruptor
         long now = System.currentTimeMillis();
-        disruptor = new Disruptor<Event>(
+        //创建环形下单队列
+        disruptor = new Disruptor<>(
+                //事件工厂类
                 new DefaultEventFactory(),
+                //队列大小 2n次幂 会进行位运算
                 ringBufferSize,
-                Executors.newFixedThreadPool(threadPollSize), //消费者线程池
-                ProducerType.SINGLE,//支持多事件发布者
-                new BlockingWaitStrategy() //阻塞等待策略
+                //亲和线程池 线程亲和性能够强制使你的应用线程运行在特定的一个或多个cpu上
+                new AffinityThreadFactory("aft_engine_core", AffinityStrategies.SAME_CORE),
+                //一个生产者
+                ProducerType.SINGLE,
+                //等待策略 阻塞队列
+                new BlockingWaitStrategy()
         );
         //获取ringBuffer
         ringBuffer = disruptor.getRingBuffer();

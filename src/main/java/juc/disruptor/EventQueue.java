@@ -7,6 +7,10 @@ import java.util.Queue;
 import java.util.concurrent.LinkedBlockingDeque;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * 业务组建，封装了Redis队列的访问
+ *
+ */
 public class EventQueue {
 
     private String queueName;
@@ -42,7 +46,7 @@ public class EventQueue {
             // PauseUtils.pauseQueue(queueName)
 //            String id = null;
 //            try {
-//                // 2.从等待Queue POP，然后PUSH到本地处理队列
+//                // 2.从等待Queue POP，然后PUSH到本地处理队列还是redis队列只不过这个队列只供当前实例使用
 //                id = queueRedis.opsForList().rightPopAndLeftPush(queueName, processingQueueName);
 //            } catch (Exception e) {
 //                // 3.发生了网络异常后告警，然后人工或定期检测，
@@ -54,7 +58,7 @@ public class EventQueue {
 //                awiatInMillis = DEFAULT_AWAIT_IN_MILLIS;
 //                return id;
 //            }
-//            local.local();
+//            lock.lock();
 //            try {
 //                // 如果没有任务，则休息一下稍后处理，防止死循环耗死cpu
 //                if (awiatInMillis < 1000) {

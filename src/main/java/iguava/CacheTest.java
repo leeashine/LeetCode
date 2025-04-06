@@ -67,7 +67,7 @@ public class CacheTest {
 //        String key = StringUtils.join(new Object[] {statDate.toString(), spuId}, '_');
         Map<Long, String> result = new HashMap<>();
         try {
-            System.out.println("get from cache, spuId:" + spuId);
+            System.out.println("try to get from cache, spuId:" + spuId);
 //            get(K k): 内部调用getOrLoad(K key)方法，缓存中有对应的值则返回，没有则使用CacheLoader load方法
 //            getOrLoad(K key)方法为线程安全方法，内部加锁
             String uv = batchQuerySpuAvgUvLast7Cache.get(spuId);
@@ -106,7 +106,7 @@ public class CacheTest {
     }
 
     private static Object query(long id) {
-
+        System.out.println("加载查询");
         return null;
     }
 
