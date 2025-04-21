@@ -61,9 +61,84 @@ public class L100Problem {
 //        int [] nums = {5,4,-1,7,8};
 //        problem.maxSubArray(nums);
 
-        int [] nums = {1,2,3,4};
-        problem.productExceptSelf(nums);
+//        int [] nums = {1,2,3,4};
+//        problem.productExceptSelf(nums);
+
+        int[][] matrix = new int[][]{{1, 1, 1}, {1, 0, 1}, {1, 1, 1}};
+        problem.setZeroes(matrix);
+        System.out.println(Arrays.toString(matrix));
+
     }
+
+    /**
+     * 给定一个 m x n 的矩阵，如果一个元素为 0 ，则将其所在行和列的所有元素都设为 0 。请使用 原地 算法。
+     * 输入：matrix = [[1,1,1],[1,0,1],[1,1,1]]
+     * 输出：[[1,0,1],[0,0,0],[1,0,1]]
+     */
+    public void setZeroes(int[][] matrix) {
+        //1.顺序遍历 先找到那个0的行和列 全部标记为0，如果已经标记为0的则跳过。
+        // 怎么在遍历的时候 所在行所在列为0？ 可能不是很好的做法，理想状态下得遍历2次才行
+        // 借助副本可以标记,还有没有什么办法可以标记？
+        //2.原地？
+        int m = matrix.length;
+        int n = matrix[0].length;
+        boolean col0 = false;
+        boolean row0 = false;
+        // 因为是原地 所以原地被标记的元素得标记下状态 是否为0 如果第0列是0 后面还第0行得置为0.如果第0行是0，后面第0列还得置为0
+        for (int i = 0; i < m; i++) {
+            if (matrix[i][0] == 0) {
+                col0 = true;
+            }
+        }
+        for (int j = 0; j < n; j++) {
+            if (matrix[0][j] == 0) {
+                row0 = true;
+            }
+        }
+
+        for (int i = 1; i < m; i++) {
+            for (int j = 1; j < n; j++) {
+                if (matrix[i][j] == 0) {
+                    // 标记
+                    matrix[i][0] = 0;
+                    matrix[0][j] = 0;
+                }
+            }
+        }
+
+        // 根据标记位 置0
+        for (int i = 1; i < m; i++) {
+            for (int j = 1; j < n; j++) {
+                if (matrix[i][0] == 0 || matrix[0][j] == 0) {
+                    matrix[i][j] = 0;
+                }
+            }
+        }
+
+        // 处理第一行和第一列
+        // row0=0 第0行为0
+        // col0=0 第0列为0
+        if (row0) {
+            setRow0(matrix, 0);
+        }
+        if (col0) {
+            setColumn0(matrix, 0);
+        }
+
+    }
+
+    public void setRow0(int[][] matrix, int row) {
+        for (int j = 0; j < matrix[0].length; j++) {
+            matrix[row][j] = 0;
+        }
+    }
+
+    public void setColumn0(int[][] matrix, int column) {
+        for (int i = 0; i < matrix.length; i++) {
+            matrix[i][column] = 0;
+        }
+    }
+
 
     /**
      * 给你一个整数数组 nums，返回 数组 answer ，其中 answer[i] 等于 nums 中除 nums[i] 之外其余各元素的乘积 。
