@@ -64,10 +64,91 @@ public class L100Problem {
 //        int [] nums = {1,2,3,4};
 //        problem.productExceptSelf(nums);
 
-        int[][] matrix = new int[][]{{1, 1, 1}, {1, 0, 1}, {1, 1, 1}};
-        problem.setZeroes(matrix);
-        System.out.println(Arrays.toString(matrix));
+//        int[][] matrix = new int[][]{{1, 1, 1}, {1, 0, 1}, {1, 1, 1}};
+//        problem.setZeroes(matrix);
+//        System.out.println(Arrays.toString(matrix));
 
+        int[][] matrix = new int[][]{{1, 2, 3}, {4, 5, 6}, {7, 8, 9}};
+        problem.spiralOrder(matrix).forEach(System.out::println);
+
+    }
+
+    /**
+     * 螺旋矩阵 顺时针螺旋顺序
+     * 输入：matrix = [[1,2,3],[4,5,6],[7,8,9]]
+     * 输出：[1,2,3,6,9,8,7,4,5]
+     */
+    public List<Integer> spiralOrder(int[][] matrix) {
+
+        // 记录一个方向 当发现走到边界处 按照顺时针 转化到下一个方向，直到走完
+        // 如何在二维数组种按照方向移动？ 比如向右：j+1; 向下:i+1; 向左：j-1; 向上:i-1
+        // 如何在第2圈 第三圈的时候及时拐弯？转变方向？ 条件是什么？  边界动态化 top=0 bottom=m-1 right=n-1 left=0 这样结束条件也有了：top<=bottom left<=right
+        //
+        int right = 1;
+        int down = 2;
+        int left = 3;
+        int up = 4;
+        int dir = right;
+        List<Integer> result = new ArrayList<>();
+        int i = 0, j = 0;
+        int m = matrix.length;
+        int n = matrix[0].length;
+        int topB=0,bottomB=m-1,rightB=n-1,leftB=0;
+        while (topB <= bottomB && leftB <= rightB) {
+            while (dir == right && leftB <= rightB) {
+                if (j == rightB + 1) {
+                    dir = down;
+                    // 先移动
+                    i++;
+                    j--;
+                    // 上边界+1
+                    topB++;
+                    break;
+                }
+                result.add(matrix[i][j++]);
+
+            }
+            while (dir == down && topB <= bottomB) {
+                if (i == bottomB + 1) {
+                    dir = left;
+                    i--;
+                    j--;
+                    // 右边界-1
+                    rightB--;
+                    break;
+                }
+                // 避免重复
+                result.add(matrix[i++][j]);
+            }
+
+            while (dir == left && leftB <= rightB) {
+                if (j == leftB - 1) {
+                    dir = up;
+                    i--;
+                    j++;
+                    // 下边界-1
+                    bottomB--;
+                    break;
+                }
+                // 向左
+                result.add(matrix[i][j--]);
+            }
+
+            while (dir == up && topB <= bottomB) {
+                if (i == topB - 1) {
+                    dir = right;
+                    i++;
+                    j++;
+                    // 左边界+1
+                    leftB++;
+                    break;
+                }
+                // 向上
+                result.add(matrix[i--][j]);
+            }
+        }
+
+        return result;
     }
 
     /**
