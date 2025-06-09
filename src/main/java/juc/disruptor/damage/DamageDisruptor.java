@@ -5,6 +5,7 @@ import com.lmax.disruptor.RingBuffer;
 import com.lmax.disruptor.dsl.Disruptor;
 import com.lmax.disruptor.dsl.ProducerType;
 
+import java.util.Random;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -20,7 +21,7 @@ public class DamageDisruptor {
         // 创建多个线程发起扣血请求
         Runnable task = () -> {
             for (int i = 0; i < 500; i++) {
-                damageDisruptor.publishDamage(1);
+                damageDisruptor.publishDamage(new Random().nextInt(10));
             }
         };
 

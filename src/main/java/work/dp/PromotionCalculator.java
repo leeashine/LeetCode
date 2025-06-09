@@ -6,6 +6,13 @@ import java.util.List;
 
 /**
  * 促销计算引擎
+ * 实践建议：
+ *
+ * 先过滤掉不满足门槛的券，再把剩余数目限制在 20 条以内；
+ *
+ * 券条数 < 15 时跑穷举，否则跑背包；
+ *
+ * 二者结果必须一致（可做单元测试双算校验）。
  */
 class PromotionCalculator {
     private List<Promotion> promotions;

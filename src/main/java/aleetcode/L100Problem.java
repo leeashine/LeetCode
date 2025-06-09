@@ -68,9 +68,46 @@ public class L100Problem {
 //        problem.setZeroes(matrix);
 //        System.out.println(Arrays.toString(matrix));
 
-        int[][] matrix = new int[][]{{1, 2, 3}, {4, 5, 6}, {7, 8, 9}};
-        problem.spiralOrder(matrix).forEach(System.out::println);
+//        int[][] matrix = new int[][]{{1, 2, 3}, {4, 5, 6}, {7, 8, 9}};
+//        problem.spiralOrder(matrix).forEach(System.out::println);
 
+        int[] nums = new int[]{5, -7, 3, 5};
+        problem.minAbsDifference(nums, 6);
+
+    }
+
+    /**
+     * 给你一个整数数组 nums 和一个目标值 goal 。
+     *
+     * 你需要从 nums 中选出一个子序列，使子序列元素总和最接近 goal 。也就是说，如果子序列元素和为 sum ，你需要 最小化绝对差 abs(sum - goal) 。
+     *
+     * 返回 abs(sum - goal) 可能的 最小值 。
+     *
+     * 注意，数组的子序列是通过移除原始数组中的某些元素（可能全部或无）而形成的数组。
+     */
+    public int minAbsDifference(int[] nums, int goal) {
+
+        // 如何让abs(sum-goal) 最小 sum和goal最接近 如何最接近？ 因为从小到大排序 有顺序的
+        // 从小到达排序  滑动窗口？ 可变的滑动窗口？ left什么时候移动 right什么时候移动？ 先left不动，right动，当差值大了，right不动 左边收缩
+        // sum怎么计算 向右的时候+ 左边收缩的时候-
+        // 终止条件？
+        Arrays.sort(nums);
+        int left = 0, right = 0;
+        int sum = 0;
+        int result = Math.abs(goal);
+        while (right < nums.length && left < nums.length&&left<=right) {
+            sum += nums[right];
+            int abs = Math.abs(sum - goal);
+            if (abs < result) {
+                right++;
+            } else {
+                sum -= nums[left];
+                left++;
+            }
+            result = Math.min(abs, result);
+        }
+
+        return result;
     }
 
     /**
