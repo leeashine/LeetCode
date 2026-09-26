@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  《亿级流量网站架构核心技术》§15.9（p311）的 Spring 配置示例 —— 仅作说明用。
+
+  本仓库只依赖 spring-beans（无 spring-context），该 XML 不会被加载；
+  生产使用需要 spring-context + 真实 Redis（JedisQueueRedis 注入 JedisPool）。
+  书中使用 Spring Data Redis 的 RedisTemplate，此处对应 QueueRedis（Jedis 适配）。
+-->
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                           http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!-- Jedis 连接池（生产环境） -->
+    <bean id="jedisPool" class="redis.clients.jedis.JedisPool">
+        <constructor-arg value="127.0.0.1"/>
+        <constructor-arg value="6379"/>
+    </bean>
+
+    <bean id="queueRedis" class="com.queue.JedisQueueRedis">
+        <constructor-arg ref="jedisPool"/>
+    </bean>
+
+    <!-- 商品变更事件队列：等待队列 productEventQueue，
+         派生处理队列 productEventQueue_processing_queue_<本机IP>、
+         失败队列 productEventQueue_failed_queue、
+         备份队列 productEventQueue_bak_queue_<小时> -->
+    <bean id="productEventQueue" class="com.queue.EventQueue">
+        <property name="queueRedis" ref="queueRedis"/>
+        <property name="processingErrorRetryCount" value="3"/>
+        <property name="queueName" value="productEventQueue"/>
+        <property name="maxBakSize" value="10000"/>
+    </bean>
+
+    <bean id="productEventHandler" class="com.task.handler.ProductEventHandler"/>
+
+    <bean id="productEventWorker" class="com.queue.EventWorker"
+          init-method="init" destroy-method="stop">
+        <property name="threadPoolSize" value="256"/>
+        <property name="ringBufferSize" value="4096"/>
+        <property name="eventHandlerMap">
+            <map>
+                <entry key-ref="productEventQueue" value-ref="productEventHandler"/>
+            </map>
+        </property>
+    </bean>
+</beans>
