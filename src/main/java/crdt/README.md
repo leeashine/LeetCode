@@ -1,112 +1,47 @@
-# CRDT 从 0 到 1：小白实操手册
+# CRDT 从 0 到 1：给离线笔记增加同步能力
 
-> **一句话总纲**：CRDT 不是某种中间件，而是一种**数据类型的写法**——把"冲突解决"从一个需要协商的流程，压缩成一个**可交换、可重复、可乱序**的纯函数 `merge`。写对了 `merge`，分布式一致性就是免费的。
+手机和电脑都能断网改笔记。重新联网时，怎样不丢修改、不重复计数，也不把已经删掉的内容带回来？
 
-配套代码全部在本仓库 `src/main/java/crdt/` 下，**每一步都能自己动手跑**。全文的每一段"期望输出"、"会挂哪个测试"都是**实测结果**，不是推测。
+本课程围绕这个应用场景，逐步实现统计、标题、标签和正文的数据结构。同步用 Java 对象之间的合并模拟，不需要先搭网络服务。
 
----
+## 先找到自己的位置
 
-## 怎么读（分阶段）
+| 文件位置 | 用来做什么 |
+|---|---|
+| [docs/00-快速开始](docs/00-快速开始.md) | 先看故事，运行一个已完成的演示 |
+| `docs/01`～`docs/09` | 每节从假设和问题出发，推导方法和实现 |
+| `src/main/java/crdt/learnning/` | 你填写的练习骨架，只有声明与 TODO |
+| `src/test/java/crdt/learnning/` | 实际测试类，检验你填写的功能 |
+| 本目录已有 Java 类 | 完成的参考实现，卡住时对照 |
 
-本手册拆成 11 个文件，**每步一个文件，独立可读**。按"总 → 分 → 总"三段推进：
+建议从 [快速开始](docs/00-快速开始.md) 顺序读。Java 的方法、Map、Set、泛型够用，其他术语在故事后再认识。
 
-| 阶段 | 文件 | 什么时候读 |
+## 一个应用，每章多解决一个问题
+
+| 章节 | 本课的小任务 | 做完能看到什么 |
 |---|---|---|
-| **总** | 本页 + [快速开始](docs/00-快速开始.md) | 开工前一次性读完（环境、三个核心名词、每步的固定套路） |
-| **分** | [第 1 步](docs/01-半格三律.md) → [第 9 步](docs/09-墓碑GC.md) | 一次只读一个文件，读完立刻动手写 + 跑测试 |
-| **总** | [总结与自检](docs/99-总结与自检.md) | 9 步都做完后再读（一页纸总结、自检清单、常见误区、术语表） |
+| [00 快速开始](docs/00-快速开始.md) | 分清本地修改、复制状态和同步 | 知道在哪写代码、怎样观察结果 |
+| [01 合并的约定](docs/01-半格三律.md) | 为只添加的标签定义合并要求 | 重发、换序、转发仍得到同一组标签 |
+| [02 操作与数量统计](docs/02-计数器.md) | 累计操作次数，再支持净增减 | 两边贡献不丢，不把重发算作新操作 |
+| [03 标题选一个值](docs/03-LWW寄存器.md) | 给标题修改贴顺序标签 | 两边按同一规则选出一个标题 |
+| [04 标题保留独立修改](docs/04-版本向量与MV寄存器.md) | 区分收到旧内容后修改与各自离线修改 | 后续修改替换旧值，独立修改保留两份 |
+| [05 标签增删](docs/05-ORSet.md) | 支持取消、重加和离线增删 | 已收到的添加可删，未收到的新添加留下 |
+| [06 正文编辑](docs/06-RGA文本.md) | 给字符稳定身份，合并插入和删除 | ab 中并发插字、删除后，双方正文相同 |
+| [07 传播检查](docs/07-收敛性证明.md) | 用重复、转发、旧消息检查已经写的类型 | 既检查两边一致，也检查内容正确 |
+| [08 少发数据](docs/08-delta-state.md) | 保留合并规则，发送小状态片段 | 重发不算重，确认以后才清待发内容 |
+| [09 有条件地回收](docs/09-墓碑GC.md) | 判断删除进度，尝试部分回收 | 识别可回收记录，以及还不能安全忘掉的历史 |
+| [99 回顾](docs/99-总结与自检.md) | 把需求、字段和方法串起来 | 能解释自己的设计，不只会背类名 |
 
-**每个步骤文件的固定结构**（约 100 行，30 分钟一轮）：
+03 与 04 是标题的两种产品选择：允许覆盖就选一个，不能丢独立修改就保留多个。它们不是同一标题字段必须叠加的两个算法。
 
-```
-目标 → 大白话原理 → 你要写的 API → 硬性不变量 → 动手验证（可复制命令 + 期望输出）
-     → 破坏性实验（改坏哪一行、实测挂哪几个测试）→ 自检问答
-```
+## 每节怎样学
 
-> 学习节奏建议：**一次只做一步**，做完必须看到那一步的 `OK (n tests)` 再往下走。卡住了再对照 `src/main/java/crdt/` 下的参考实现——**先写后看**，效果差 10 倍。
+**读假设 → 在问题处先想一下 → 读解释 → 按需求补对应 TODO → 运行本章测试。**
 
----
+开始只填写本章需要的部分。例如 05、06 先完成基本增删与合并，版本记录和 gc 留到 09。初始骨架会报 TODO 未实现；已完成的参考实现不等于你的练习已经完成。
 
-## 实现阶梯（点步骤名进入对应文件）
+每章结束只问两件事：这次多解决了什么问题？为什么必须留下这些字段或记录？参考答案折叠放在对应问题后，完整类留在参考文件里。
 
-| 步骤 | 你会实现 | 解决的真实问题 | 产出文件 | 该步验证 |
-|---|---|---|---|---|
-| [**1** 半格三律](docs/01-半格三律.md) | 契约 + 三律 | 先立规矩：什么样的 merge 才算合格 | `CvRDT.java` | 纯接口，无测试 |
-| [**2** 计数器](docs/02-计数器.md) | `GCounter` / `PNCounter` | 多机并发计数，不丢不重 | `GCounter.java`、`PNCounter.java` | `OK (10 tests)` |
-| [**3** LWW 寄存器](docs/03-LWW寄存器.md) | `LamportClock` / `LWWRegister` | 多机同时改同一个值，谁赢 | `LamportClock.java`、`LWWRegister.java` | `OK (6 tests)` |
-| [**4** 版本向量与 MV 寄存器](docs/04-版本向量与MV寄存器.md) | `VersionVector` / `MVRegister` | 并发写不想丢，两个值都留 | `VersionVector.java`、`MVRegister.java` | `OK (8 tests)` |
-| [**5** ORSet](docs/05-ORSet.md) | `ORSet` | 多机同时增删同一个集合 | `ORSet.java` | `OK (13 tests)` |
-| [**6** RGA 文本](docs/06-RGA文本.md) | `RGA` | 协同文本编辑（Google Docs 的核心） | `RGA.java` | `OK (16 tests)` |
-| [**7** 收敛性证明](docs/07-收敛性证明.md) | 恶劣网络仿真 | 用"丢包 + 重复 + 乱序"证明前 6 步 | `ConvergenceTest.java` | `OK (13 tests)` |
-| [**8** delta-state](docs/08-delta-state.md) | 增量同步 | 不再传全量，只传增量 | `DeltaGCounter.java`、`DeltaORSet.java` | `OK (29 tests)` |
-| [**9** 墓碑 GC](docs/09-墓碑GC.md) | 因果稳定 + 回收 | 让内存不随历史无限膨胀 | `CausalStamp.java`、`CausalStability.java` | `OK (5 tests)` |
-| **合计** | 12 个 CRDT 类 + 12 个测试类 | | | **`OK (100 tests)`** |
+进阶边界集中在相关章节末尾。尤其是 09：共同收到删除不自动保证旧快照不会再来，当前 GC 也不构成完整的生产回收协议。
 
-依赖关系（**严格按箭头顺序做**，后面的每一步都用到前面的概念）：
-
-```mermaid
-graph LR
-  S1["1 半格三律"] --> S2["2 GCounter/PNCounter"]
-  S1 --> S3["3 Lamport+LWW"]
-  S3 --> S4["4 版本向量+MV"]
-  S4 --> S5["5 ORSet"]
-  S4 --> S6["6 RGA 文本"]
-  S2 --> S7["7 收敛性证明"]
-  S5 --> S7
-  S6 --> S7
-  S7 --> S8["8 delta-state"]
-  S8 --> S9["9 墓碑 GC"]
-  S4 --> S9
-```
-
----
-
-## 学习进度清单
-
-- [ ] [00 快速开始：环境、概念与套路](docs/00-快速开始.md)
-- [ ] [01 半格三律](docs/01-半格三律.md)
-- [ ] [02 GCounter / PNCounter](docs/02-计数器.md)
-- [ ] [03 LamportClock + LWWRegister](docs/03-LWW寄存器.md)
-- [ ] [04 VersionVector + MVRegister](docs/04-版本向量与MV寄存器.md)
-- [ ] [05 ORSet](docs/05-ORSet.md)
-- [ ] [06 RGA 文本](docs/06-RGA文本.md)
-- [ ] [07 收敛性证明](docs/07-收敛性证明.md)
-- [ ] [08 delta-state](docs/08-delta-state.md)
-- [ ] [09 墓碑 GC / 因果稳定](docs/09-墓碑GC.md)
-- [ ] [99 总结与自检](docs/99-总结与自检.md)
-
----
-
-## 三条命令（随时可用）
-
-本仓库的 `mvn compile` 已经损坏（`java8/chap6` 编码错误、`com.sun.*` 内部包等历史遗留，与 CRDT 无关），**不要用 mvn 验证本模块**。用 `javac` + JUnit：
-
-```bash
-cd /Users/lizixuan/Documents/IdeaProjects/LeetCode
-
-JAR="$HOME/.m2/repository/junit/junit/4.13.1/junit-4.13.1.jar:$HOME/.m2/repository/org/hamcrest/hamcrest-core/1.3/hamcrest-core-1.3.jar"
-
-# 1) 编译整个 crdt 模块
-rm -rf /tmp/crdt && mkdir -p /tmp/crdt
-javac -encoding UTF-8 -d /tmp/crdt -cp "$JAR" src/main/java/crdt/*.java src/test/java/crdt/*.java
-
-# 2) 跑全部测试（当前实测 100 个全绿）
-java -cp "/tmp/crdt:$JAR" org.junit.runner.JUnitCore \
-  crdt.GCounterTest crdt.PNCounterTest crdt.LWWRegisterTest crdt.MVRegisterTest \
-  crdt.ORSetTest crdt.RGATest crdt.LatticeLawsTest crdt.ConvergenceTest \
-  crdt.DeltaGCounterTest crdt.DeltaORSetTest crdt.DeltaSyncTest crdt.TombstoneGcTest
-
-# 3) 跑可视化 demo（打印每一步的合并结果）
-java -cp /tmp/crdt crdt.CrdtDemo
-```
-
-```
-JUnit version 4.13.1
-OK (100 tests)
-```
-
-> 每一步还有**更窄的编译命令**（只编译那一步需要的文件），写在对应步骤文件的"动手验证"里——那才是做练习时该用的。
-
----
-
-**开始** → [快速开始：环境、概念与学习套路](docs/00-快速开始.md)
+**开始** → [00 快速开始](docs/00-快速开始.md)

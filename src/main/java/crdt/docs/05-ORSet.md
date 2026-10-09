@@ -1,111 +1,228 @@
-> **进度**：[← 目录](../README.md) ｜ 上一步：[第 4 步 `VersionVector` + `MVRegister` —— 并发写两个都留](04-版本向量与MV寄存器.md) ｜ 下一步：[第 6 步 `RGA` —— 协同文本编辑](06-RGA文本.md)
-> **前置**：第 4 步　**产出**：`ORSet.java`　**验证**：`OK (13 tests)`
+# 第 5 步：笔记标签，取消后还能重新加吗？
 
----
+**上一步**：上章让手机 A 和电脑 B 保留笔记标题的并发修改，不再悄悄覆盖其中一个。
 
-# 第 5 步：`ORSet` —— 多机同时增删集合
+**本课任务**：给同一篇离线笔记添加“旅行”“工作”标签，支持取消、重新添加和同步。
 
-**目标**：多机并发地对同一个集合做 add / remove，收敛且语义合理。
+**完成后**：写出一个集合：旧消息不会复活已取消的标签，并发的新添加仍能留下。
 
-**大白话**：集合的难点是"删除"——如果 A 删掉 x 的同时 B 加了 x，x 该不该在？
+**练习入口**：[learnning/ORSet.java](../learnning/ORSet.java) 和 [ORSetLearningTest.java](../../../../test/java/crdt/learnning/ORSetLearningTest.java)，按下面的任务填 TODO。
 
-**解法：给每次 add 发一张唯一票（tag）**。
+[← 目录](../README.md) ｜ 上一步：[版本向量与 MV 寄存器](04-版本向量与MV寄存器.md) ｜ 下一步：[RGA 文本](06-RGA文本.md)
 
-```
-状态 = 每个元素挂着的 tag 集合  +  墓碑集合（被删掉的 tag）
-add(x)    → 给 x 发一张新票 tag(A,1)
-remove(x) → 把 x 当前所有票丢进墓碑
-x 是否存在 = x 还有"没进墓碑的票"吗
-```
+## 1. 给“添加一次”一个身份
 
-**为什么"并发 add vs remove"是 add 赢**：`remove` 只能墓碑它**已经看见**的票。B 并发加的票 A 从没见过，自然删不掉。
+**假设**：手机 A 添加“旅行”后同步给电脑 B。断网后，A 取消“旅行”，B 什么也没做。
 
-```
-A: add(苹果)  → 苹果:[票A1]
-B: add(苹果)  → 苹果:[票B1]        ← 真并发
-A: remove(苹果) → 墓碑{A1}          ← 只删得掉自己看见的票
-同步后 → 苹果:[票B1] 且 票B1 不在墓碑 → 苹果还活着 ✅
+```text
+A 的标签：{}
+B 的标签：{旅行}
 ```
 
-## 你要写的 API
+**问题**：联网时把两个集合取并集，标签会怎样？再换成取交集能解决吗？
+
+**解释**：并集让“旅行”回来，因为 A 的空集合没有记录删除。交集也不合适：A 新加“工作”、B 尚未收到时，交集会把新标签丢掉。要把“取消过”存下来。
+
+再假设我们记一个“已取消标签”集合，把“旅行”放进去。用户后来重新添加“旅行”，旧删除也会挡住它。问题在于：删除的对象应当是**旧的那次添加**，而不是永久禁止“旅行”这个名字。
+
+给每次添加一张唯一票，叫 `Tag`：
+
+```text
+(A, 1) = A 第一次添加，本章简写 A1
+(A, 2) = A 第二次添加，本章简写 A2
+(B, 1) = B 第一次添加，本章简写 B1
+```
+
+先在骨架的 `Tag` 内保存这两个字段，再实现它的方法。构造输入是副本 ID 和添加序号，返回一张不可变票；`replicaId()`、`seq()` 返回这两个值。两张票只有这两项都相同才相等，`hashCode()` 也使用它们，才能放进 `Set` 去重。
+
+A1 和 A2 不相等，即使都代表“旅行”。不同设备不能共用同一个写入 ID；同一设备也不能丢失计数历史后从 1 重来，否则旧删除可能误伤新添加。
+
+## 2. 一份标签为什么要存多张票？
+
+**假设**：A、B 都已经收到“旅行”的 A1。离线后，A 取消“旅行”，B 又添加一次“旅行”，发出 B1。
+
+```text
+A 看见过 A1，因此取消 A1
+B 持有 A1，并新增 B1
+```
+
+**问题**：A 的取消是否应该删除它尚未见过的 B1？
+
+**解释**：本章选择让 B1 留下。删除只处理当前已经收到的添加；A 以后收到 B1，再取消一次，才会删除它。这是 observed-remove（删除已观察到的添加）；未被删除者观察到的并发添加留下，所以也叫 add-wins。
+
+这不是“添加永远胜过删除”，而是明确规定删除的范围。若产品要求并发删除也挡住新添加，要选择另一套语义。
+
+为了执行这条规则，先在骨架中定义两份数据字段，再补操作方法：
 
 ```java
-public final class ORSet<E> implements CvRDT<ORSet<E>> {
-    public static <E> ORSet<E> empty(String replicaId);
-    public ORSet<E> add(E element);
-    public ORSet<E> remove(E element);
-    public boolean contains(E element);
-    public Set<E> elements();
-    public int size();
-    public ORSet<E> merge(ORSet<E> other);
-
-    public VersionVector version();     // 第 9 步：因果历史（GC 用）
-    public int tombstoneCount();        // 第 9 步：观测墓碑数量（GC 用）
-    public ORSet<E> gc(VersionVector stableFrontier);   // 第 9 步
-
-    public static final class Tag {   // (replicaId, seq) 唯一票
-        public Tag(String replicaId, long seq);
-        public String replicaId();
-        public long seq();
-    }
-}
+String replicaId;         // 本设备后续发票使用的身份
+long seq;                 // 本设备最后发出的添加序号
+Map<E, Set<Tag>> entries;  // 标签 → 当前仍存活的添加票
+Set<Tag> tombstones;      // 已取消的票，叫墓碑
 ```
 
-## 硬性不变量
+例如合并后的“旅行”只剩 B1，A1 进入墓碑：
 
-- [ ] **规范形式**：`entries` 的每个值集非空，且不含任何已在 `tombstones` 里的 tag（每次操作后都要维持）
-- [ ] `remove` 只墓碑**当前观察到的** tag，不是"永久拉黑这个元素"
-- [ ] `merge` = tag 并集 + 墓碑并集 → 再 prune
-- [ ] `equals` 只比较 `(entries, tombstones)`，**不含 `replicaId` / `seq`**（本地身份和本地计数器不是复制状态）
-- [ ] tag 的 `seq` 必须**单调递增**，保证同一副本产生的票永不重复
+```text
+entries    = {旅行: {B1}}
+tombstones = {A1}
+```
 
-## 动手验证
+始终维持两个约束：`entries` 不保存空票集，也不保存已进入墓碑的票。这样有这个 key 就表示标签存在，后面的查询不用再次过滤。
+
+基础阶段使用骨架的四参数内部构造器，只保存身份、seq、entries、tombstones。带 version/删除见证的六参数构造器留到第 9 章；本章 add/remove/merge 返回基本状态，不需要调用 CausalStamp。
+
+先补 `empty(String replicaId)`：输入本设备身份，返回添加序号为 0、两份集合都为空的状态。空或缺失 ID 应拒绝；身份有效后创建状态即可。
+
+需要检查后续写入身份时，`replicaId()` 无输入，直接返回保存的本地 ID；它不会改变集合。
+
+所有修改返回新 `ORSet<E>`，原状态不变。复制外层 `Map` 还不够：要改变某个标签的票集时，也复制那份 `Set`，不要改到旧快照共享的数据。
+
+## 3. 用户点“添加旅行”：实现 add
+
+**假设**：A 当前 `seq=0`，没有标签。它点击添加“旅行”，随后又点击添加一次。
+
+**问题**：第二次添加只要忽略就行吗？
+
+**解释**：不能。本地显示仍是一个“旅行”，但第二次点击是新的添加历史。它可能和另一个设备的取消并发，必须有新的身份。
+
+因此 `add(E element)` 接收标签，返回包含新添加的状态。每次执行都发一张新票：
+
+```text
+第一次：seq=1，entries={旅行:{A1}}
+第二次：seq=2，entries={旅行:{A1,A2}}
+```
+
+按需求把 TODO 拆成这几步：
+
+```text
+nextSeq = seq + 1
+newTag = Tag(replicaId, nextSeq)
+复制 entries
+复制 element 原有的票集，没有则从空集开始
+把 newTag 加进去，写回 element
+返回新状态，保存 nextSeq，沿用旧墓碑
+```
+
+计数到 `Long.MAX_VALUE` 时应拒绝继续添加，不能绕回旧序号。`element` 不承担添加身份：字符串相同只决定归到哪个标签下面。
+
+## 4. 用户点“取消旅行”：实现 remove
+
+**假设**：A 的“旅行”有 A1、A2 两张票。取消后，电脑 B 还可能发来旧 A1。
+
+**问题**：只从 `entries` 删掉“旅行”，够不够？
+
+**解释**：不够。旧消息到来时，A 得有证据说明 A1 已失效。`remove(E element)` 接收标签，返回取消本地可见添加后的状态：
+
+```text
+取消前：entries={旅行:{A1,A2}}，tombstones={}
+取消后：entries={}，tombstones={A1,A2}
+```
+
+实现时先取 `entries.get(element)`。没有票说明当前看不到它，直接返回等价状态；有票则复制两份集合，把这些票加进墓碑，并删除这个 key。
+
+不能扫描并删除“未来可能属于旅行的票”，因为它们尚不存在于本地历史。也不能删掉旧墓碑，因为旧消息还可能到来。
+
+此时再次 `add("旅行")` 会产生 A3。墓碑只含 A1、A2，因此 A3 存活，完成“添加 → 取消 → 重加”。
+
+## 5. 标签栏需要查询：实现 contains、elements、size
+
+**假设**：存储是 `{旅行:{A1,B1}, 工作:{A2}}`，页面要画两个标签，并判断“旅行”按钮是否选中。
+
+**问题**：`size()` 应返回 3 还是 2？页面可以直接拿到内部可修改集合吗？
+
+**解释**：返回 2。票是同步历史，标签是业务内容。前面维持了“只有存活票的 key 才存在”的约束，所以查询很短：
+
+```java
+boolean contains(E element)  // 输入标签，返回 entries 是否有这个 key
+Set<E> elements()            // 无输入，返回可见标签集合，即 entries 的 key
+int size()                  // 无输入，返回标签数量，即 entries 的 key 数
+```
+
+这些方法是为页面读取而来，不发新票、不修改状态。返回的集合也不能允许调用方改动内部状态：可返回不可修改视图或不可修改副本。骨架与参考实现都用不可变状态约束来保护它。
+
+## 6. 联网交换状态：实现 merge
+
+**假设**：两边从 A1 开始，A 取消“旅行”，B 并发重新添加“旅行”，还添加了“工作”。
+
+```text
+A：entries={}，tombstones={A1}
+B：entries={旅行:{A1,B1}, 工作:{B2}}，tombstones={}
+```
+
+**问题**：怎样既阻止 A1 复活，又留下 B1 和“工作”？
+
+**解释**：`merge(ORSet<E> other)` 输入对方状态，返回接收者合并后的新状态；接收者仍使用自己的副本 ID 写入。空参数应拒绝。
+
+核心步骤是“先汇总，再剪枝”：
+
+```text
+1. 对每个标签，把两边添加票取并集。
+2. 把两边墓碑取并集。
+3. 每个标签的票集移除全部墓碑票。
+4. 若某个标签没剩票，移除这个 key。
+```
+
+手算这一轮：
+
+| 阶段 | 旅行的票 | 工作的票 | 墓碑 |
+| --- | --- | --- | --- |
+| 汇总 | A1、B1 | B2 | A1 |
+| 剪枝 | B1 | B2 | A1 |
+
+合并不会发新票。`seq` 是**本设备发添加票的序号**，不能直接拿对方的 `seq` 当自己的：A 合并 B2 后，下次仍可发 A2。
+
+但若收到的是自己身份的旧状态或票，要把本地 `seq` 提升到已知本设备最大序号。参考实现检查同身份状态的 `seq`，也检查对方存活票和墓碑中的本设备票，防止下次复用已经发过的身份。
+
+边合并边修改共享票集会破坏旧快照；仍用复制后的集合做并集与剪枝。最终再检查“无空票集、无墓碑票”的约束。
+
+## 7. 两边同步完了吗：实现 equals 和 hashCode
+
+**假设**：A、B 页面都显示“旅行”。A 保存 `{旅行:{A1}}`，B 保存 `{旅行:{B1}}`。
+
+**问题**：文本一样就能认定两个状态相等吗？
+
+**解释**：不能。未来收到“删除 A1”时，A 会失去标签，B 仍有 B1。隐藏历史会影响未来合并，必须参与比较。
+
+`equals(Object other)` 接收任意对象，返回是否是同类、且 `entries` 和 `tombstones` 都相等。`hashCode()` 使用同样两份数据。副本 ID 和本地 `seq` 不参与：它们决定下一次本地写入，不决定当前共享集合状态。
+
+调试时还要看见隐藏的票和墓碑，因此 `toString()` 无输入，返回包含这两份集合的状态描述；`Tag.toString()` 返回设备 ID 与序号的描述。它们只用于观察，不承担相等判断。
+
+完整参考实现还带有第 9 章的删除见证和 `version`，OR-Set 的 `equals` 没有比较它们。因此这里的相等不能替代全部回收元数据的核对。
+
+## 8. 把这篇笔记的操作串起来
+
+**假设**：每次调用都把返回的新状态保存回来。先在纸上写出票，再填代码预测结果。
+
+**问题**：最后“旅行”为什么存在？“工作”为什么不受取消影响？
+
+```java
+ORSet<String> a = ORSet.<String>empty("A").add("旅行"); // A1
+ORSet<String> b = ORSet.<String>empty("B").merge(a);
+a = a.remove("旅行");              // 墓碑 A1
+b = b.add("旅行").add("工作");    // B1、B2
+a = a.merge(b);                     // 旅行 B1，工作 B2
+a = a.remove("旅行");              // 又收到并取消 B1
+a = a.add("旅行");                 // 新票 A2
+```
+
+**解释**：最终 `elements()` 是“旅行”“工作”，墓碑是 A1、B1；“旅行”靠 A2 存活，“工作”靠 B2 存活。取消按标签找到当时可见的票，不会影响另一个标签。
+
+标记为第 9 章的 `version()`、`tombstoneCount()`、`gc()` 暂时留到那里；本章测试不依赖这些方法。先完成本章的核心 TODO，再对照 [完整参考 ORSet.java](../ORSet.java) 核对复制集合、序号提升和剪枝细节。
+
+参考中的 `seq` 只在添加时推进；`version` 记录添加和有效删除的修改进度，删除不存在的标签不推进。二者不是同一个计数。墓碑何时可以回收、删除见证怎么记录，留到 [第 9 章：墓碑 GC](09-墓碑GC.md)。
+
+## 验证你的实现
+
+[ORSetLearningTest.java](../../../../test/java/crdt/learnning/ORSetLearningTest.java) 检查取消后重加、并发添加、旧状态重放及合并规律。骨架里的 TODO 尚未补完时预期失败；补完后应通过。
+
+在仓库根目录运行：
 
 ```bash
 JAR="$HOME/.m2/repository/junit/junit/4.13.1/junit-4.13.1.jar:$HOME/.m2/repository/org/hamcrest/hamcrest-core/1.3/hamcrest-core-1.3.jar"
-cd /Users/lizixuan/Documents/IdeaProjects/LeetCode
-rm -rf /tmp/crdt5 && mkdir -p /tmp/crdt5
-javac -encoding UTF-8 -d /tmp/crdt5 -cp "$JAR" \
-  src/main/java/crdt/CvRDT.java src/main/java/crdt/VersionVector.java \
-  src/main/java/crdt/CausalStamp.java src/main/java/crdt/CausalStability.java \
-  src/main/java/crdt/ORSet.java src/test/java/crdt/ORSetTest.java
-java -cp "/tmp/crdt5:$JAR" org.junit.runner.JUnitCore crdt.ORSetTest
+CRDT_BUILD=$(mktemp -d /tmp/crdt-learning.XXXXXX)
+javac -encoding UTF-8 -cp "$JAR" -d "$CRDT_BUILD" src/main/java/crdt/learnning/*.java src/test/java/crdt/learnning/*.java
+java -cp "$CRDT_BUILD:$JAR" org.junit.runner.JUnitCore crdt.learnning.ORSetLearningTest
 ```
 
-期望输出：
-
-```
-JUnit version 4.13.1
-.............
-OK (13 tests)
-```
-
-## 破坏性实验（实测结果）
-
-让 `merge` **不再传播墓碑**（把 `tombstones` 的并集改成空集）：
-
-```java
-Set<Tag> joinedTombstones = new HashSet<Tag>(tombstones);   // 改坏它
-Set<Tag> joinedTombstones = new HashSet<Tag>();             // 墓碑不再同步
-```
-
-实测：**5 个测试挂掉**——
-
-```
-✗ ORSetTest#concurrentAddSurvivesUnobservedRemove
-✗ ORSetTest#threeReplicasConvergeAfterSeededOperationsAndMerges
-✗ ORSetTest#versionVectorConvergesAfterMerge
-✗ ORSetTest#mergeIsJoinWithEmptyIdentity
-✗ LatticeLawsTest#orSetIsALattice
-```
-
-**墓碑记录了"删过"，但必须真的同步并剪枝才有用**：不同步墓碑，两个副本对"x 是否还存在"的答案就会永久分叉。
-
-## 自检问答
-
-1. 墓碑为什么不能马上删？（答：还没和所有副本同步过时，删掉墓碑会导致旧 tag 复活。必须等**因果稳定**——所有副本都见过这条墓碑——才能 GC，见第 9 步）
-2. ORSet 的墓碑会无限增长吗？（答：会。这是它在真实系统里的头号内存问题，第 8、9 步专门处理它）
-
----
-
-**下一步** → [第 6 步：`RGA` —— 协同文本编辑](06-RGA文本.md)
+**下一步** → [给笔记正文插字和删字](06-RGA文本.md)

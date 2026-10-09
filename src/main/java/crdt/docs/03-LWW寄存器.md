@@ -1,99 +1,150 @@
-> **进度**：[← 目录](../README.md) ｜ 上一步：[第 2 步 `GCounter` / `PNCounter` —— 并发计数不丢](02-计数器.md) ｜ 下一步：[第 4 步 `VersionVector` + `MVRegister` —— 并发写两个都留](04-版本向量与MV寄存器.md)
-> **前置**：第 1 步　**产出**：`LamportClock.java`、`LWWRegister.java`　**验证**：`OK (6 tests)`
+# 第 3 步：两台设备改标题，怎样约定一个赢家
 
----
+[← 操作统计](02-计数器.md) ｜ [目录](../README.md) ｜ [下一章：保留独立标题修改 →](04-版本向量与MV寄存器.md)
 
-# 第 3 步：`LamportClock` + `LWWRegister` —— 谁最后写的谁赢
+**上一步**：不同来源的计数可以同时保留，再汇总。
 
-**目标**：多机同时改同一个值（比如用户昵称），约定"最后写的赢"。
+**本课任务**：这次标题只留一个值，规定两边一致的选取规则。
 
-**大白话**：既然要分先后，就得有时间戳。但**不能用机器时钟**（时钟会漂移、会回拨）。用**逻辑时钟**：每发生一个本地事件就 +1，收到别人的时间戳就取 max+1。
+**完成后**：旧标题晚到，不覆盖带更大编号的新标题；同编号时两边仍选同一个值。
 
-```
-副本A: 写昵称 = "小明"   (时间戳 1)
-副本B: 写昵称 = "小红"   (时间戳 1)   ← 真并发，时间戳撞车了
-merge → 时间戳相同，比 replicaId 字典序，大的赢
-```
+**练习入口**：[LamportClock](../learnning/LamportClock.java)、[LWWRegister](../learnning/LWWRegister.java)。
 
-**关键认知**：Lamport 时钟只保证 `a 因果先于 b ⇒ ts(a) < ts(b)`，**反过来不成立**——时间戳大不代表因果更晚，可能只是并发。所以 LWW 会**静默丢掉并发写**。这是它的特性，不是 bug；下一步的 MVRegister 就是来修这个的。
+## 1. 最后收到的消息不同
 
-## 你要写的 API
+**假设**
+
+A 保存标题“周末计划”，B 保存“出差计划”。A 最后收到出差，B 最后收到周末。
+
+**问题**
+
+谁的消息后到就显示谁，最终会一样吗？
+
+**解释**
+
+不会。我们给修改附一个可比较的顺序标记，让接收次序不决定结果。
+
+本课接受“独立修改也按规则只留一个”的产品选择。下一课改成不丢独立修改，这两种选择不要混为同一种业务要求。
+
+## 2. A 已收到编号 5，接下来再保存
+
+**假设**
+
+A 本地计数是 1，已收到 B 编号 5 的标题，再保存一次。若继续用 2，新标题还赢不过已知状态。
+
+**问题**
+
+怎样产生一个比已经看到的顺序标记更大的编号？需要哪些时钟方法？
+
+**解释**
+
+在本地保存时加一，产生 tick；收到远端编号时先跟上它，产生 observe。需要一个初始 0，产生 start；显示或传入标题时需要读数，产生 time。
+
+定义一个 time 字段及构造器，随后填写这些方法：observe 取 max，tick 再加一。本仓库 observe 自己不加一，组合 `clock.observe(remote).tick()` 才给下一次修改更大编号。
+
+at 只是方便从已知读数构造时钟，equals/hashCode 比 time；它们不是额外的同步规则。
+
+## 3. 两边第一次写都编号 1
+
+**假设**
+
+A 的修改是 `(1,A,周末计划)`，B 是 `(1,B,出差计划)`。
+
+**问题**
+
+数字平局时保留自己，为何会分歧？怎样补一条裁决规则？
+
+**解释**
+
+A 留周末、B 留出差。再比较 ID，约定自然序较大者赢，于是两边都选 B。
+
+因此 LWWRegister 保存 value、timestamp 和这次写的 replicaId。这里 ID 标识获胜写，不是接收者身份，应参与相等判断。
+
+数字与 ID 合起来标识一次写；同一顺序标记不能对应两个不同值，这由调用方保证。编号用于裁决，不等于并发操作的真实时间先后。
+
+## 4. 把“保存一个标题”变成方法
+
+**假设**
+
+调用方已拿到本次编号，想把标题与编号、来源绑定，稍后再合并另一台设备的记录。
+
+**问题**
+
+时钟与标题容器各负责什么？为什么 set 与 merge 不合在一起？
+
+**解释**
+
+set(value,timestamp,id) 保存一次本地新写；merge(other) 比较已存在的两次写。set 不自动生成编号，也不自动 observe，调用方先操作时钟再传入顺序标记。
+
+填构造器，绑定三个字段；set 校验保留时间戳和 ID，再返回新状态。merge 先比较 timestamp，再比较 ID，返回获胜状态。
+
+<details>
+<summary>合并只按共同顺序标记选取</summary>
 
 ```java
-public final class LamportClock {                       // 不可变，注意：它不是 CRDT
-    public static LamportClock start();                 // time == 0
-    public static LamportClock at(long time);
-    public long time();
-    public LamportClock tick();                         // 本地事件：time + 1
-    public LamportClock observe(long remoteTime);       // 收到远端：max(time, remoteTime)
+if (timestamp > other.timestamp) {
+    return this;
 }
-
-public final class LWWRegister<T> implements CvRDT<LWWRegister<T>> {
-    public static <T> LWWRegister<T> empty();           // 半格底元素
-    public LWWRegister<T> set(T value, long timestamp, String replicaId);
-    public T value();
-    public long timestamp();
-    public String replicaId();
-    public boolean isEmpty();
-    public LWWRegister<T> merge(LWWRegister<T> other);
+if (timestamp < other.timestamp) {
+    return other;
 }
+return replicaId.compareTo(other.replicaId) >= 0 ? this : other;
 ```
 
-## 硬性不变量
+</details>
 
-- [ ] **底元素（bottom）**：`empty()` 必须返回 `(timestamp = Long.MIN_VALUE, replicaId = "", value = null)`，且必须是 merge 的**单位元**：`x.merge(empty()) == x`
-- [ ] **全序规则**：先比 `timestamp`，大者胜；相同则比 `replicaId` 的字符串自然序，大者胜。**这条 tie-break 不能省**——省了交换律立刻挂
-- [ ] `set` 不允许 `timestamp == Long.MIN_VALUE`（那是底元素专用）和空的 `replicaId`
-- [ ] `equals` 比较三元组 `(timestamp, replicaId, value)`
+先在片段前拒绝 null 输入。value/timestamp/replicaId 三个读取方法，分别满足显示标题和为下一次写推进时钟的需要。
 
-> **为什么需要"底元素"？** 一个新副本还没写过任何值时，它的状态必须能与任何状态 merge 且不改变对方。这就是半格理论里的"最小元"，工程上对应"空副本加入集群"。
+## 5. 空设备第一次加入
 
-## 动手验证
+**假设**
+
+新设备尚未写任何标题，合并它不应该抹掉已有的“周末计划”。null 也可能是一次合法赋值。
+
+**问题**
+
+如何表示“从没写过”，而不让它赢过真实修改？
+
+**解释**
+
+empty 保存保留的最低顺序标记 `(Long.MIN_VALUE,"",null)`；普通 set 禁用最低时间戳。isEmpty 判断保留顺序标记，不能只看 value 是否为 null。
+
+最后补 equals/hashCode，比较完整三元组。这份空状态与任何合法写合并，合法写都赢。toString 只把时钟读数或标题三元组显示出来，方便观察，不决定排序。
+
+## 本课任务顺序
+
+先给时钟定义 time，再完成 start/time/observe/tick；随后定义标题三元组，完成 empty/set/merge；最后补读取方法与状态相等。
+
+完成后观察这段目标用法。代码中的 A/B 是两台设备：
+
+```java
+LamportClock clock = LamportClock.start().tick();
+LWWRegister<String> a = LWWRegister.<String>empty().set("周末计划", clock.time(), "A");
+LWWRegister<String> b = LWWRegister.<String>empty().set("出差计划", 1, "B");
+a = a.merge(b);  // 同编号时 B 赢
+clock = clock.observe(a.timestamp()).tick();
+a = a.set("新的计划", clock.time(), "A");  // 本次顺序标记更大
+System.out.println(b.merge(a).value());  // 新的计划
+```
+
+代价是另一份独立修改会被丢弃。物理时钟也能作为排序顺序标记，但漂移和回拨影响业务时间语义；本课用逻辑计数不等于恢复了真实先后。
+
+## 运行本章练习
+
+测试类：[RegisterLearningTest](../../../../test/java/crdt/learnning/RegisterLearningTest.java)。补齐本章和前置章节的 TODO 后运行：
 
 ```bash
-JAR="$HOME/.m2/repository/junit/junit/4.13.1/junit-4.13.1.jar:$HOME/.m2/repository/org/hamcrest/hamcrest-core/1.3/hamcrest-core-1.3.jar"
 cd /Users/lizixuan/Documents/IdeaProjects/LeetCode
-rm -rf /tmp/crdt3 && mkdir -p /tmp/crdt3
-javac -encoding UTF-8 -d /tmp/crdt3 -cp "$JAR" \
-  src/main/java/crdt/CvRDT.java src/main/java/crdt/LamportClock.java \
-  src/main/java/crdt/LWWRegister.java src/test/java/crdt/LWWRegisterTest.java
-java -cp "/tmp/crdt3:$JAR" org.junit.runner.JUnitCore crdt.LWWRegisterTest
+JAR="$HOME/.m2/repository/junit/junit/4.13.1/junit-4.13.1.jar:$HOME/.m2/repository/org/hamcrest/hamcrest-core/1.3/hamcrest-core-1.3.jar"
+CRDT_BUILD=$(mktemp -d /tmp/crdt-learnning.XXXXXX)
+javac -encoding UTF-8 -cp "$JAR" -d "$CRDT_BUILD" src/main/java/crdt/learnning/*.java src/test/java/crdt/learnning/*.java
+java -cp "$CRDT_BUILD:$JAR" org.junit.runner.JUnitCore crdt.learnning.RegisterLearningTest
 ```
 
-期望输出：
+## 本课回看
 
-```
-JUnit version 4.13.1
-......
-OK (6 tests)
-```
+去掉平局 ID 裁决，两边为什么不同？A 收到编号 9 后，下次写需要怎样操作时钟？能够解释这个取舍，就进入保留两份标题的方案。
 
-## 破坏性实验（实测结果）
+参考：[LamportClock](../LamportClock.java)、[LWWRegister](../LWWRegister.java)。
 
-把 `merge` 里的 tie-break 去掉（时间戳相等时直接返回 `this`）：
-
-```java
-return replicaId.compareTo(other.replicaId) >= 0 ? this : other;  // 删掉这行
-return this;                                                      // 变成"相等就保留自己"
-```
-
-实测：**4 个测试挂掉**——
-
-```
-✗ LWWRegisterTest#bottomIsIdentityAndJoinLawsHold
-✗ LWWRegisterTest#replicaIdBreaksConcurrentTimestampTies
-✗ LatticeLawsTest#lwwRegisterIsALattice
-✗ ConvergenceTest#lwwRegisterConvergesToHighestTimestamp
-```
-
-> 📌 **本项目真实踩坑记录**：这个实验第一版跑的时候，`LatticeLawsTest#lwwRegisterIsALattice` **居然没挂**。原因是我最初写的通用定律检查只验了 `(a,b)` 一对的交换律，而时间戳撞车发生在 `(b,c)` 这一对上——测试漏了个洞。后来把交换律补成"三对全验"，这个破坏性实验才如实暴露出来。
-> **教训：验证半格性质时，"随便挑一对验交换律"是不够的。** 边界往往藏在特定的那一对里。
-
-## 自检问答
-
-1. 为什么 `LamportClock` 不实现 `CvRDT`？（答：它是本地的时间工具，不是被复制的状态；它自己 merge 没有意义）
-2. LWW 适合什么场景？（答：昵称、主题色、开关这类"最后设置生效"的字段；不适合购物车、收藏夹这类"不能丢数据"的场景）
-
----
-
-**下一步** → [第 4 步：`VersionVector` + `MVRegister` —— 并发写两个都留](04-版本向量与MV寄存器.md)
+**下一步** → [04 保留独立标题修改](04-版本向量与MV寄存器.md)

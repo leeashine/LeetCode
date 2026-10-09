@@ -21,7 +21,7 @@ public final class CrdtDemo {
 
     /** 只增计数器：不需要"协商"，merge 取逐副本最大值即可。 */
     private static void gCounter() {
-        title("1. GCounter —— 并发计数不会丢");
+        title("1. GCounter —— 笔记操作次数不丢不重");
         GCounter a = new GCounter("A").increment(3);
         GCounter b = new GCounter("B").increment(1);
         GCounter c = new GCounter("C").increment(5);
@@ -35,39 +35,39 @@ public final class CrdtDemo {
 
     /** 可增删集合：并发 add / remove 谁赢？ */
     private static void orSet() {
-        title("2. ORSet —— 并发 add vs remove：add 胜");
-        ORSet<String> a = ORSet.<String>empty("A").add("苹果").add("香蕉");
-        ORSet<String> b = ORSet.<String>empty("B").add("苹果");
+        title("2. ORSet —— 笔记标签的离线添加与取消");
+        ORSet<String> a = ORSet.<String>empty("A").add("旅行").add("工作");
+        ORSet<String> b = ORSet.<String>empty("B").add("旅行");
 
-        // A 在还没看到 B 的写入前，删掉"苹果"
-        ORSet<String> aAfterRemove = a.remove("苹果");
-        System.out.println("  A(删苹果后): " + aAfterRemove.elements());
-        System.out.println("  B(并发 add 苹果): " + b.elements());
+        // A 在还没看到 B 的写入前，删掉"旅行"
+        ORSet<String> aAfterRemove = a.remove("旅行");
+        System.out.println("  A(删旅行后): " + aAfterRemove.elements());
+        System.out.println("  B(并发 add 旅行): " + b.elements());
 
         ORSet<String> aSynced = aAfterRemove.merge(b);
         ORSet<String> bSynced = b.merge(aAfterRemove);
         System.out.println("  A 同步后: " + aSynced.elements());
         System.out.println("  B 同步后: " + bSynced.elements());
-        System.out.println("  两边一致: " + aSynced.equals(bSynced) + "  <- 苹果活着：A 的 remove 只能删掉它'看见过'的 tag");
+        System.out.println("  两边一致: " + aSynced.equals(bSynced) + "  <- 旅行活着：A 的 remove 只能删掉它'看见过'的 tag");
     }
 
     /** 寄存器：同一个 key 被两个离线副本同时写，LWW 会丢一个，MV 两个都留。 */
     private static void registers() {
-        title("3. LWWRegister vs MVRegister —— 并发写该丢还是该留？");
-        LWWRegister<String> lwwA = LWWRegister.<String>empty().set("http://a", 1L, "A");
-        LWWRegister<String> lwwB = LWWRegister.<String>empty().set("http://b", 1L, "B");
+        title("3. LWWRegister vs MVRegister —— 笔记标题选一个还是保留两份？");
+        LWWRegister<String> lwwA = LWWRegister.<String>empty().set("周末计划", 1L, "A");
+        LWWRegister<String> lwwB = LWWRegister.<String>empty().set("出差计划", 1L, "B");
         System.out.println("  LWW merge 结果: '" + lwwA.merge(lwwB).value()
                 + "'  <- 时间戳相同，靠 replicaId 定胜负，另一个值被静默丢弃");
 
-        MVRegister<String> mvA = MVRegister.<String>empty().assign("http://a", "A");
-        MVRegister<String> mvB = MVRegister.<String>empty().assign("http://b", "B");
+        MVRegister<String> mvA = MVRegister.<String>empty().assign("周末计划", "A");
+        MVRegister<String> mvB = MVRegister.<String>empty().assign("出差计划", "B");
         System.out.println("  MV  merge 结果: " + mvA.merge(mvB).values()
                 + "  <- 两个并发值都保留，冲突交给上层决定");
     }
 
     /** 序列 CRDT：两个人在同一句话里并发插字，字符既不丢也不撕裂。 */
     private static void rga() {
-        title("4. RGA —— 两人同时编辑同一句话");
+        title("4. RGA —— 手机和电脑编辑笔记正文");
         // 基线文档 "ab" 由副本 S 写下；A、B 通过 new RGA(id).merge(shared) 加入这份文档。
         // merge 保留的是"本地" replicaId，所以这行就是"副本加入已有文档"的标准写法。
         // 反面教材：直接拿同一个 RGA 对象派生两个副本会让两个副本共用 replicaId，
